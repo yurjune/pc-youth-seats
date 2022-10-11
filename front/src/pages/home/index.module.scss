@@ -1,0 +1,29 @@
+.container {
+  overflow-x: auto;
+
+  .title {
+    max-width: 1350px;
+    min-width: 1200px;
+    margin: 0 auto;
+    color: #5aba85;
+    font-size: 2rem;
+    text-align: center;
+    border: 2px solid #5aba85;
+    border-radius: 2px;
+  }
+
+  .seatContainer {
+    width: 1200px;
+    margin: 0 auto;
+  }
+
+  .line {
+    display: flex;
+    justify-content: center;
+
+    .emptyBox {
+      width: 10px;
+      height: 10px;
+    }
+  }
+}
