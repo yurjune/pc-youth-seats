@@ -1,16 +1,26 @@
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { SeatBox } from '../../components/seat-box';
 import { Seat } from '../../shared/models/seat.model';
 import styles from './index.module.scss';
-import mockData from './mock.json';
+import service from '../../services/seats';
+import socket from '../../socket';
 
 const Home = () => {
   const [seats, setSeats] = useState<Record<string, Seat[]>>();
 
   useEffect(() => {
-    setSeats(mockData);
-  });
+    socket.on('chat', (data) => {
+      console.log('data:', data);
+    });
+  }, []);
+
+  useEffect(() => {
+    service.getSeats().then((res) => setSeats(res));
+  }, []);
+
+  const emitMessage = () => {
+    socket.emit('chat', 'from front');
+  };
 
   const renderSeats = () => {
     if (seats == null) {
@@ -25,7 +35,7 @@ const Home = () => {
               return <div key={idx} className={styles.emptyBox} />;
             }
 
-            return <SeatBox key={idx} {...seat} />;
+            return <SeatBox key={idx} {...seat} onClick={emitMessage} />;
           })}
         </div>
         {line === 'seat_line_6' && <br />}

@@ -48,18 +48,17 @@ schedule.scheduleJob('00 00 15 * * 0', () => {
   });
 });
 
-const server = app.listen(5001, () => {
-  console.log('소켓 port 5001');
+const expressServer = app.listen(app.get('port'), () => {
+  console.log('WebServer Port: ' + app.get('port'));
 });
 
-const io = require('socket.io')(server);
-
+const io = require('socket.io')(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
-  console.log('Connect from Client: ' + socket);
+  console.log('connect from client: ' + socket);
 
   socket.on('chat', (data) => {
-    console.log('message from Client: ' + data);
-    io.sockets.emit('chat', data);
+    console.log('message from client: ' + data);
+    io.emit('chat', 'from backend');
   });
 });
 
@@ -243,8 +242,4 @@ app.post('/api/seatsChange', (req, res) => {
   const jsonFile = fs.readFileSync(`./json/${seatPlace}`, 'utf8');
   const jsonData = JSON.parse(jsonFile);
   res.send(jsonData);
-});
-
-http.createServer(app).listen(app.get('port'), () => {
-  console.log('WebServer Port: ' + app.get('port'));
 });
