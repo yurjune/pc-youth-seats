@@ -1,28 +1,31 @@
+@import '../../styles/responsive.scss';
+
 .container {
   overflow-x: auto;
+  padding: 20px 10px;
 
   .title {
-    max-width: 1350px;
-    min-width: 1200px;
+    width: 700px;
     margin: 0 auto;
     color: #5aba85;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-align: center;
     border: 2px solid #5aba85;
     border-radius: 2px;
   }
 
   .seatContainer {
-    width: 1200px;
+    width: 700px;
     margin: 0 auto;
+    padding: 16px 0;
 
     .line {
       display: flex;
       justify-content: center;
 
       .active-0 {
-        width: 10px;
-        height: 10px;
+        width: 5px;
+        height: 5px;
         align-self: center;
       }
     }
@@ -42,6 +45,40 @@
       &:first-of-type {
         color: #1976d2;
       }
+    }
+  }
+}
+
+@include md {
+  .container {
+    .title {
+      width: 930px;
+      font-size: 2rem;
+    }
+
+    .seatContainer {
+      width: 930px;
+
+      .line {
+        .active-0 {
+          width: 10px;
+          height: 10px;
+        }
+      }
+    }
+  }
+}
+
+@include lg {
+  .container {
+    .title {
+      max-width: 1350px;
+      min-width: 1200px;
+      width: 100%;
+    }
+
+    .seatContainer {
+      width: 1200px;
     }
   }
 }

@@ -1,3 +1,5 @@
+@import '../../styles/responsive.scss';
+
 .container {
   display: flex;
   justify-content: center;
@@ -8,12 +10,13 @@
     margin-right: 8px;
 
     > span {
-      font-size: 14px;
+      font-size: 0.8rem;
+      word-break: keep-all;
     }
   }
 
   .seat {
-    width: 30px;
+    width: 20px;
     height: 20px;
     margin-right: 4px;
     border-radius: 3px;
@@ -41,5 +44,11 @@
         background: #fbc02d;
       }
     }
+  }
+}
+
+@include md {
+  .container .box > span {
+    font-size: 1rem;
   }
 }

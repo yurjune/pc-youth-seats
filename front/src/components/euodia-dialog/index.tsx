@@ -13,8 +13,7 @@ export const EuodiaDialog = (props: EuodiaDialogProps) => {
       <DialogTitle className={styles.title}>유오디아 확인</DialogTitle>
       <DialogContent>
         <div className={styles.textFieldContainer}>
-          {/* <TextField className={styles.textField} id='euodia' label='유오디아' variant='standard' fullWidth autoFocus /> */}
-          <TextField className={styles.textField} id='euodia' label='유오디아' variant='standard' fullWidth autoFocus />
+          <TextField className={styles.textField} id='euodia' label='유오디아' variant='standard' fullWidth />
         </div>
         <DialogActions className={styles.actions}>
           <Button variant='contained' color='success'>

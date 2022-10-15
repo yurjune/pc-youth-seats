@@ -29,7 +29,7 @@ export const ReserveDialog = (props: ReserveDialogProps) => {
           *부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
         </DialogContentText>
         <div className={styles.textFieldContainer}>
-          <TextField className={styles.textField} id='name' label='이름' variant='standard' fullWidth autoFocus />
+          <TextField className={styles.textField} id='name' label='이름' variant='standard' fullWidth />
           <TextField className={styles.textField} id='pw' label='비밀번호' variant='standard' fullWidth />
           <TextField className={styles.textField} id='pwcheck' label='비밀번호 확인' variant='standard' fullWidth />
         </div>

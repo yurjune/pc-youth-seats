@@ -4,6 +4,7 @@ import service from '../../service';
 import { Seat } from '../../shared/models';
 import socket from '../../socket';
 import styles from './index.module.scss';
+import mock from './mock.json';
 
 const Home = () => {
   const [seats, setSeats] = useState<Record<string, Seat[]>>();
@@ -18,7 +19,8 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    service.getSeats().then((res) => setSeats(res));
+    // service.getSeats().then((res) => setSeats(res));
+    setSeats(mock);
   }, []);
 
   const renderSeats = () => {
@@ -56,11 +58,8 @@ const Home = () => {
   return (
     <>
       <div className={styles.container}>
-        <br />
         <div className={styles.title}>강단</div>
-        <br />
         <div className={styles.seatContainer}>{renderSeats()}</div>
-        <br />
         <div className={styles.title}>입구</div>
         <div className={styles.info}>
           <SeatInfo />
@@ -71,7 +70,6 @@ const Home = () => {
           <span> / </span>
           <strong>100</strong>
         </div>
-        <br />
       </div>
       <ReserveDialog open={reserveDialogOpen} onClose={() => setReserveDialogOpen(false)} />
       <DeleteDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} />
