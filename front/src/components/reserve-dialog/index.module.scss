@@ -1,0 +1,11 @@
+@import '../../styles/modal.scss';
+
+#dialog {
+  @include modal-basic();
+
+  .contentText {
+    font-size: 14px;
+    color: #800080;
+    margin-bottom: 20px;
+  }
+}

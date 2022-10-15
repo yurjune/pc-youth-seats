@@ -1,4 +1,4 @@
-import { client } from '..';
+import { client } from './client';
 
 export default {
   async getSeats() {

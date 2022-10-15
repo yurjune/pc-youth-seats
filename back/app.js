@@ -69,7 +69,7 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get('/api/getSeats', (req, res) => {
-  const jsonFile = fs.readFileSync('./json/seats.json', 'utf8');
+  const jsonFile = fs.readFileSync('./json/seats(test).json', 'utf8');
   const jsonData = JSON.parse(jsonFile);
   res.send(jsonData);
 });

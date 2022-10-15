@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  .box {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+
+    > span {
+      font-size: 14px;
+    }
+  }
+
+  .seat {
+    width: 30px;
+    height: 20px;
+    margin-right: 4px;
+    border-radius: 3px;
+
+    &.active-1 {
+      background: #9e9e9e;
+
+      &:hover {
+        background: #000;
+      }
+    }
+
+    &.active-2 {
+      background: #5aba85;
+    }
+
+    &.active-4 {
+      background: #b4d8c3;
+    }
+
+    &.active-5 {
+      background: #1976d2;
+
+      &:hover {
+        background: #fbc02d;
+      }
+    }
+  }
+}

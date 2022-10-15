@@ -1,0 +1,9 @@
+@import '../../styles/modal.scss';
+
+#dialog {
+  @include modal-basic();
+
+  :global(.MuiPaper-root) {
+    width: 600px;
+  }
+}
