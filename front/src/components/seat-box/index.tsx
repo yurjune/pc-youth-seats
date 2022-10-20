@@ -1,9 +1,11 @@
 import clsx from 'clsx';
+import { useUpdateAtom } from 'jotai/utils';
+import { deleteDialogOpenAtom, euodiaDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
 import { Seat } from '../../shared/models';
 import styles from './index.module.scss';
 
-interface SeatBoxProps extends Seat {
-  onClick?: () => void;
+interface SeatBoxProps {
+  seat: Seat;
 }
 
 /**
@@ -17,16 +19,48 @@ interface SeatBoxProps extends Seat {
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {
-  const cls = clsx(styles.seat, styles[`active-${props.seat_active}`]);
-  const isDisabled = props.seat_active === 2 || props.seat_active === 6;
+  const { seat } = props;
+  const { seat_active, id, name } = seat;
+  const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
+  const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
+  const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
+  const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
+
+  const cls = clsx(styles.seat, styles[`active-${seat_active}`]);
+  const isDisabled = seat_active === 2 || seat_active === 6;
+
+  const handleSeatClick = () => {
+    switch (seat_active) {
+      case 1: {
+        setReserveDialogOpen(true);
+        setSelectedSeat(seat);
+        break;
+      }
+      case 4: {
+        // 교역자, 방송팀, ...
+        if (seat.name) {
+          break;
+        }
+
+        setEuodiaDialogOpen(true);
+        setSelectedSeat(seat);
+        break;
+      }
+      case 5: {
+        setDeleteDialogOpen(true);
+        setSelectedSeat(seat);
+        break;
+      }
+    }
+  };
 
   return (
-    <div className={cls} onClick={props.onClick}>
+    <div className={cls} onClick={handleSeatClick}>
       {!isDisabled && (
         <>
-          {props.id}
+          {id}
           <br />
-          {props.name}
+          {name}
         </>
       )}
     </div>

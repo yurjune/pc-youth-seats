@@ -1,0 +1,10 @@
+.inner {
+  max-width: 1000px;
+  padding: 8px 32px;
+  border-radius: 4px;
+  font-size: 14px;
+
+  div[role='status'] {
+    margin-left: 12px;
+  }
+}

@@ -1,16 +1,16 @@
+import { useAtomValue } from 'jotai/utils';
 import { useEffect, useState } from 'react';
-import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo } from '../../components';
+import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
+import { selectedSeatAtom } from '../../jotai';
 import service from '../../service';
-import { Seat } from '../../shared/models';
+import { Seats } from '../../shared/models';
 import socket from '../../socket';
 import styles from './index.module.scss';
-import mock from './mock.json';
+// import mock from './mock.json';
 
 const Home = () => {
-  const [seats, setSeats] = useState<Record<string, Seat[]>>();
-  const [reserveDialogOpen, setReserveDialogOpen] = useState(false);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [euodiaDialogOpen, setEuodiaDialogOpen] = useState(false);
+  const selectedSeat = useAtomValue(selectedSeatAtom);
+  const [seats, setSeats] = useState<Seats>();
 
   useEffect(() => {
     socket.on('chat', (data) => {
@@ -19,8 +19,12 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // service.getSeats().then((res) => setSeats(res));
-    setSeats(mock);
+    console.log('selectedSeat', selectedSeat);
+  }, [selectedSeat]);
+
+  useEffect(() => {
+    // setSeats(mock);
+    service.getSeats().then((data) => setSeats(data));
   }, []);
 
   const renderSeats = () => {
@@ -32,22 +36,11 @@ const Home = () => {
       <div key={idx}>
         <div className={styles.line}>
           {seats[line].map((seat, idx) => {
-            let handleSeatClick;
-
             if (seat.seat_active === 0) {
               return <div key={idx} className={styles['active-0']} />;
             }
-            if (seat.seat_active === 1) {
-              handleSeatClick = () => setReserveDialogOpen(true);
-            }
-            if (seat.seat_active === 4 && seat.name === '') {
-              handleSeatClick = () => setEuodiaDialogOpen(true);
-            }
-            if (seat.seat_active === 5) {
-              handleSeatClick = () => setDeleteDialogOpen(true);
-            }
 
-            return <SeatBox key={idx} {...seat} onClick={handleSeatClick} />;
+            return <SeatBox key={idx} seat={seat} />;
           })}
         </div>
         {line === 'seat_line_6' && <br />}
@@ -71,9 +64,10 @@ const Home = () => {
           <strong>100</strong>
         </div>
       </div>
-      <ReserveDialog open={reserveDialogOpen} onClose={() => setReserveDialogOpen(false)} />
-      <DeleteDialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)} />
-      <EuodiaDialog open={euodiaDialogOpen} onClose={() => setEuodiaDialogOpen(false)} />
+      <ReserveDialog />
+      <DeleteDialog />
+      <EuodiaDialog />
+      <Toaster />
     </>
   );
 };

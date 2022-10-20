@@ -1,12 +1,22 @@
-import { client } from './client';
+import { SeatParam, Seats } from '../shared/models';
+import { requests } from './client';
 
 export default {
-  async getSeats() {
-    try {
-      const result = await client.get('/getSeats');
-      return result.data;
-    } catch (error: unknown) {
-      return error;
-    }
-  },
+  getSeats: (): Promise<Seats> =>
+    requests
+      .get('/getSeats')
+      .then((data) => data)
+      .catch((error) => {
+        console.error(error);
+        return error;
+      }),
+
+  seatsModify: (body: SeatParam): Promise<Seats> =>
+    requests
+      .put('/seatsModify', body)
+      .then((data) => data)
+      .catch((error) => {
+        console.error(error);
+        return error;
+      }),
 };
