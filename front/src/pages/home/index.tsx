@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
 import service from '../../service';
-import { useCountSeats, useSeats } from '../../shared/hooks';
+import { useSeats } from '../../shared/hooks';
+import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
 // import mock from './mock.json';
 
 const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();
-  const { activeSeats, totalSeats } = useCountSeats(seats);
+  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
   useEffect(() => {
     socket.on('chat', (data) => {

@@ -1,8 +1,8 @@
 import { io, Socket } from 'socket.io-client';
+import { SERVER_URL } from './shared/constants';
 import { ClientToServerEvents, ServerToClientEvents } from './shared/models';
 
-const URL = 'http://localhost:5000';
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(SERVER_URL, {
   path: '/socket.io',
   transports: ['websocket'],
 });

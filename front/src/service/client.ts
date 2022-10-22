@@ -1,8 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { Seats } from '../shared/models';
+import { SERVER_URL } from '../shared/constants';
 
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: 'http://localhost:5000/api',
+  baseURL: `${SERVER_URL}/api`,
 };
 const client = axios.create(axiosConfig);
 
