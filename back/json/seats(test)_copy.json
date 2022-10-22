@@ -2288,16 +2288,16 @@
     {
       "id": "M-20",
       "seat_num": 24,
-      "seat_active": 5,
-      "name": "테스트",
-      "pw": "1234"
+      "seat_active": 1,
+      "name": "",
+      "pw": ""
     },
     {
       "id": "M-21",
       "seat_num": 25,
-      "seat_active": 5,
-      "name": "테스트",
-      "pw": "1234"
+      "seat_active": 1,
+      "name": "",
+      "pw": ""
     }
   ]
 }
