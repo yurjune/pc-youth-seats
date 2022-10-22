@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
 import service from '../../service';
-import { useSeats } from '../../shared/hooks';
+import { useCountSeats, useSeats } from '../../shared/hooks';
 import socket from '../../socket';
 import styles from './index.module.scss';
 // import mock from './mock.json';
 
 const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();
+  const { activeSeats, totalSeats } = useCountSeats(seats);
 
   useEffect(() => {
     socket.on('chat', (data) => {
-      console.log(data);
       modifySeats(data);
     });
   }, []);
@@ -54,11 +54,11 @@ const Home = () => {
         <div className={styles.info}>
           <SeatInfo />
         </div>
-        <div className={styles.participant}>
+        <div className={styles.participants}>
           <span>좌석 현황: </span>
-          <strong>10</strong>
+          <strong>{activeSeats}</strong>
           <span> / </span>
-          <strong>100</strong>
+          <strong>{totalSeats}</strong>
         </div>
       </div>
       <ReserveDialog />
