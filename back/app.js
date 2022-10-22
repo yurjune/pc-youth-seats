@@ -8,11 +8,14 @@ const bodyParser = require('body-parser');
 const schedule = require('node-schedule');
 const helmet = require('helmet');
 const moment = require('moment');
+const cors = require('cors');
 
 let seatsMode = 'seats(50%).json'; // 단계별 좌석 선택 하기 위함
 let scheduleTime = '00 00 15 * * 0';
 let ableReserveDay = 1;
 let ableReserveTime = 21;
+
+app.use(cors());
 
 // Post 방식은 Get 과 다르기 때문에 body-parser 를 설치해서 사용해야한다.
 app.use(bodyParser.json());
@@ -58,7 +61,7 @@ io.on('connection', (socket) => {
 
   socket.on('chat', (data) => {
     console.log('message from client: ' + data);
-    io.emit('chat', 'from backend');
+    io.emit('chat', data);
   });
 });
 
@@ -153,7 +156,8 @@ app.put('/api/seatsModify', (req, res) => {
     res.send({ negative: '예약 가능한 시간대가 아닙니다.' });
   } else {
     let params = req.body.params;
-    let seatPlace = params.seatPlace === 'xion' ? 'seats.json' : 'seats_cana.json';
+    // let seatPlace = params.seatPlace === 'xion' ? 'seats.json' : 'seats_cana.json';
+    let seatPlace = 'seats(test).json';
     fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
       let showData = JSON.parse(data);
       for (let i in showData[params.seat]) {
@@ -182,9 +186,10 @@ app.put('/api/seatsModify', (req, res) => {
 
 app.put('/api/deleteSeatsReservation', (req, res) => {
   let params = req.body.params;
-  let seatPlace = params.seatPlace === 'xion' ? 'seats.json' : 'seats_cana.json';
+  let seatPlace = 'seats(test).json';
+  let originalSeatPlace = 'seats(test)_copy.json';
   fsp
-    .readFile(`./json/${seatsMode}`)
+    .readFile(`./json/${originalSeatPlace}`)
     .then((el) => {
       let parseEl = JSON.parse(el);
       let orgSeatActive = 0;
@@ -200,8 +205,8 @@ app.put('/api/deleteSeatsReservation', (req, res) => {
         let showData = JSON.parse(data);
         for (let i in showData[params.seat]) {
           if (showData[params.seat][i].id === params.seatId) {
-            showData[params.seat][i].pw = params.pw;
-            showData[params.seat][i].name = params.name;
+            showData[params.seat][i].pw = '';
+            showData[params.seat][i].name = '';
             showData[params.seat][i].seat_active = orgActive;
           }
         }

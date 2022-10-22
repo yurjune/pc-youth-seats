@@ -1,22 +1,11 @@
-import { SeatParam, Seats } from '../shared/models';
+import { SeatParams, Seats } from '../shared/models';
 import { requests } from './client';
 
 export default {
-  getSeats: (): Promise<Seats> =>
-    requests
-      .get('/getSeats')
-      .then((data) => data)
-      .catch((error) => {
-        console.error(error);
-        return error;
-      }),
+  getSeats: (): Promise<Seats> => requests.get('/getSeats'),
 
-  seatsModify: (body: SeatParam): Promise<Seats> =>
-    requests
-      .put('/seatsModify', body)
-      .then((data) => data)
-      .catch((error) => {
-        console.error(error);
-        return error;
-      }),
+  seatsModify: (params: SeatParams): Promise<any> => requests.put('/seatsModify', { params }),
+
+  deleteSeatsReservation: (params: Omit<SeatParams, 'name' | 'pw' | 'seat_active'>): Promise<any> =>
+    requests.put('/deleteSeatsReservation', { params }),
 };

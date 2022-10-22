@@ -1,30 +1,27 @@
-import { useAtomValue } from 'jotai/utils';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
-import { selectedSeatAtom } from '../../jotai';
 import service from '../../service';
-import { Seats } from '../../shared/models';
+import { useSeats } from '../../shared/hooks';
 import socket from '../../socket';
 import styles from './index.module.scss';
 // import mock from './mock.json';
 
 const Home = () => {
-  const selectedSeat = useAtomValue(selectedSeatAtom);
-  const [seats, setSeats] = useState<Seats>();
+  const [seats, setSeats, modifySeats] = useSeats();
 
   useEffect(() => {
     socket.on('chat', (data) => {
-      console.log('data:', data);
+      console.log(data);
+      modifySeats(data);
     });
   }, []);
 
   useEffect(() => {
-    console.log('selectedSeat', selectedSeat);
-  }, [selectedSeat]);
-
-  useEffect(() => {
     // setSeats(mock);
-    service.getSeats().then((data) => setSeats(data));
+    service
+      .getSeats()
+      .then((data) => setSeats(data))
+      .catch((error) => console.error(error));
   }, []);
 
   const renderSeats = () => {
@@ -40,7 +37,7 @@ const Home = () => {
               return <div key={idx} className={styles['active-0']} />;
             }
 
-            return <SeatBox key={idx} seat={seat} />;
+            return <SeatBox key={idx} seat={seat} seatLine={line} />;
           })}
         </div>
         {line === 'seat_line_6' && <br />}

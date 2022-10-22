@@ -1,11 +1,18 @@
 import clsx from 'clsx';
 import { useUpdateAtom } from 'jotai/utils';
-import { deleteDialogOpenAtom, euodiaDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
+import {
+  deleteDialogOpenAtom,
+  euodiaDialogOpenAtom,
+  reserveDialogOpenAtom,
+  selectedSeatAtom,
+  selectedSeatLineAtom,
+} from '../../jotai';
 import { Seat } from '../../shared/models';
 import styles from './index.module.scss';
 
 interface SeatBoxProps {
   seat: Seat;
+  seatLine: string;
 }
 
 /**
@@ -19,9 +26,10 @@ interface SeatBoxProps {
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {
-  const { seat } = props;
+  const { seat, seatLine } = props;
   const { seat_active, id, name } = seat;
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
+  const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
   const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
@@ -34,6 +42,7 @@ export const SeatBox = (props: SeatBoxProps) => {
       case 1: {
         setReserveDialogOpen(true);
         setSelectedSeat(seat);
+        setSelectedSeatLine(seatLine);
         break;
       }
       case 4: {
@@ -44,11 +53,13 @@ export const SeatBox = (props: SeatBoxProps) => {
 
         setEuodiaDialogOpen(true);
         setSelectedSeat(seat);
+        setSelectedSeatLine(seatLine);
         break;
       }
       case 5: {
         setDeleteDialogOpen(true);
         setSelectedSeat(seat);
+        setSelectedSeatLine(seatLine);
         break;
       }
     }

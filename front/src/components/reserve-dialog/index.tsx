@@ -1,14 +1,18 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useMemo, useState } from 'react';
-import { reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
+import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
 import { useInput } from '../../shared/hooks';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
+import service from '../../service';
+import { reportErrorMessage } from '../../shared/utilities';
+import socket from '../../socket';
 
 export const ReserveDialog = () => {
   const [open, setOpen] = useAtom(reserveDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
+  const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
   const [name, handleChangeName, setName] = useInput();
   const [pw, handleChangePw, setPw] = useInput();
   const [pwCheck, handleChangePwCheck, setPwCheck] = useInput();
@@ -18,38 +22,68 @@ export const ReserveDialog = () => {
     pwCheck: false,
   });
 
-  const handleOkClick = () => {
-    if (selectedSeat == null) {
+  const handleOkClick = async () => {
+    if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
 
     if (!validation.name || !validation.pw) {
-      toast.error('이름 또는 비밀번호를 적어주세요.', {
-        id: '1',
-      });
+      toast.error('이름 또는 비밀번호를 적어주세요.', { id: '1' });
       return;
     }
 
     if (!validation.pwCheck) {
-      toast.error('비밀번호가 일치하지 않습니다.', {
-        id: '2',
-      });
+      toast.error('비밀번호가 일치하지 않습니다.', { id: '2' });
       return;
     }
 
-    toast.success('예약 되었습니다.', {
-      id: '3',
-    });
-    setOpen(false);
-    setSelectedSeat(null);
-    setName('');
-    setPw('');
-    setPwCheck('');
+    try {
+      const params = {
+        name,
+        pw,
+        seat: selectedSeatLine,
+        seatId: selectedSeat.id,
+        seat_active: 5,
+        seatPlace: 'xion',
+      };
+      const result = await service.seatsModify(params);
+
+      if (result.negative) {
+        toast.error(result.negative, { id: '3' });
+        return;
+      }
+
+      if (result.reserved) {
+        toast.error('이미 예약 된 자리입니다.', { id: '4' });
+        return;
+      }
+
+      if (result === false) {
+        toast.error('Something went wrong', { id: '5' });
+        return;
+      }
+
+      if (result === true) {
+        socket.emit('chat', params);
+        toast.success('예약 되었습니다.', { id: '6' });
+
+        setOpen(false);
+        setSelectedSeat(null);
+        setSelectedSeatLine(null);
+        setName('');
+        setPw('');
+        setPwCheck('');
+        return;
+      }
+    } catch (error) {
+      reportErrorMessage(error, '6');
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
     setSelectedSeat(null);
+    setSelectedSeatLine(null);
   };
 
   const nameValidate = useMemo(() => {

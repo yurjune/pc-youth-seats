@@ -1,18 +1,18 @@
 export interface Seat {
-  id: string;
+  id: string; // A-1
   seat_num: number;
   seat_active: number;
-  name: string;
+  name: string; // 방송팀
   pw: string;
 }
 
 export type Seats = Record<string, Seat[]>;
 
-export interface SeatParam {
+export interface SeatParams {
   seat: string; // seat_line_1
-  seatId: string; // B-1
+  seatId: string; // A-1
   seat_active: number;
-  seatPlace: string;
-  name: string;
+  seatPlace: string; // xion
+  name: string; // 방송팀
   pw: string;
 }

@@ -1,38 +1,64 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
-import { deleteDialogOpenAtom, selectedSeatAtom } from '../../jotai';
+import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput } from '../../shared/hooks';
+import service from '../../service';
+import { reportErrorMessage } from '../../shared/utilities';
+import socket from '../../socket';
 
 export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
+  const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
   const [pw, handleChangePw, setPw] = useInput();
 
-  const handleOkClick = () => {
-    if (selectedSeat == null) {
+  const handleOkClick = async () => {
+    if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
 
     if (pw !== selectedSeat.pw) {
-      toast.error('비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.', {
-        id: '1',
-      });
+      toast.error('비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.', { id: '1' });
       return;
     }
 
-    setOpen(false);
-    setSelectedSeat(null);
-    setPw('');
-    toast.success('삭제 되었습니다.', {
-      id: '2',
-    });
+    try {
+      const params = {
+        seat: selectedSeatLine,
+        seatId: selectedSeat.id,
+        seatPlace: 'xion',
+      };
+      const result = await service.deleteSeatsReservation(params);
+
+      if (result.resFlag === false) {
+        toast.error('Something went wrong', { id: '2' });
+      }
+
+      if (result.resFlag === true) {
+        socket.emit('chat', {
+          ...params,
+          name: '',
+          pw: '',
+          seat_active: result.orgActive,
+        });
+
+        setOpen(false);
+        setSelectedSeat(null);
+        setSelectedSeatLine(null);
+        setPw('');
+        toast.success('삭제 되었습니다.', { id: '3' });
+      }
+    } catch (error) {
+      reportErrorMessage(error, '4');
+    }
   };
 
   const handleClose = () => {
     setOpen(false);
     setSelectedSeat(null);
+    setSelectedSeatLine(null);
     setPw('');
   };
 

@@ -20,9 +20,7 @@ export const EuodiaDialog = () => {
       return;
     }
 
-    toast.error('비밀번호가 틀렸습니다.', {
-      id: '1',
-    });
+    toast.error('비밀번호가 틀렸습니다.', { id: '1' });
   };
 
   const handleClose = () => {
