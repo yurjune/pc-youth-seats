@@ -6,6 +6,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 const toastOptions = {
   className: styles.inner,
   duration: 3000,
+  style: {
+    maxWidth: '1000px',
+    padding: '8px 32px',
+    borderRadius: '4px',
+    fontSize: '14px',
+  },
   error: {
     icon: <InfoIcon htmlColor='#e6a23c' fontSize='small' />,
     style: {

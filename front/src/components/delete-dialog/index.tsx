@@ -73,6 +73,7 @@ export const DeleteDialog = () => {
             id='seat'
             label='좌석'
             variant='standard'
+            color='success'
             fullWidth
             inputProps={{ readOnly: true }}
             helperText=' '
@@ -83,6 +84,7 @@ export const DeleteDialog = () => {
             id='name'
             label='예약자 이름'
             variant='standard'
+            color='success'
             fullWidth
             inputProps={{ readOnly: true }}
             helperText=' '
@@ -95,6 +97,7 @@ export const DeleteDialog = () => {
             label='비밀번호'
             type='password'
             variant='standard'
+            color='success'
             fullWidth
             helperText=' '
           />

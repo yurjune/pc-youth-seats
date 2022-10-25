@@ -5,7 +5,7 @@ import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
-// import mock from './mock.json';
+import mock from './mock.json';
 
 const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();

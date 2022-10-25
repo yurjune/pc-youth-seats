@@ -152,6 +152,7 @@ export const ReserveDialog = () => {
             variant='standard'
             fullWidth
             helperText={nameValidate}
+            color='success'
           />
           <TextField
             value={pw}
@@ -163,6 +164,7 @@ export const ReserveDialog = () => {
             variant='standard'
             fullWidth
             helperText={pwValidate}
+            color='success'
           />
           <TextField
             value={pwCheck}
@@ -174,6 +176,7 @@ export const ReserveDialog = () => {
             variant='standard'
             fullWidth
             helperText={pwCheckValidate}
+            color='success'
           />
         </div>
         <DialogActions className={styles.actions}>

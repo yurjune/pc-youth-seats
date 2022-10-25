@@ -42,6 +42,7 @@ export const EuodiaDialog = () => {
             id='euodia'
             label='유오디아'
             variant='standard'
+            color='success'
             fullWidth
           />
         </div>

@@ -1,12 +1,13 @@
 #dialog {
   :global(.MuiPaper-root) {
     margin: 24px;
+    max-width: 550px;
   }
 
   .contentText {
     font-size: 14px;
     color: #800080;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .title {
