@@ -46,7 +46,7 @@ export const ReserveDialog = () => {
         seat_active: 5,
         seatPlace: 'xion',
       };
-      const result = await service.seatsModify(params);
+      const result = await service.makeReservation(params);
 
       if (result.negative) {
         toast.error(result.negative, { id: '3' });

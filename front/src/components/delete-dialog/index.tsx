@@ -30,7 +30,7 @@ export const DeleteDialog = () => {
         seatId: selectedSeat.id,
         seatPlace: 'xion',
       };
-      const result = await service.deleteSeatsReservation(params);
+      const result = await service.cancelReservation(params);
 
       if (result.resFlag === false) {
         toast.error('Something went wrong', { id: '2' });
