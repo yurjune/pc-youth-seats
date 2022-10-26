@@ -6,7 +6,7 @@ import { useInput } from '../../shared/hooks';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import service from '../../service';
-import { reportErrorMessage } from '../../shared/utilities';
+import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
 
 export const ReserveDialog = () => {
@@ -40,7 +40,7 @@ export const ReserveDialog = () => {
     try {
       const params = {
         name,
-        pw,
+        pw: encrypt(pw),
         seat: selectedSeatLine,
         seatId: selectedSeat.id,
         seat_active: 5,

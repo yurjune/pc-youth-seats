@@ -3,7 +3,9 @@ import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
 import { euodiaDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
+import { EUODIA_PW } from '../../shared/constants';
 import { useInput } from '../../shared/hooks';
+import { encrypt } from '../../shared/utilities';
 import styles from './index.module.scss';
 
 export const EuodiaDialog = () => {
@@ -13,7 +15,7 @@ export const EuodiaDialog = () => {
   const [pw, handlePw, setPw] = useInput();
 
   const handleOkClick = () => {
-    if (pw === 'euodia2021!') {
+    if (encrypt(pw) === EUODIA_PW) {
       setOpen(false);
       setPw('');
       setReserveDialogOpen(true);

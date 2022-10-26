@@ -5,8 +5,9 @@ import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput } from '../../shared/hooks';
 import service from '../../service';
-import { reportErrorMessage } from '../../shared/utilities';
+import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
+import { ADMIN_PW } from '../../shared/constants';
 
 export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
@@ -19,7 +20,7 @@ export const DeleteDialog = () => {
       return;
     }
 
-    if (pw !== selectedSeat.pw) {
+    if (encrypt(pw) !== ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
       toast.error('비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.', { id: '1' });
       return;
     }
