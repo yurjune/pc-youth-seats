@@ -15,7 +15,6 @@ let scheduleTime = '00 00 15 * * 0';
 let ableReserveDay = 1;
 let ableReserveTime = 21;
 
-// Post 방식은 Get 과 다르기 때문에 body-parser 를 설치해서 사용해야한다.
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -75,60 +74,14 @@ app.get('/api/getReserveAbleFlag', (req, res) => {
     return;
   }
 
-  const getTime1 = dayjs().add(9, 'h').format('HH-mm-ss');
-  res.send({ getTime1 });
-});
-
-app.put('/api/makeReservationAdmin', (req, res) => {
-  const params = req.body.params;
-  const seatPlace = 'seats.json';
-
-  fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
-    const parsedSeat = JSON.parse(data);
-    for (let i in parsedSeat[params.seat]) {
-      if (parsedSeat[params.seat][i].id === params.seatId) {
-        parsedSeat[params.seat][i].pw = params.pw;
-        parsedSeat[params.seat][i].name = params.name;
-        parsedSeat[params.seat][i].seat_active = params.seat_active;
-      }
-    }
-
-    fs.writeFile(`./json/${seatPlace}`, JSON.stringify(parsedSeat), (err) => {
-      if (err) {
-        res.send(false);
-        return;
-      }
-      console.log('JSON 파일 수정 완료');
-
-      fs.readFile(`./json/${seatsMode}`, 'utf8', (err, data) => {
-        const parsedSeat = JSON.parse(data);
-        for (let i in parsedSeat[params.seat]) {
-          if (parsedSeat[params.seat][i].id === params.seatId) {
-            parsedSeat[params.seat][i].pw = params.pw;
-            parsedSeat[params.seat][i].name = params.name;
-            parsedSeat[params.seat][i].seat_active = params.seat_active;
-          }
-        }
-
-        fs.writeFile(`./json/${seatsMode}`, JSON.stringify(parsedSeat), (err) => {
-          if (err) {
-            res.send(false);
-            return;
-          }
-
-          res.send(true);
-          console.log('현재 JSON FILE 수정 완료');
-        });
-      });
-    });
-  });
+  res.send(true);
 });
 
 app.put('/api/makeReservation', (req, res) => {
   const getTime = dayjs().add(9, 'h').format('HH');
   const getDay = dayjs().add(9, 'h').day();
   if (getDay == ableReserveDay && getTime < ableReserveTime) {
-    res.send({ negative: '예약 가능한 시간대가 아닙니다.' });
+    res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
     return;
   }
 
@@ -138,8 +91,8 @@ app.put('/api/makeReservation', (req, res) => {
     const showData = JSON.parse(data);
     for (let i in showData[params.seat]) {
       if (showData[params.seat][i].id === params.seatId) {
-        if (showData[params.seat][i].seat_active === 5 && !params.delFlag) {
-          res.send({ reserved: true });
+        if (showData[params.seat][i].seat_active === 5) {
+          res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
           return;
         }
 
@@ -151,11 +104,11 @@ app.put('/api/makeReservation', (req, res) => {
 
     fs.writeFile(`./json/${seatPlace}`, JSON.stringify(showData), (err) => {
       if (err) {
-        res.send(false);
+        res.send({ ok: false, message: 'Something went wrong.' });
         return;
       }
 
-      res.send(true);
+      res.send({ ok: true, message: '예약 되었습니다.' });
       console.log('JSON FILE 수정 완료');
     });
   });
@@ -169,34 +122,34 @@ app.put('/api/cancelReservation', (req, res) => {
     .readFile(`./json/${seatsMode}`)
     .then((el) => {
       let parseEl = JSON.parse(el);
-      let originalSeatActive = 0;
+      let defaultSeatActive = 0;
 
       for (let i in parseEl[params.seat]) {
         if (parseEl[params.seat][i].id === params.seatId) {
-          originalSeatActive = parseEl[params.seat][i].seat_active;
+          defaultSeatActive = parseEl[params.seat][i].seat_active;
         }
       }
 
-      return originalSeatActive;
+      return defaultSeatActive;
     })
-    .then((orgActive) => {
+    .then((defaultSeatActive) => {
       fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
         const showData = JSON.parse(data);
         for (let i in showData[params.seat]) {
           if (showData[params.seat][i].id === params.seatId) {
             showData[params.seat][i].pw = '';
             showData[params.seat][i].name = '';
-            showData[params.seat][i].seat_active = orgActive;
+            showData[params.seat][i].seat_active = defaultSeatActive;
           }
         }
 
         fs.writeFile(`./json/${seatPlace}`, JSON.stringify(showData), (err) => {
           if (err) {
-            res.send({ orgActive, resFlag: false });
+            res.send({ ok: false, message: 'Something went wrong', defaultSeatActive });
             return;
           }
 
-          res.send({ orgActive, resFlag: true });
+          res.send({ ok: true, message: '삭제 되었습니다.', defaultSeatActive });
           console.log('JSON FILE 수정 완료');
         });
       });

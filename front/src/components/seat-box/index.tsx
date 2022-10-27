@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useUpdateAtom } from 'jotai/utils';
+import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
   euodiaDialogOpenAtom,
@@ -7,6 +8,7 @@ import {
   selectedSeatAtom,
   selectedSeatLineAtom,
 } from '../../jotai';
+import service from '../../service';
 import { Seat } from '../../shared/models';
 import styles from './index.module.scss';
 
@@ -37,7 +39,17 @@ export const SeatBox = (props: SeatBoxProps) => {
   const cls = clsx(styles.seat, styles[`active-${seat_active}`]);
   const isDisabled = seat_active === 2 || seat_active === 6;
 
-  const handleSeatClick = () => {
+  const handleSeatClick = async () => {
+    try {
+      const result = await service.getReserveAbleFlag();
+      if (!result) {
+        toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
+        return;
+      }
+    } catch (error) {
+      reportError(error);
+    }
+
     switch (seat_active) {
       case 1: {
         setReserveDialogOpen(true);

@@ -8,6 +8,7 @@ const toastOptions = {
   duration: 3000,
   style: {
     maxWidth: '1000px',
+    minWidth: '300px',
     padding: '8px 32px',
     borderRadius: '4px',
     fontSize: '14px',

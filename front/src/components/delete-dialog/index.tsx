@@ -29,27 +29,27 @@ export const DeleteDialog = () => {
       const params = {
         seat: selectedSeatLine,
         seatId: selectedSeat.id,
-        seatPlace: 'xion',
       };
       const result = await service.cancelReservation(params);
+      const { ok, message } = result;
 
-      if (result.resFlag === false) {
-        toast.error('Something went wrong', { id: '2' });
+      if (!ok) {
+        toast.error(message, { id: '2' });
       }
 
-      if (result.resFlag === true) {
+      if (ok) {
         socket.emit('chat', {
           ...params,
           name: '',
           pw: '',
-          seat_active: result.orgActive,
+          seat_active: result.defaultSeatActive,
         });
 
         setOpen(false);
         setSelectedSeat(null);
         setSelectedSeatLine(null);
         setPw('');
-        toast.success('삭제 되었습니다.', { id: '3' });
+        toast.success(message, { id: '3' });
       }
     } catch (error) {
       reportErrorMessage(error, '4');

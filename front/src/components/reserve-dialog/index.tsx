@@ -44,28 +44,18 @@ export const ReserveDialog = () => {
         seat: selectedSeatLine,
         seatId: selectedSeat.id,
         seat_active: 5,
-        seatPlace: 'xion',
       };
       const result = await service.makeReservation(params);
+      const { ok, message } = result;
 
-      if (result.negative) {
-        toast.error(result.negative, { id: '3' });
+      if (!ok) {
+        toast.error(message, { id: '3' });
         return;
       }
 
-      if (result.reserved) {
-        toast.error('이미 예약 된 자리입니다.', { id: '4' });
-        return;
-      }
-
-      if (result === false) {
-        toast.error('Something went wrong', { id: '5' });
-        return;
-      }
-
-      if (result === true) {
+      if (ok) {
         socket.emit('chat', params);
-        toast.success('예약 되었습니다.', { id: '6' });
+        toast.success('예약 되었습니다.', { id: '4' });
 
         setOpen(false);
         setSelectedSeat(null);
@@ -76,7 +66,7 @@ export const ReserveDialog = () => {
         return;
       }
     } catch (error) {
-      reportErrorMessage(error, '6');
+      reportErrorMessage(error, '5');
     }
   };
 
