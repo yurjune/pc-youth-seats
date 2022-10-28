@@ -2,13 +2,14 @@
 
 .container {
   overflow-x: auto;
-  padding: 20px 10px;
+  padding: 16px 8px;
 
   .title {
-    width: 700px;
+    max-width: 760px;
+    min-width: 700px;
     margin: 0 auto;
     color: #5aba85;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     text-align: center;
     border: 2px solid #5aba85;
     border-radius: 2px;
@@ -52,8 +53,10 @@
 @include md {
   .container {
     .title {
-      width: 930px;
-      font-size: 2rem;
+      max-width: 1050px;
+      min-width: 930px;
+      width: 100%;
+      font-size: 1.6rem;
     }
 
     .seatContainer {
@@ -75,6 +78,7 @@
       max-width: 1350px;
       min-width: 1200px;
       width: 100%;
+      font-size: 2rem;
     }
 
     .seatContainer {

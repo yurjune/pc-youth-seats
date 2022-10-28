@@ -10,6 +10,7 @@ import {
 } from '../../jotai';
 import service from '../../service';
 import { Seat } from '../../shared/models';
+import { reportErrorMessage } from '../../shared/utilities';
 import styles from './index.module.scss';
 
 interface SeatBoxProps {
@@ -47,7 +48,7 @@ export const SeatBox = (props: SeatBoxProps) => {
         return;
       }
     } catch (error) {
-      reportError(error);
+      reportErrorMessage(error, '2');
     }
 
     switch (seat_active) {
