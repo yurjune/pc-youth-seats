@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
-import { useAtom } from 'jotai';
-import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
+import { useAtom, useAtomValue } from 'jotai';
+import { deleteDialogOpenAtom, isAdminAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput } from '../../shared/hooks';
@@ -13,6 +13,7 @@ export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
+  const idAdmin = useAtomValue(isAdminAtom);
   const [pw, handleChangePw, setPw] = useInput();
 
   const handleOkClick = async () => {
@@ -79,17 +80,19 @@ export const DeleteDialog = () => {
             inputProps={{ readOnly: true }}
             helperText=' '
           />
-          <TextField
-            value={selectedSeat?.name ?? ''}
-            className={styles.textField}
-            id='name'
-            label='예약자 이름'
-            variant='standard'
-            color='success'
-            fullWidth
-            inputProps={{ readOnly: true }}
-            helperText=' '
-          />
+          {idAdmin && (
+            <TextField
+              value={selectedSeat?.name ?? ''}
+              className={styles.textField}
+              id='name'
+              label='예약자 이름'
+              variant='standard'
+              color='success'
+              fullWidth
+              inputProps={{ readOnly: true }}
+              helperText=' '
+            />
+          )}
           <TextField
             value={pw}
             onChange={handleChangePw}

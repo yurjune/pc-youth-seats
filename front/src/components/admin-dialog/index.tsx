@@ -1,50 +1,50 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
+import { adminDialogOpenAtom, isAdminAtom } from '../../jotai';
+import styles from './index.module.scss';
 import toast from 'react-hot-toast';
-import { euodiaDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
-import { EUODIA_PW } from '../../shared/constants';
 import { useInput } from '../../shared/hooks';
 import { encrypt } from '../../shared/utilities';
-import styles from './index.module.scss';
+import { ADMIN_PW } from '../../shared/constants';
+import { useNavigate } from 'react-router-dom';
 
-export const EuodiaDialog = () => {
-  const [open, setOpen] = useAtom(euodiaDialogOpenAtom);
-  const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
-  const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
-  const [pw, handlePw, setPw] = useInput();
-
-  const handleOkClick = () => {
-    if (encrypt(pw) === EUODIA_PW) {
-      setOpen(false);
-      setPw('');
-      setReserveDialogOpen(true);
-      return;
-    }
-
-    toast.error('비밀번호가 틀렸습니다.', { id: '1' });
-  };
+export const AdminDialog = () => {
+  const setIsAdmin = useUpdateAtom(isAdminAtom);
+  const [open, setOpen] = useAtom(adminDialogOpenAtom);
+  const [pw, handlePwChange, setPw] = useInput('');
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedSeat(null);
     setPw('');
+  };
+
+  const handleOkClick = () => {
+    if (encrypt(pw) === ADMIN_PW) {
+      setIsAdmin(true);
+      handleClose();
+      navigate('/admin');
+      return;
+    }
+
+    toast.error('비밀번호를 확인해주세요.', { id: '1' });
   };
 
   return (
     <Dialog id={styles.dialog} open={open} onClose={handleClose}>
-      <DialogTitle className={styles.title}>유오디아 확인</DialogTitle>
+      <DialogTitle className={styles.title}>관리자 확인</DialogTitle>
       <DialogContent>
         <div className={styles.textFieldContainer}>
           <TextField
             value={pw}
-            onChange={handlePw}
+            onChange={handlePwChange}
             className={styles.textField}
-            type='password'
-            id='euodia'
-            label='유오디아'
+            id='pw'
+            label='비밀번호'
             variant='standard'
             color='success'
+            type='password'
             fullWidth
             helperText=' '
           />

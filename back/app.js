@@ -77,6 +77,29 @@ app.get('/api/getReserveAbleFlag', (req, res) => {
   res.send(true);
 });
 
+app.post('/api/searchSeat', (req, res) => {
+  const { name, pw } = req.body.params;
+  const seatPlace = 'seats.json';
+
+  fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
+    const showData = JSON.parse(data);
+    const lineList = Object.keys(showData);
+
+    for (const line of lineList) {
+      const seat = showData[line].find(item => {
+        return item.name === name && item.pw === pw;
+      });
+
+      if (seat) {
+        res.send(seat.id);
+        return;
+      }
+    }
+
+    res.send(false);
+  });
+});
+
 app.put('/api/makeReservation', (req, res) => {
   const getTime = dayjs().add(9, 'h').format('HH');
   const getDay = dayjs().add(9, 'h').day();

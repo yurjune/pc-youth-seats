@@ -13,22 +13,6 @@
     text-align: center;
     border: 2px solid #5aba85;
     border-radius: 2px;
-    position: relative;
-  }
-
-  .searchButton {
-    position: absolute;
-    left: 1px;
-    top: 2px;
-    bottom: 2px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    // color: #5aba85;
-    color: rgba(90, 186, 133, 0.8);
-
-    &:hover {
-      background-color: rgba(90, 186, 133, 0.15);
-    }
   }
 
   .seatContainer {
@@ -75,10 +59,6 @@
       font-size: 1.6rem;
     }
 
-    .searchButton {
-      font-size: 0.85rem;
-    }
-
     .seatContainer {
       width: 930px;
 
@@ -99,10 +79,6 @@
       min-width: 1200px;
       width: 100%;
       font-size: 2rem;
-    }
-
-    .searchButton {
-      font-size: 1rem;
     }
 
     .seatContainer {

@@ -1,5 +1,8 @@
 import { SeatParams } from '../shared/models/seat.model';
 
+export type SearchSeatReqDto = { name: string; pw: string };
+export type SearchSeatResDto = string | boolean;
+
 export type MakeReservationReqDto = SeatParams;
 export type MakeReservationResDto = {
   ok: boolean;

@@ -1,9 +1,10 @@
 import clsx from 'clsx';
-import { useUpdateAtom } from 'jotai/utils';
+import { useAtomValue, useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
   euodiaDialogOpenAtom,
+  isAdminAtom,
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
@@ -31,6 +32,7 @@ interface SeatBoxProps {
 export const SeatBox = (props: SeatBoxProps) => {
   const { seat, seatLine } = props;
   const { seat_active, id, name } = seat;
+  const isAdmin = useAtomValue(isAdminAtom);
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
@@ -38,7 +40,6 @@ export const SeatBox = (props: SeatBoxProps) => {
   const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
 
   const cls = clsx(styles.seat, styles[`active-${seat_active}`]);
-  const isDisabled = seat_active === 2 || seat_active === 6;
 
   const handleSeatClick = async () => {
     try {
@@ -78,13 +79,16 @@ export const SeatBox = (props: SeatBoxProps) => {
     }
   };
 
+  const isDisabled = seat_active === 2 || seat_active === 6;
+  const isRenderName = isAdmin || seat_active === 4;
+
   return (
     <div className={cls} onClick={handleSeatClick}>
       {!isDisabled && (
         <>
           {id}
           <br />
-          {name}
+          {isRenderName && name}
         </>
       )}
     </div>
