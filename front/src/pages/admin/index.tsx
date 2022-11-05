@@ -1,4 +1,4 @@
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DeleteDialog, EuodiaDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
@@ -12,7 +12,7 @@ import styles from './index.module.scss';
 
 const Admin = () => {
   const [seats, setSeats, modifySeats] = useSeats();
-  const [isAdmin, setIsAdmin] = useAtom(isAdminAtom);
+  const isAdmin = useAtomValue(isAdminAtom);
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
   const navigate = useNavigate();
 
@@ -21,11 +21,7 @@ const Admin = () => {
       alert('잘못된 접근입니다. 예약화면으로 돌아갑니다');
       navigate('/');
     }
-
-    return () => {
-      setIsAdmin(false);
-    };
-  }, [navigate, isAdmin, setIsAdmin]);
+  }, [navigate, isAdmin]);
 
   useEffect(() => {
     socket.on('chat', (data) => {

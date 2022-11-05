@@ -1,7 +1,10 @@
 import { atom } from 'jotai';
 import { Seat } from '../shared/models';
+import { atomWithStorage, createJSONStorage } from 'jotai/utils';
 
-export const isAdminAtom = atom(false);
+const storage = createJSONStorage(() => sessionStorage);
+
+export const isAdminAtom = atomWithStorage('isAdminAtomKey', false, storage);
 
 export const selectedSeatAtom = atom<null | Seat>(null);
 export const selectedSeatLineAtom = atom<null | string>(null);
