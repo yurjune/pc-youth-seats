@@ -55,7 +55,7 @@ export const ReserveDialog = () => {
 
       if (ok) {
         socket.emit('chat', params);
-        toast.success('예약 되었습니다.', { id: '4' });
+        toast.success(message, { id: '4' });
 
         setOpen(false);
         setSelectedSeat(null);

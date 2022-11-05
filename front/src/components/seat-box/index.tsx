@@ -9,9 +9,8 @@ import {
   selectedSeatAtom,
   selectedSeatLineAtom,
 } from '../../jotai';
-import service from '../../service';
 import { Seat } from '../../shared/models';
-import { reportErrorMessage } from '../../shared/utilities';
+import { checkIsAvailableForReservation } from '../../shared/utilities';
 import styles from './index.module.scss';
 
 interface SeatBoxProps {
@@ -42,14 +41,9 @@ export const SeatBox = (props: SeatBoxProps) => {
   const cls = clsx(styles.seat, styles[`active-${seat_active}`]);
 
   const handleSeatClick = async () => {
-    try {
-      const result = await service.getReserveAbleFlag();
-      if (!result) {
-        toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
-        return;
-      }
-    } catch (error) {
-      reportErrorMessage(error, '2');
+    if (!checkIsAvailableForReservation()) {
+      toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
+      return;
     }
 
     switch (seat_active) {
