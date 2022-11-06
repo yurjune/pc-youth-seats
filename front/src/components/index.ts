@@ -1,4 +1,5 @@
 export * from './admin-dialog';
+export * from './admin-radio-dialog';
 export * from './delete-dialog';
 export * from './euodia-dialog';
 export * from './reserve-dialog';

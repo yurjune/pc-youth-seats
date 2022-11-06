@@ -4,9 +4,9 @@ import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
+const dayjsKorea = dayjs().tz('Asia/Seoul');
 
 export const checkIsAvailableForReservation = (): boolean => {
-  const dayjsKorea = dayjs().tz('Asia/Seoul');
   const day = dayjsKorea.day();
   const time = dayjsKorea.hour();
 

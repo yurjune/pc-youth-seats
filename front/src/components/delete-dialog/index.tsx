@@ -1,9 +1,9 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom, useAtomValue } from 'jotai';
-import { deleteDialogOpenAtom, isAdminAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
+import { deleteDialogOpenAtom, isMasterAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
-import { useInput } from '../../shared/hooks';
+import { useInput, useMode } from '../../shared/hooks';
 import service from '../../service';
 import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
@@ -13,7 +13,8 @@ export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const idAdmin = useAtomValue(isAdminAtom);
+  const idAdmin = useAtomValue(isMasterAtom);
+  const { isUserMode } = useMode();
   const [pw, handleChangePw, setPw] = useInput();
 
   const handleOkClick = async () => {
@@ -80,7 +81,7 @@ export const DeleteDialog = () => {
             inputProps={{ readOnly: true }}
             helperText=' '
           />
-          {idAdmin && (
+          {!isUserMode && (
             <TextField
               value={selectedSeat?.name ?? ''}
               className={styles.textField}

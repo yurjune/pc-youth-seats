@@ -45,6 +45,11 @@
   }
 }
 
+.isUpdatedLate {
+  background: #ff0081;
+  cursor: pointer;
+}
+
 @include md {
   .seat {
     width: 40px;

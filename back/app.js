@@ -9,11 +9,12 @@ const helmet = require('helmet');
 const dayjs = require('dayjs');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
+const { checkIsLateReservation } = require('./utils/time');
 
 let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
-let scheduleTime = '00 00 15 * * 0';
 let ableReserveDay = 1;
 let ableReserveTime = 21;
+let lateSeatIds = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,11 +46,20 @@ const expressServer = app.listen(app.get('port'), () => {
 
 const io = require('socket.io')(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
-  console.log('connect from client: ' + socket);
+  io.emit('lateSeatList', lateSeatIds);
 
   socket.on('chat', (data) => {
-    console.log('message from client: ' + data);
     io.emit('chat', data);
+
+    if (checkIsLateReservation()) {
+      lateSeatIds.push(data.seatId);
+      io.emit('lateSeatList', lateSeatIds);
+    }
+  });
+
+  socket.on('lateSeatRemoved', (data) => {
+    lateSeatIds = lateSeatIds.filter((id) => id !== data);
+    io.emit('lateSeatList', lateSeatIds);
   });
 });
 
@@ -86,7 +96,7 @@ app.post('/api/searchSeat', (req, res) => {
     const lineList = Object.keys(showData);
 
     for (const line of lineList) {
-      const seat = showData[line].find(item => {
+      const seat = showData[line].find((item) => {
         return item.name === name && item.pw === pw;
       });
 

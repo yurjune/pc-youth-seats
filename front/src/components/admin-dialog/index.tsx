@@ -1,19 +1,18 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
-import { adminDialogOpenAtom, isAdminAtom } from '../../jotai';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../jotai';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput } from '../../shared/hooks';
 import { encrypt } from '../../shared/utilities';
 import { ADMIN_PW } from '../../shared/constants';
-import { useNavigate } from 'react-router-dom';
 
 export const AdminDialog = () => {
-  const setIsAdmin = useUpdateAtom(isAdminAtom);
+  const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
+  const setIsMaster = useUpdateAtom(isMasterAtom);
   const [open, setOpen] = useAtom(adminDialogOpenAtom);
   const [pw, handlePwChange, setPw] = useInput('');
-  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpen(false);
@@ -22,9 +21,9 @@ export const AdminDialog = () => {
 
   const handleOkClick = () => {
     if (encrypt(pw) === ADMIN_PW) {
-      setIsAdmin(true);
+      setIsMaster(true);
+      setRadioDialogOpen(true);
       handleClose();
-      navigate('/admin');
       return;
     }
 

@@ -1,16 +1,19 @@
 import clsx from 'clsx';
 import { useAtomValue, useUpdateAtom } from 'jotai/utils';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
   euodiaDialogOpenAtom,
-  isAdminAtom,
+  isMasterAtom,
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
 } from '../../jotai';
+import { useMode } from '../../shared/hooks';
 import { Seat } from '../../shared/models';
 import { checkIsAvailableForReservation } from '../../shared/utilities';
+import socket from '../../socket';
 import styles from './index.module.scss';
 
 interface SeatBoxProps {
@@ -31,18 +34,37 @@ interface SeatBoxProps {
 export const SeatBox = (props: SeatBoxProps) => {
   const { seat, seatLine } = props;
   const { seat_active, id, name } = seat;
-  const isAdmin = useAtomValue(isAdminAtom);
+  const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
   const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
+  const [isUpdatedLate, setIsUpdatedLate] = useState(false);
 
-  const cls = clsx(styles.seat, styles[`active-${seat_active}`]);
+  useEffect(() => {
+    if (!isAttendanceMode) {
+      return;
+    }
+
+    socket.on('lateSeatList', (data) => {
+      if (data.includes(seat.id)) {
+        setIsUpdatedLate(true);
+        return;
+      }
+
+      setIsUpdatedLate(false);
+    });
+  }, [isAttendanceMode, seat]);
 
   const handleSeatClick = async () => {
     if (!checkIsAvailableForReservation()) {
       toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
+      return;
+    }
+
+    if (isUpdatedLate) {
+      socket.emit('lateSeatRemoved', seat.id);
       return;
     }
 
@@ -73,8 +95,13 @@ export const SeatBox = (props: SeatBoxProps) => {
     }
   };
 
+  const cls = clsx(styles.seat, {
+    [styles.isUpdatedLate]: isUpdatedLate,
+    [styles[`active-${seat_active}`]]: !isUpdatedLate,
+  });
+
   const isDisabled = seat_active === 2 || seat_active === 6;
-  const isRenderName = isAdmin || seat_active === 4;
+  const isRenderName = !isUserMode || seat_active === 4;
 
   return (
     <div className={cls} onClick={handleSeatClick}>

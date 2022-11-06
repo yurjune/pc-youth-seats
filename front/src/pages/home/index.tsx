@@ -1,8 +1,11 @@
 import { Button } from '@mui/material';
+import { useAtomValue } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AdminDialog,
+  AdminRadioDialog,
   DeleteDialog,
   EuodiaDialog,
   ReserveDialog,
@@ -11,31 +14,47 @@ import {
   SeatInfo,
   Toaster,
 } from '../../components';
-import { adminDialogOpenAtom, searchDialogOpenAtom } from '../../jotai';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom, searchDialogOpenAtom } from '../../jotai';
 import service from '../../service';
-import { useSeats } from '../../shared/hooks';
+import { useMode, useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
 
 const Home = () => {
-  const [seats, setSeats, modifySeats] = useSeats();
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
+  const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const setSearchDialogOpen = useUpdateAtom(searchDialogOpenAtom);
+  const isMaster = useAtomValue(isMasterAtom);
+  const { isUserMode } = useMode();
+  const [seats, setSeats, modifySeats] = useSeats();
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isUserMode) {
+      return;
+    }
+
+    if (!isMaster) {
+      alert('잘못된 접근입니다. 예약화면으로 돌아갑니다');
+      navigate('/');
+    }
+  }, [navigate, isMaster, isUserMode]);
 
   useEffect(() => {
     socket.on('chat', (data) => {
       modifySeats(data);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    // setSeats(mock);
     service
       .getSeats()
       .then((data) => setSeats(data))
       .catch((error) => console.error(error));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderSeats = () => {
@@ -64,6 +83,11 @@ const Home = () => {
   };
 
   const handleEntranceClick = () => {
+    if (isMaster) {
+      setAdminRadioDialogOpen(true);
+      return;
+    }
+
     setAdminDialogOpen(true);
   };
 
@@ -71,9 +95,11 @@ const Home = () => {
     <>
       <div className={styles.container}>
         <div className={styles.title}>
-          <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
-            내 좌석 찾기
-          </Button>
+          {isUserMode && (
+            <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
+              내 좌석 찾기
+            </Button>
+          )}
           <span className={styles.text}>강단</span>
         </div>
         <div className={styles.seatContainer}>{renderSeats()}</div>
@@ -90,12 +116,17 @@ const Home = () => {
           <strong>{totalSeats}</strong>
         </div>
       </div>
+      <Toaster />
       <ReserveDialog />
       <DeleteDialog />
       <EuodiaDialog />
-      <AdminDialog />
-      <SearchDialog />
-      <Toaster />
+      {isUserMode && (
+        <>
+          <SearchDialog />
+          <AdminDialog />
+          <AdminRadioDialog />
+        </>
+      )}
     </>
   );
 };
