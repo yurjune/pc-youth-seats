@@ -13,11 +13,17 @@ export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const idAdmin = useAtomValue(isMasterAtom);
   const { isUserMode } = useMode();
   const [pw, handleChangePw, setPw] = useInput();
 
-  const handleOkClick = async () => {
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedSeat(null);
+    setSelectedSeatLine(null);
+    setPw('');
+  };
+
+  const handleUserOkClick = async () => {
     if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
@@ -58,11 +64,40 @@ export const DeleteDialog = () => {
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedSeat(null);
-    setSelectedSeatLine(null);
-    setPw('');
+  const handleMasterOkClick = async () => {
+    if (selectedSeat == null || selectedSeatLine == null) {
+      return;
+    }
+
+    try {
+      const params = {
+        seat: selectedSeatLine,
+        seatId: selectedSeat.id,
+      };
+      const result = await service.cancelReservation(params);
+      const { ok, message } = result;
+
+      if (!ok) {
+        toast.error(message, { id: '2' });
+      }
+
+      if (ok) {
+        socket.emit('chat', {
+          ...params,
+          name: '',
+          pw: '',
+          seat_active: result.defaultSeatActive,
+        });
+
+        setOpen(false);
+        setSelectedSeat(null);
+        setSelectedSeatLine(null);
+        setPw('');
+        toast.success(message, { id: '3' });
+      }
+    } catch (error) {
+      reportErrorMessage(error, '4');
+    }
   };
 
   return (
@@ -94,21 +129,23 @@ export const DeleteDialog = () => {
               helperText=' '
             />
           )}
-          <TextField
-            value={pw}
-            onChange={handleChangePw}
-            className={styles.textField}
-            id='pw'
-            label='비밀번호'
-            type='password'
-            variant='standard'
-            color='success'
-            fullWidth
-            helperText=' '
-          />
+          {isUserMode && (
+            <TextField
+              value={pw}
+              onChange={handleChangePw}
+              className={styles.textField}
+              id='pw'
+              label='비밀번호'
+              type='password'
+              variant='standard'
+              color='success'
+              fullWidth
+              helperText=' '
+            />
+          )}
         </div>
         <DialogActions className={styles.actions}>
-          <Button variant='contained' color='success' onClick={handleOkClick}>
+          <Button variant='contained' color='success' onClick={isUserMode ? handleUserOkClick : handleMasterOkClick}>
             삭제
           </Button>
           <Button variant='contained' color='error' onClick={handleClose}>

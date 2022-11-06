@@ -2,17 +2,19 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, B
 import { useAtom } from 'jotai';
 import { useMemo, useState } from 'react';
 import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
-import { useInput } from '../../shared/hooks';
+import { useInput, useMode } from '../../shared/hooks';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import service from '../../service';
 import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
+import { ADMIN_PW } from '../../shared/constants';
 
 export const ReserveDialog = () => {
   const [open, setOpen] = useAtom(reserveDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
+  const { isUserMode } = useMode();
   const [name, handleChangeName, setName] = useInput();
   const [pw, handleChangePw, setPw] = useInput();
   const [pwCheck, handleChangePwCheck, setPwCheck] = useInput();
@@ -22,7 +24,7 @@ export const ReserveDialog = () => {
     pwCheck: false,
   });
 
-  const handleOkClick = async () => {
+  const handleUserOkClick = async () => {
     if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
@@ -67,6 +69,49 @@ export const ReserveDialog = () => {
       }
     } catch (error) {
       reportErrorMessage(error, '5');
+    }
+  };
+
+  const handleMasterOkClick = async () => {
+    if (selectedSeat == null || selectedSeatLine == null) {
+      return;
+    }
+
+    if (!validation.name) {
+      toast.error('이름을 적어주세요.', { id: '1' });
+      return;
+    }
+
+    try {
+      const params = {
+        name,
+        pw: ADMIN_PW,
+        seat: selectedSeatLine,
+        seatId: selectedSeat.id,
+        seat_active: 5,
+      };
+      const result = await service.makeReservation(params);
+      const { ok, message } = result;
+
+      if (!ok) {
+        toast.error(message, { id: '2' });
+        return;
+      }
+
+      if (ok) {
+        socket.emit('chat', params);
+        toast.success(message, { id: '3' });
+
+        setOpen(false);
+        setSelectedSeat(null);
+        setSelectedSeatLine(null);
+        setName('');
+        setPw('');
+        setPwCheck('');
+        return;
+      }
+    } catch (error) {
+      reportErrorMessage(error, '4');
     }
   };
 
@@ -125,12 +170,14 @@ export const ReserveDialog = () => {
     <Dialog id={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>좌석 예약</DialogTitle>
       <DialogContent>
-        <DialogContentText className={styles.contentText}>
-          * 좌석 예약 가능 시간: 매주 월요일 오후 9시 ~ 주일 예배 직전
-          <br />
-          (이외 시간에 예약 시 예약 내용이 삭제 될 수 있으니 주의해 주세요.)
-          <br />* 부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
-        </DialogContentText>
+        {isUserMode && (
+          <DialogContentText className={styles.contentText}>
+            * 좌석 예약 가능 시간: 매주 월요일 오후 9시 ~ 주일 예배 직전
+            <br />
+            (이외 시간에 예약 시 예약 내용이 삭제 될 수 있으니 주의해 주세요.)
+            <br />* 부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
+          </DialogContentText>
+        )}
         <div className={styles.textFieldContainer}>
           <TextField
             value={name}
@@ -143,33 +190,37 @@ export const ReserveDialog = () => {
             helperText={nameValidate}
             color='success'
           />
-          <TextField
-            value={pw}
-            onChange={handleChangePw}
-            className={styles.textField}
-            id='pw'
-            label='비밀번호'
-            type='password'
-            variant='standard'
-            fullWidth
-            helperText={pwValidate}
-            color='success'
-          />
-          <TextField
-            value={pwCheck}
-            onChange={handleChangePwCheck}
-            className={styles.textField}
-            id='pwcheck'
-            label='비밀번호 확인'
-            type='password'
-            variant='standard'
-            fullWidth
-            helperText={pwCheckValidate}
-            color='success'
-          />
+          {isUserMode && (
+            <>
+              <TextField
+                value={pw}
+                onChange={handleChangePw}
+                className={styles.textField}
+                id='pw'
+                label='비밀번호'
+                type='password'
+                variant='standard'
+                fullWidth
+                helperText={pwValidate}
+                color='success'
+              />
+              <TextField
+                value={pwCheck}
+                onChange={handleChangePwCheck}
+                className={styles.textField}
+                id='pwcheck'
+                label='비밀번호 확인'
+                type='password'
+                variant='standard'
+                fullWidth
+                helperText={pwCheckValidate}
+                color='success'
+              />
+            </>
+          )}
         </div>
         <DialogActions className={styles.actions}>
-          <Button variant='contained' color='success' onClick={handleOkClick}>
+          <Button variant='contained' color='success' onClick={isUserMode ? handleUserOkClick : handleMasterOkClick}>
             예약
           </Button>
           <Button variant='contained' color='error' onClick={handleClose}>
