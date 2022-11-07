@@ -40,8 +40,10 @@
     &.active-5 {
       background: #1976d2;
 
-      &:hover {
-        background: #fbc02d;
+      @media (hover: hover) {
+        &:hover {
+          background: #fbc02d;
+        }
       }
     }
   }
