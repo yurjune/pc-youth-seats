@@ -6,14 +6,11 @@ const app = express();
 const bodyParser = require('body-parser');
 const schedule = require('node-schedule');
 const helmet = require('helmet');
-const dayjs = require('dayjs');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
-const { checkIsLateReservation } = require('./utils/time');
+const { checkIsAvailableForReservation, checkIsLateReservation } = require('./utils/time');
 
 let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
-let ableReserveDay = 1;
-let ableReserveTime = 21;
 let lateSeatIds = [];
 
 app.use(bodyParser.json());
@@ -84,10 +81,7 @@ app.get('/api/getSeats', (req, res) => {
 });
 
 app.get('/api/getReserveAbleFlag', (req, res) => {
-  const getTime = dayjs().add(9, 'h').format('HH');
-  const getDay = dayjs().add(9, 'h').day();
-
-  if (getDay == ableReserveDay && getTime < ableReserveTime) {
+  if (!checkIsAvailableForReservation()) {
     res.send(false);
     return;
   }
@@ -119,9 +113,7 @@ app.post('/api/searchSeat', (req, res) => {
 });
 
 app.put('/api/makeReservation', (req, res) => {
-  const getTime = dayjs().add(9, 'h').format('HH');
-  const getDay = dayjs().add(9, 'h').day();
-  if (getDay == ableReserveDay && getTime < ableReserveTime) {
+  if (!checkIsAvailableForReservation()) {
     res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
     return;
   }

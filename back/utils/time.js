@@ -10,7 +10,7 @@ const checkIsAvailableForReservation = () => {
   const day = dayjsKorea.day();
   const time = dayjsKorea.hour();
 
-  // 월요일 00시 ~ 21시
+  // 월요일 00시 ~ 21시 예약불가
   if (day === 1 && time < 21) {
     return false;
   }
