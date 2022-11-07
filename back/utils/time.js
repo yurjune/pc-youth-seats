@@ -8,10 +8,10 @@ dayjs.extend(timezone);
 const checkIsAvailableForReservation = () => {
   const dayjsKorea = dayjs().tz('Asia/Seoul');
   const day = dayjsKorea.day();
-  const time = dayjsKorea.hour();
+  const hour = dayjsKorea.hour();
 
   // 월요일 00시 ~ 21시 예약불가
-  if (day === 1 && time < 21) {
+  if (day === 1 && hour < 21) {
     return false;
   }
 

@@ -20,6 +20,7 @@ import { useMode, useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
+// import mockSeats from './mock.json';
 
 const Home = () => {
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
@@ -50,10 +51,12 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    // setSeats(mockSeats);
     service
       .getSeats()
       .then((data) => setSeats(data))
       .catch((error) => console.error(error));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
