@@ -4,13 +4,13 @@ const timezone = require('dayjs/plugin/timezone');
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-const dayjsKorea = dayjs().tz('Asia/Seoul');
 
 const checkIsAvailableForReservation = () => {
+  const dayjsKorea = dayjs().tz('Asia/Seoul');
   const day = dayjsKorea.day();
   const time = dayjsKorea.hour();
 
-  // 월요일 00시 ~ 21 시
+  // 월요일 00시 ~ 21시
   if (day === 1 && time < 21) {
     return false;
   }
@@ -19,6 +19,7 @@ const checkIsAvailableForReservation = () => {
 };
 
 const checkIsLateReservation = () => {
+  const dayjsKorea = dayjs().tz('Asia/Seoul');
   const day = dayjsKorea.day();
   const hour = dayjsKorea.hour();
   const minute = dayjsKorea.minute();
@@ -27,8 +28,12 @@ const checkIsLateReservation = () => {
     return false;
   }
 
-  // 일요일 1:30 ~ 2:30
-  if ((hour === 13 && minute >= 30) || (hour === 14 && minute <= 30)) {
+  // 일요일 1:30 이후
+  if (hour === 13 && minute >= 30) {
+    return true;
+  }
+
+  if (hour >= 14) {
     return true;
   }
 

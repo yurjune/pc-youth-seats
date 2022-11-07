@@ -1,11 +1,10 @@
 import clsx from 'clsx';
-import { useAtomValue, useUpdateAtom } from 'jotai/utils';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useUpdateAtom } from 'jotai/utils';
+import { useLayoutEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
   euodiaDialogOpenAtom,
-  isMasterAtom,
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
@@ -42,10 +41,13 @@ export const SeatBox = (props: SeatBoxProps) => {
   const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
   const [isUpdatedLate, setIsUpdatedLate] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isAttendanceMode) {
+      setIsUpdatedLate(false);
       return;
     }
+
+    socket.emit('seatBoxRendered');
 
     socket.on('lateSeatList', (data) => {
       if (data.includes(seat.id)) {

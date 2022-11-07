@@ -14,4 +14,5 @@ export interface SeatParams {
   seat_active: number;
   name: string; // 방송팀
   pw: string;
+  ignoreIsLate?: boolean;
 }

@@ -28,6 +28,8 @@ app.set('port', process.env.PORT || 5000);
 // 00 00 00 * * 1
 // 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
 schedule.scheduleJob('00 00 15 * * 0', () => {
+  lateSeatIds = [];
+
   fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
     fs.writeFile('./json/seats.json', result, (err) => {
       if (err) {
@@ -46,10 +48,16 @@ const expressServer = app.listen(app.get('port'), () => {
 
 const io = require('socket.io')(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
-  io.emit('lateSeatList', lateSeatIds);
+  socket.on('seatBoxRendered', () => {
+    io.emit('lateSeatList', lateSeatIds);
+  });
 
   socket.on('chat', (data) => {
     io.emit('chat', data);
+
+    if (data.ignoreIsLate) {
+      return;
+    }
 
     if (checkIsLateReservation()) {
       lateSeatIds.push(data.seatId);

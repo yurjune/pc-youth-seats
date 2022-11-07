@@ -14,7 +14,7 @@ export const ReserveDialog = () => {
   const [open, setOpen] = useAtom(reserveDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const { isUserMode } = useMode();
+  const { isUserMode, isAttendanceMode } = useMode();
   const [name, handleChangeName, setName] = useInput();
   const [pw, handleChangePw, setPw] = useInput();
   const [pwCheck, handleChangePwCheck, setPwCheck] = useInput();
@@ -99,7 +99,11 @@ export const ReserveDialog = () => {
       }
 
       if (ok) {
-        socket.emit('chat', params);
+        const ignoreIsLate = isAttendanceMode ? true : false;
+        socket.emit('chat', {
+          ...params,
+          ignoreIsLate,
+        });
         toast.success(message, { id: '3' });
 
         setOpen(false);

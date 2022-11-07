@@ -8,5 +8,6 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   chat: (arg: SeatParams) => void;
+  seatBoxRendered: () => void;
   lateSeatRemoved: (arg: string) => void;
 }

@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
-import { useAtom, useAtomValue } from 'jotai';
-import { deleteDialogOpenAtom, isMasterAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
+import { useAtom } from 'jotai';
+import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput, useMode } from '../../shared/hooks';
@@ -13,7 +13,7 @@ export const DeleteDialog = () => {
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const { isUserMode } = useMode();
+  const { isUserMode, isAttendanceMode } = useMode();
   const [pw, handleChangePw, setPw] = useInput();
 
   const handleClose = () => {
@@ -82,11 +82,13 @@ export const DeleteDialog = () => {
       }
 
       if (ok) {
+        const ignoreIsLate = isAttendanceMode ? true : false;
         socket.emit('chat', {
           ...params,
           name: '',
           pw: '',
           seat_active: result.defaultSeatActive,
+          ignoreIsLate,
         });
 
         setOpen(false);

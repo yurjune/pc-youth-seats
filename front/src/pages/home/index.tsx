@@ -83,6 +83,10 @@ const Home = () => {
   };
 
   const handleEntranceClick = () => {
+    if (!isUserMode) {
+      return;
+    }
+
     if (isMaster) {
       setAdminRadioDialogOpen(true);
       return;
