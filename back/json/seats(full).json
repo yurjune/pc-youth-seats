@@ -3,8 +3,8 @@
     {
       "id": "A-1",
       "seat_num": 1,
-      "seat_active": 4,
-      "name": "방송팀",
+      "seat_active": 1,
+      "name": "",
       "pw": ""
     },
     {
@@ -1156,8 +1156,8 @@
     {
       "id": "G-11",
       "seat_num": 14,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 4,
+      "name": "방송팀",
       "pw": ""
     },
     {
