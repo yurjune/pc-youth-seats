@@ -2,5 +2,5 @@ export const SERVER_URL = process.env.NODE_ENV === 'development' ? 'http://local
 
 export const ADMIN_PW =
   'cb70c1ecebf67ada2ae0dc35835af04aef5b192c6ae70a2ba82ed5734702f9c4b1340e804fbdc98a36196623e11091565ef8bc1d18f75813a20fbe5a6067e3f5';
-export const EUODIA_PW =
-  '3f29164e2e849fb9b6227126b5a314b469200144a5c2f63b9fea401c69c1689344e4bcb5869f3b668b0ed850e3b36cb703077c19b2d881af15a9c8d6fd490446';
+export const REDEEMUS_PW =
+  '02f76f662c66dc428a76cd20eeb345f0fbc7535e296a64fde3eb16d7c7050a8646244fd4709926e82a6b0db76bde96ed766288cc95b73ef3adaee082d098c5dd';

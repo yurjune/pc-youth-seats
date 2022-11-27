@@ -11,7 +11,7 @@ export const selectedSeatLineAtom = atom<null | string>(null);
 
 export const reserveDialogOpenAtom = atom(false);
 export const deleteDialogOpenAtom = atom(false);
-export const euodiaDialogOpenAtom = atom(false);
+export const redeemusDialogOpenAtom = atom(false);
 export const adminDialogOpenAtom = atom(false);
 export const adminRadioDialogOpenAtom = atom(false);
 export const searchDialogOpenAtom = atom(false);

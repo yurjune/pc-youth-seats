@@ -4,7 +4,7 @@ import { useLayoutEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
-  euodiaDialogOpenAtom,
+  redeemusDialogOpenAtom,
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
@@ -38,7 +38,7 @@ export const SeatBox = (props: SeatBoxProps) => {
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
-  const setEuodiaDialogOpen = useUpdateAtom(euodiaDialogOpenAtom);
+  const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
   const [isUpdatedLate, setIsUpdatedLate] = useState(false);
 
   useLayoutEffect(() => {
@@ -83,7 +83,7 @@ export const SeatBox = (props: SeatBoxProps) => {
           break;
         }
 
-        setEuodiaDialogOpen(true);
+        setRedeemusDialogOpen(true);
         setSelectedSeat(seat);
         setSelectedSeatLine(seatLine);
         break;

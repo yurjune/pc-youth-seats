@@ -7,7 +7,7 @@ import {
   AdminDialog,
   AdminRadioDialog,
   DeleteDialog,
-  EuodiaDialog,
+  RedeemusDialog,
   ReserveDialog,
   SearchDialog,
   SeatBox,
@@ -126,7 +126,7 @@ const Home = () => {
       <Toaster />
       <ReserveDialog />
       <DeleteDialog />
-      <EuodiaDialog />
+      <RedeemusDialog />
       {isUserMode && (
         <>
           <SearchDialog />

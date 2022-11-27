@@ -667,42 +667,42 @@
     {
       "id": "D-16",
       "seat_num": 20,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-17",
       "seat_num": 21,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-18",
       "seat_num": 22,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-19",
       "seat_num": 23,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-20",
       "seat_num": 24,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-21",
       "seat_num": 25,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     }
