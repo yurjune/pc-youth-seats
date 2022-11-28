@@ -1,30 +1,26 @@
-import { Button } from '@mui/material';
-import { useUpdateAtom } from 'jotai/utils';
+import { useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
-import {
-  AdminDialog,
-  AdminRadioDialog,
-  DeleteDialog,
-  RedeemusDialog,
-  ReserveDialog,
-  SearchDialog,
-  SeatBox,
-  SeatInfo,
-  Toaster,
-} from '../../components';
-import { adminDialogOpenAtom, searchDialogOpenAtom } from '../../jotai';
+import { useNavigate } from 'react-router-dom';
+import { DeleteDialog, RedeemusDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
+import { isMasterAtom } from '../../jotai';
 import service from '../../service';
 import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
-// import mockSeats from './mock.json';
 
-const Home = () => {
-  const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
-  const setSearchDialogOpen = useUpdateAtom(searchDialogOpenAtom);
+const Attendance = () => {
+  const isMaster = useAtomValue(isMasterAtom);
   const [seats, setSeats, modifySeats] = useSeats();
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isMaster) {
+      alert('잘못된 접근입니다. 예약화면으로 돌아갑니다');
+      navigate('/');
+    }
+  }, [navigate, isMaster]);
 
   useEffect(() => {
     socket.on('chat', (data) => {
@@ -34,7 +30,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // setSeats(mockSeats);
     service
       .getSeats()
       .then((data) => setSeats(data))
@@ -64,27 +59,14 @@ const Home = () => {
     ));
   };
 
-  const handleSearchButtonClick = () => {
-    setSearchDialogOpen(true);
-  };
-
-  const handleEntranceClick = () => {
-    setAdminDialogOpen(true);
-  };
-
   return (
     <>
       <div className={styles.container}>
         <div className={styles.title}>
-          <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
-            내 좌석 찾기
-          </Button>
           <span className={styles.text}>강단</span>
         </div>
         <div className={styles.seatContainer}>{renderSeats()}</div>
-        <div className={styles.title} onClick={handleEntranceClick}>
-          입구
-        </div>
+        <div className={styles.title}>입구</div>
         <div className={styles.info}>
           <SeatInfo />
         </div>
@@ -99,11 +81,8 @@ const Home = () => {
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />
-      <SearchDialog />
-      <AdminDialog />
-      <AdminRadioDialog />
     </>
   );
 };
 
-export default Home;
+export default Attendance;
