@@ -11,10 +11,10 @@ import socket from '../../socket';
 import { ADMIN_PW } from '../../shared/constants';
 
 export const ReserveDialog = () => {
+  const { isUserMode, isAttendanceMode } = useMode();
   const [open, setOpen] = useAtom(reserveDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const { isUserMode, isAttendanceMode } = useMode();
   const [name, handleChangeName, setName] = useInput();
   const [pw, handleChangePw, setPw] = useInput();
   const [pwCheck, handleChangePwCheck, setPwCheck] = useInput();
@@ -23,6 +23,26 @@ export const ReserveDialog = () => {
     pw: false,
     pwCheck: false,
   });
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedSeat(null);
+    setSelectedSeatLine(null);
+  };
+
+  const resetAllStates = () => {
+    setOpen(false);
+    setSelectedSeat(null);
+    setSelectedSeatLine(null);
+    setName('');
+    setPw('');
+    setPwCheck('');
+    setValidation({
+      name: false,
+      pw: false,
+      pwCheck: false,
+    });
+  };
 
   const handleUserOkClick = async () => {
     if (selectedSeat == null || selectedSeatLine == null) {
@@ -56,15 +76,10 @@ export const ReserveDialog = () => {
       }
 
       if (ok) {
-        socket.emit('chat', params);
+        socket.emit('seatReserved', params);
         toast.success(message, { id: '4' });
 
-        setOpen(false);
-        setSelectedSeat(null);
-        setSelectedSeatLine(null);
-        setName('');
-        setPw('');
-        setPwCheck('');
+        resetAllStates();
         return;
       }
     } catch (error) {
@@ -100,29 +115,18 @@ export const ReserveDialog = () => {
 
       if (ok) {
         const ignoreIsLate = isAttendanceMode ? true : false;
-        socket.emit('chat', {
+        socket.emit('seatReserved', {
           ...params,
           ignoreIsLate,
         });
         toast.success(message, { id: '3' });
 
-        setOpen(false);
-        setSelectedSeat(null);
-        setSelectedSeatLine(null);
-        setName('');
-        setPw('');
-        setPwCheck('');
+        resetAllStates();
         return;
       }
     } catch (error) {
       reportErrorMessage(error, '4');
     }
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedSeat(null);
-    setSelectedSeatLine(null);
   };
 
   const nameValidate = useMemo(() => {

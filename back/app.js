@@ -49,14 +49,19 @@ io.on('connection', (socket) => {
     io.emit('lateSeatList', lateSeatIds);
   });
 
-  socket.on('chat', (data) => {
-    io.emit('chat', data);
+  socket.on('seatReserved', (data) => {
+    io.emit('seatList', data);
 
-    if (data.ignoreIsLate) {
-      return;
+    if (!data.ignoreIsLate && checkIsLateReservation()) {
+      lateSeatIds.push(data.seatId);
+      io.emit('lateSeatList', lateSeatIds);
     }
+  });
 
-    if (checkIsLateReservation()) {
+  socket.on('seatRemoved', (data) => {
+    io.emit('seatList', data);
+
+    if (!data.ignoreIsLate && checkIsLateReservation()) {
       lateSeatIds.push(data.seatId);
       io.emit('lateSeatList', lateSeatIds);
     }

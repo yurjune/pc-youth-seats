@@ -10,13 +10,17 @@ import socket from '../../socket';
 import { ADMIN_PW } from '../../shared/constants';
 
 export const DeleteDialog = () => {
+  const { isUserMode, isAttendanceMode } = useMode();
   const [open, setOpen] = useAtom(deleteDialogOpenAtom);
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
-  const { isUserMode, isAttendanceMode } = useMode();
   const [pw, handleChangePw, setPw] = useInput();
 
   const handleClose = () => {
+    resetAllStates();
+  };
+
+  const resetAllStates = () => {
     setOpen(false);
     setSelectedSeat(null);
     setSelectedSeatLine(null);
@@ -46,17 +50,14 @@ export const DeleteDialog = () => {
       }
 
       if (ok) {
-        socket.emit('chat', {
+        socket.emit('seatRemoved', {
           ...params,
           name: '',
           pw: '',
           seat_active: result.defaultSeatActive,
         });
 
-        setOpen(false);
-        setSelectedSeat(null);
-        setSelectedSeatLine(null);
-        setPw('');
+        resetAllStates();
         toast.success(message, { id: '3' });
       }
     } catch (error) {
@@ -83,7 +84,7 @@ export const DeleteDialog = () => {
 
       if (ok) {
         const ignoreIsLate = isAttendanceMode ? true : false;
-        socket.emit('chat', {
+        socket.emit('seatRemoved', {
           ...params,
           name: '',
           pw: '',
@@ -91,10 +92,7 @@ export const DeleteDialog = () => {
           ignoreIsLate,
         });
 
-        setOpen(false);
-        setSelectedSeat(null);
-        setSelectedSeatLine(null);
-        setPw('');
+        resetAllStates();
         toast.success(message, { id: '3' });
       }
     } catch (error) {

@@ -23,7 +23,7 @@ const Admin = () => {
   }, [navigate, isMaster]);
 
   useEffect(() => {
-    socket.on('chat', (data) => {
+    socket.on('seatList', (data) => {
       modifySeats(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
