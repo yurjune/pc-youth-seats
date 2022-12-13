@@ -1,3 +1,4 @@
+import { useAtomValue } from 'jotai';
 import { Button } from '@mui/material';
 import { useUpdateAtom } from 'jotai/utils';
 import { useEffect, useMemo } from 'react';
@@ -12,7 +13,7 @@ import {
   SeatInfo,
   Toaster,
 } from '../../components';
-import { adminDialogOpenAtom, searchDialogOpenAtom } from '../../jotai';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom, searchDialogOpenAtom } from '../../jotai';
 import service from '../../service';
 import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
@@ -21,8 +22,10 @@ import styles from './index.module.scss';
 // import mockSeats from './mock.json';
 
 const Home = () => {
-  const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
+  const isMaster = useAtomValue(isMasterAtom);
   const setSearchDialogOpen = useUpdateAtom(searchDialogOpenAtom);
+  const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
+  const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const [seats, setSeats, modifySeats] = useSeats();
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
@@ -69,6 +72,10 @@ const Home = () => {
   };
 
   const handleEntranceClick = () => {
+    if (isMaster) {
+      setAdminRadioDialogOpen(true);
+      return;
+    }
     setAdminDialogOpen(true);
   };
 
