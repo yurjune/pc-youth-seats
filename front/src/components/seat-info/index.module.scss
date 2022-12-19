@@ -1,4 +1,5 @@
 @import '../../styles/responsive.scss';
+@import '../../styles/color.scss';
 
 .container {
   display: flex;
@@ -22,37 +23,37 @@
     border-radius: 3px;
 
     &.active-1 {
-      background: #9e9e9e;
+      background: $active1-color;
 
       &:hover {
-        background: #000;
+        background: $active1-hover-color;
       }
     }
 
     &.active-2 {
-      background: #5aba85;
+      background: $active2-color;
     }
 
     &.active-4 {
-      background: #b4d8c3;
+      background: $active4-color;
     }
 
     &.active-5 {
-      background: #1976d2;
+      background: $active5-color;
 
       @media (hover: hover) {
         &:hover {
-          background: #fbc02d;
+          background: $active5-hover-color;
         }
       }
     }
 
     &.late {
-      background: #ff0081;
+      background: $late-color;
     }
 
     &.absent {
-      background: #4d377b;
+      background: $absent-color;
     }
   }
 }

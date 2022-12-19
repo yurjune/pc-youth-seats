@@ -1,4 +1,5 @@
 @import '../../styles/responsive.scss';
+@import '../../styles/color.scss';
 
 .seat {
   box-sizing: border-box;
@@ -14,32 +15,32 @@
   cursor: default;
 
   &.active-1 {
-    background: #9e9e9e;
+    background: $active1-color;
     cursor: pointer;
 
     @media (hover: hover) {
       &:hover {
-        background: #000;
+        background: $active1-hover-color;
       }
     }
   }
 
   &.active-2 {
-    background: #5aba85;
+    background: $active2-color;
   }
 
   &.active-4 {
-    background: #b4d8c3;
+    background: $active4-color;
     cursor: pointer;
   }
 
   &.active-5 {
-    background: #1976d2;
+    background: $active5-color;
     cursor: pointer;
 
     @media (hover: hover) {
       &:hover {
-        background: #fbc02d;
+        background: $active5-hover-color;
       }
     }
   }
@@ -50,12 +51,12 @@
 }
 
 .isUpdatedLate {
-  background: #ff0081;
+  background: $late-color;
   cursor: pointer;
 }
 
 .isAbsent {
-  background: #4d377b;
+  background: $absent-color;
   cursor: pointer;
 }
 
