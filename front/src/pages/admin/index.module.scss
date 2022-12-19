@@ -3,87 +3,91 @@
 .container {
   overflow-x: auto;
   padding: 16px 8px;
+}
 
-  .title {
-    max-width: 760px;
-    min-width: 700px;
-    margin: 0 auto;
-    color: #5aba85;
-    font-size: 1.3rem;
-    text-align: center;
-    border: 2px solid #5aba85;
-    border-radius: 2px;
-    position: relative;
-  }
+.wrapper {
+  max-width: 760px;
+  min-width: 700px;
+  margin: 0 auto;
+}
 
-  .seatContainer {
-    width: 700px;
-    margin: 0 auto;
-    padding: 16px 0;
+.title {
+  color: #5aba85;
+  font-size: 1.3rem;
+  text-align: center;
+  border: 2px solid #5aba85;
+  border-radius: 2px;
+  position: relative;
+}
 
-    .line {
-      display: flex;
-      justify-content: center;
+.seatContainer {
+  width: 700px;
+  margin: 0 auto;
+  padding: 16px 0;
 
-      .active-0 {
-        width: 5px;
-        height: 5px;
-        align-self: center;
-      }
+  .line {
+    display: flex;
+    justify-content: center;
+
+    .active-0 {
+      width: 5px;
+      height: 5px;
+      align-self: center;
     }
   }
+}
 
-  .info {
-    margin: 8px 0 8px;
-  }
+.info {
+  margin: 8px 0 8px;
+}
 
-  .participants {
-    color: #9e9e9e;
-    text-align: center;
+.participants {
+  color: #9e9e9e;
+  text-align: center;
 
-    strong {
-      font-weight: bolder;
+  strong {
+    font-weight: bolder;
 
-      &:first-of-type {
-        color: #1976d2;
-      }
+    &:first-of-type {
+      color: #1976d2;
     }
   }
 }
 
 @include md {
-  .container {
-    .title {
-      max-width: 1050px;
-      min-width: 930px;
-      width: 100%;
-      font-size: 1.6rem;
-    }
+  .wrapper {
+    max-width: 1050px;
+    min-width: 930px;
+    width: 100%;
+  }
 
-    .seatContainer {
-      width: 930px;
+  .title {
+    font-size: 1.6rem;
+  }
 
-      .line {
-        .active-0 {
-          width: 10px;
-          height: 10px;
-        }
+  .seatContainer {
+    width: 930px;
+
+    .line {
+      .active-0 {
+        width: 10px;
+        height: 10px;
       }
     }
   }
 }
 
 @include lg {
-  .container {
-    .title {
-      max-width: 1350px;
-      min-width: 1200px;
-      width: 100%;
-      font-size: 2rem;
-    }
+  .wrapper {
+    max-width: 1350px;
+    min-width: 1200px;
+  }
 
-    .seatContainer {
-      width: 1200px;
-    }
+  .title {
+    font-size: 2rem;
+  }
+
+  .seatContainer {
+    width: 1200px;
   }
 }

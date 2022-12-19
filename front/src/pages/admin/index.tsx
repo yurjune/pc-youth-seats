@@ -62,11 +62,13 @@ const Admin = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.title}>
-          <span className={styles.text}>강단</span>
+        <div className={styles.wrapper}>
+          <div className={styles.title}>
+            <span className={styles.text}>강단</span>
+          </div>
+          <div className={styles.seatContainer}>{renderSeats()}</div>
+          <div className={styles.title}>입구</div>
         </div>
-        <div className={styles.seatContainer}>{renderSeats()}</div>
-        <div className={styles.title}>입구</div>
         <div className={styles.info}>
           <SeatInfo />
         </div>

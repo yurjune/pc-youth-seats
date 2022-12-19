@@ -82,15 +82,17 @@ const Home = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.title}>
-          <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
-            내 좌석 찾기
-          </Button>
-          <span className={styles.text}>강단</span>
-        </div>
-        <div className={styles.seatContainer}>{renderSeats()}</div>
-        <div className={styles.title} onClick={handleEntranceClick}>
-          입구
+        <div className={styles.wrapper}>
+          <div className={styles.title}>
+            <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
+              내 좌석 찾기
+            </Button>
+            <span className={styles.text}>강단</span>
+          </div>
+          <div className={styles.seatContainer}>{renderSeats()}</div>
+          <div className={styles.title} onClick={handleEntranceClick}>
+            입구
+          </div>
         </div>
         <div className={styles.info}>
           <SeatInfo />
