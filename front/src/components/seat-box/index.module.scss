@@ -54,6 +54,11 @@
   cursor: pointer;
 }
 
+.isAbsent {
+  background: #4d377b;
+  cursor: pointer;
+}
+
 @include md {
   .seat {
     width: 40px;

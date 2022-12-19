@@ -1,0 +1,28 @@
+@import '../../styles/responsive.scss';
+
+.checkbox {
+  :global(.MuiCheckbox-root) {
+    padding-right: 3px;
+  }
+  :global(.MuiCheckbox-root) svg {
+    font-size: 1.3rem;
+  }
+  :global(.MuiCheckbox-root:not(.Mui-checked)) {
+    color: #9e9e9e;
+  }
+  :global(.MuiFormControlLabel-label) {
+    font-size: 11px;
+    color: #434448;
+  }
+}
+
+@include lg {
+  .checkbox {
+    :global(.MuiCheckbox-root) svg {
+      font-size: 1.5rem;
+    }
+    :global(.MuiFormControlLabel-label) {
+      font-size: 14px;
+    }
+  }
+}

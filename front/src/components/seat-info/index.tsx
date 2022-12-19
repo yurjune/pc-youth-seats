@@ -1,7 +1,10 @@
 import clsx from 'clsx';
 import styles from './index.module.scss';
+import { useMode } from '../../shared/hooks';
 
 export const SeatInfo = () => {
+  const { isAttendanceMode } = useMode();
+
   return (
     <div className={styles.container}>
       <div className={styles.box}>
@@ -20,6 +23,18 @@ export const SeatInfo = () => {
         <div className={clsx(styles.seat, styles['active-5'])} />
         <span>선택 완료</span>
       </div>
+      {isAttendanceMode ? (
+        <>
+          <div className={styles.box}>
+            <div className={clsx(styles.seat, styles.late)} />
+            <span>늦은 예약</span>
+          </div>
+          <div className={styles.box}>
+            <div className={clsx(styles.seat, styles.absent)} />
+            <span>미출석</span>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

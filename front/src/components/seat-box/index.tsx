@@ -11,13 +11,16 @@ import {
 } from '../../jotai';
 import { useMode } from '../../shared/hooks';
 import { Seat } from '../../shared/models';
-import { checkIsAvailableForReservation } from '../../shared/utilities';
+import { checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
 
 interface SeatBoxProps {
   seat: Seat;
   seatLine: string;
+  lateSeatIds?: string[];
+  absentSeatIds?: string[];
+  isAbsenteeMode?: boolean;
 }
 
 /**
@@ -31,7 +34,7 @@ interface SeatBoxProps {
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {
-  const { seat, seatLine } = props;
+  const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsenteeMode } = props;
   const { seat_active, id, name } = seat;
   const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
@@ -40,24 +43,29 @@ export const SeatBox = (props: SeatBoxProps) => {
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
   const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
   const [isUpdatedLate, setIsUpdatedLate] = useState(false);
+  const [isAbsent, setIsAbsent] = useState(false);
 
   useLayoutEffect(() => {
     if (!isAttendanceMode) {
-      setIsUpdatedLate(false);
       return;
     }
 
-    socket.emit('seatBoxRendered');
-
-    socket.on('lateSeatList', (data) => {
-      if (data.includes(seat.id)) {
+    setIsUpdatedLate(false);
+    for (const id of lateSeatIds) {
+      if (id === seat.id) {
         setIsUpdatedLate(true);
         return;
       }
+    }
 
-      setIsUpdatedLate(false);
-    });
-  }, [isAttendanceMode, seat]);
+    setIsAbsent(false);
+    for (const id of absentSeatIds) {
+      if (id === seat.id) {
+        setIsAbsent(true);
+        return;
+      }
+    }
+  }, [isAttendanceMode, seat, lateSeatIds, absentSeatIds]);
 
   const handleSeatClick = async () => {
     if (!checkIsAvailableForReservation()) {
@@ -65,9 +73,18 @@ export const SeatBox = (props: SeatBoxProps) => {
       return;
     }
 
-    if (isUpdatedLate) {
-      socket.emit('lateSeatRemoved', seat.id);
-      return;
+    try {
+      if (isUpdatedLate) {
+        socket.emit('lateSeatRemoved', seat.id);
+        return;
+      }
+
+      if (isAbsenteeMode) {
+        socket.emit('absentSeatModified', seat.id);
+        return;
+      }
+    } catch (error) {
+      reportErrorMessage(error, '2');
     }
 
     switch (seat_active) {
@@ -99,7 +116,8 @@ export const SeatBox = (props: SeatBoxProps) => {
 
   const cls = clsx(styles.seat, {
     [styles.isUpdatedLate]: isUpdatedLate,
-    [styles[`active-${seat_active}`]]: !isUpdatedLate,
+    [styles.isAbsent]: !isUpdatedLate && isAbsent,
+    [styles[`active-${seat_active}`]]: !isUpdatedLate && !isAbsent,
   });
 
   const isDisabled = seat_active === 2 || seat_active === 6;

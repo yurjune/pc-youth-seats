@@ -4,6 +4,7 @@ import { SeatParams } from './seat.model';
 export interface ServerToClientEvents {
   seatList: (arg: SeatParams) => void;
   lateSeatList: (arg: string[]) => void;
+  absentSeatList: (arg: string[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -11,4 +12,5 @@ export interface ClientToServerEvents {
   seatReserved: (arg: SeatParams) => void;
   seatRemoved: (arg: SeatParams) => void;
   lateSeatRemoved: (arg: string) => void;
+  absentSeatModified: (arg: string) => void;
 }

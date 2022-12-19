@@ -12,6 +12,7 @@ const { checkIsAvailableForReservation, checkIsLateReservation } = require('./ut
 
 let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
 let lateSeatIds = [];
+let absentSeatIds = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,8 +26,6 @@ app.set('port', process.env.PORT || 5000);
 // 00 00 00 * * 1
 // 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
 schedule.scheduleJob('00 00 15 * * 0', () => {
-  lateSeatIds = [];
-
   fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
     fs.writeFile('./json/seats.json', result, (err) => {
       if (err) {
@@ -34,6 +33,8 @@ schedule.scheduleJob('00 00 15 * * 0', () => {
         return;
       }
 
+      lateSeatIds = [];
+      absentSeatIds = [];
       console.log('시온 데이터 리셋 완료');
     });
   });
@@ -47,6 +48,7 @@ const io = require('socket.io')(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
   socket.on('seatBoxRendered', () => {
     io.emit('lateSeatList', lateSeatIds);
+    io.emit('absentSeatList', absentSeatIds);
   });
 
   socket.on('seatReserved', (data) => {
@@ -61,6 +63,9 @@ io.on('connection', (socket) => {
   socket.on('seatRemoved', (data) => {
     io.emit('seatList', data);
 
+    absentSeatIds = absentSeatIds.filter((id) => id !== data.seatId);
+    io.emit('absentSeatList', absentSeatIds);
+
     if (!data.ignoreIsLate && checkIsLateReservation()) {
       lateSeatIds.push(data.seatId);
       io.emit('lateSeatList', lateSeatIds);
@@ -70,6 +75,16 @@ io.on('connection', (socket) => {
   socket.on('lateSeatRemoved', (data) => {
     lateSeatIds = lateSeatIds.filter((id) => id !== data);
     io.emit('lateSeatList', lateSeatIds);
+  });
+
+  socket.on('absentSeatModified', (data) => {
+    const absentSeat = absentSeatIds.find((id) => id === data);
+    if (absentSeat) {
+      absentSeatIds = absentSeatIds.filter((id) => id !== data);
+    } else {
+      absentSeatIds.push(data);
+    }
+    io.emit('absentSeatList', absentSeatIds);
   });
 });
 

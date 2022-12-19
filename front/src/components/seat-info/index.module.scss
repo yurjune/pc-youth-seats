@@ -46,6 +46,14 @@
         }
       }
     }
+
+    &.late {
+      background: #ff0081;
+    }
+
+    &.absent {
+      background: #4d377b;
+    }
   }
 }
 
