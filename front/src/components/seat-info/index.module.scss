@@ -48,6 +48,10 @@
       }
     }
 
+    &.lastWeek {
+      background: $lastWeek-color;
+    }
+
     &.late {
       background: $late-color;
     }

@@ -14,7 +14,7 @@ import type { CheckboxProps } from '../../components/checkbox';
 const Attendance = () => {
   const isMaster = useAtomValue(isMasterAtom);
   const [seats, setSeats, modifySeats] = useSeats();
-  const [absenteeCheckboxChecked, setAbsenteeCheckboxChecked] = useState(false);
+  const [absentCheckboxChecked, setAbsentCheckboxChecked] = useState(false);
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
   const navigate = useNavigate();
   const [lateSeatIds, setLateSeatIds] = useState<string[]>([]);
@@ -73,7 +73,7 @@ const Attendance = () => {
                 seatLine={line}
                 lateSeatIds={lateSeatIds}
                 absentSeatIds={absentSeatIds}
-                isAbsenteeMode={absenteeCheckboxChecked}
+                isAbsentMode={absentCheckboxChecked}
               />
             );
           })}
@@ -84,7 +84,7 @@ const Attendance = () => {
   };
 
   const handleAbsentCheckboxChange: CheckboxProps['onChange'] = (e) => {
-    setAbsenteeCheckboxChecked(e.target.checked);
+    setAbsentCheckboxChecked(e.target.checked);
   };
 
   return (
@@ -95,7 +95,7 @@ const Attendance = () => {
             <span className={styles.text}>강단</span>
           </div>
           <div className={styles.seatContainer}>{renderSeats()}</div>
-          <Checkbox label='미출석자 수정하기' checked={absenteeCheckboxChecked} onChange={handleAbsentCheckboxChange} />
+          <Checkbox label='미출석자 수정하기' checked={absentCheckboxChecked} onChange={handleAbsentCheckboxChange} />
           <div className={styles.title}>입구</div>
         </div>
         <div className={styles.info}>

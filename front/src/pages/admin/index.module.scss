@@ -39,10 +39,11 @@
 }
 
 .info {
+  min-width: 450px;
   margin: 8px 0 8px;
 }
 
-.participants {
+.count {
   color: $active1-color;
   text-align: center;
 

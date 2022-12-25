@@ -26,6 +26,12 @@ app.set('port', process.env.PORT || 5000);
 // 00 00 00 * * 1
 // 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
 schedule.scheduleJob('00 00 15 * * 0', () => {
+  fs.readFile('./json/seats.json', 'utf8', (err, result) => {
+    fs.writeFile('./json/seats_last_week.json', result, (err) => {
+      console.log('지난주 좌석 저장 완료');
+    });
+  });
+
   fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
     fs.writeFile('./json/seats.json', result, (err) => {
       if (err) {
@@ -100,13 +106,10 @@ app.get('/api/getSeats', (req, res) => {
   res.send(jsonData);
 });
 
-app.get('/api/getReserveAbleFlag', (req, res) => {
-  if (!checkIsAvailableForReservation()) {
-    res.send(false);
-    return;
-  }
-
-  res.send(true);
+app.get('/api/getLastWeekSeats', (req, res) => {
+  const jsonFile = fs.readFileSync('./json/seats_last_week.json', 'utf8');
+  const jsonData = JSON.parse(jsonFile);
+  res.send(jsonData);
 });
 
 app.post('/api/searchSeat', (req, res) => {

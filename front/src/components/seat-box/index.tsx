@@ -20,7 +20,8 @@ interface SeatBoxProps {
   seatLine: string;
   lateSeatIds?: string[];
   absentSeatIds?: string[];
-  isAbsenteeMode?: boolean;
+  isAbsentMode?: boolean;
+  isLastWeekMode?: boolean;
 }
 
 /**
@@ -34,7 +35,7 @@ interface SeatBoxProps {
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {
-  const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsenteeMode } = props;
+  const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
   const { seat_active, id, name } = seat;
   const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
@@ -42,7 +43,7 @@ export const SeatBox = (props: SeatBoxProps) => {
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
   const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
-  const [isUpdatedLate, setIsUpdatedLate] = useState(false);
+  const [isLate, setIsLate] = useState(false);
   const [isAbsent, setIsAbsent] = useState(false);
 
   useLayoutEffect(() => {
@@ -50,10 +51,10 @@ export const SeatBox = (props: SeatBoxProps) => {
       return;
     }
 
-    setIsUpdatedLate(false);
+    setIsLate(false);
     for (const id of lateSeatIds) {
       if (id === seat.id) {
-        setIsUpdatedLate(true);
+        setIsLate(true);
         return;
       }
     }
@@ -68,18 +69,22 @@ export const SeatBox = (props: SeatBoxProps) => {
   }, [isAttendanceMode, seat, lateSeatIds, absentSeatIds]);
 
   const handleSeatClick = async () => {
+    if (isLastWeekMode) {
+      return;
+    }
+
     if (!checkIsAvailableForReservation()) {
       toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
       return;
     }
 
     try {
-      if (isUpdatedLate) {
+      if (isLate) {
         socket.emit('lateSeatRemoved', seat.id);
         return;
       }
 
-      if (isAbsenteeMode) {
+      if (isAbsentMode) {
         socket.emit('absentSeatModified', seat.id);
         return;
       }
@@ -115,9 +120,10 @@ export const SeatBox = (props: SeatBoxProps) => {
   };
 
   const cls = clsx(styles.seat, {
-    [styles.isUpdatedLate]: isUpdatedLate,
-    [styles.isAbsent]: !isUpdatedLate && isAbsent,
-    [styles[`active-${seat_active}`]]: !isUpdatedLate && !isAbsent,
+    [styles[`active-${seat_active}`]]: !isLate && !isAbsent,
+    [styles.lastWeek]: isLastWeekMode,
+    [styles.late]: isLate,
+    [styles.absent]: !isLate && isAbsent,
   });
 
   const isDisabled = seat_active === 2 || seat_active === 6;

@@ -11,7 +11,7 @@ import {
 
 export default {
   getSeats: (): Promise<Seats> => requests.get('/getSeats'),
-  getReserveAbleFlag: (): Promise<boolean> => requests.get('/getReserveAbleFlag'),
+  getLastWeekSeats: (): Promise<Seats> => requests.get('/getLastWeekSeats'),
   searchSeat: (params: SearchSeatReqDto): Promise<SearchSeatResDto> => requests.post(`/searchSeat`, { params }),
 
   makeReservation: (params: MakeReservationReqDto): Promise<MakeReservationResDto> =>

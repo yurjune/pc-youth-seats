@@ -18,9 +18,11 @@
     background: $active1-color;
     cursor: pointer;
 
-    @media (hover: hover) {
-      &:hover {
-        background: $active1-hover-color;
+    &:not(.lastWeek) {
+      @media (hover: hover) {
+        &:hover {
+          background: $active1-hover-color;
+        }
       }
     }
   }
@@ -34,7 +36,7 @@
     cursor: pointer;
   }
 
-  &.active-5 {
+  &.active-5:not(.lastWeek) {
     background: $active5-color;
     cursor: pointer;
 
@@ -45,17 +47,26 @@
     }
   }
 
+  &.active-5.lastWeek {
+    background: $lastWeek-color;
+    cursor: pointer;
+  }
+
   &.active-6 {
     background: transparent;
   }
 }
 
-.isUpdatedLate {
+.lastWeek {
+  cursor: default !important;
+}
+
+.late {
   background: $late-color;
   cursor: pointer;
 }
 
-.isAbsent {
+.absent {
   background: $absent-color;
   cursor: pointer;
 }
