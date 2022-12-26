@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import toast from 'react-hot-toast';
 import { searchDialogOpenAtom } from '../../jotai';
 import service from '../../service';
-import { useInput } from '../../shared/hooks';
+import { useGAEventsTracker, useInput } from '../../shared/hooks';
 import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import styles from './index.module.scss';
 
@@ -11,8 +11,11 @@ export const SearchDialog = () => {
   const [open, setOpen] = useAtom(searchDialogOpenAtom);
   const [name, handleName] = useInput();
   const [pw, handlePw] = useInput();
+  const { trackEvent } = useGAEventsTracker();
 
   const handleOkClick = async () => {
+    trackEvent('find_my_seat');
+
     try {
       const body = {
         name,

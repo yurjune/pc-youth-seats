@@ -15,7 +15,7 @@ import {
 } from '../../components';
 import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom, searchDialogOpenAtom } from '../../jotai';
 import service from '../../service';
-import { useSeats } from '../../shared/hooks';
+import { useSeats, useGAEventsTracker } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
@@ -28,6 +28,7 @@ const Home = () => {
   const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const [seats, setSeats, modifySeats] = useSeats();
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
+  const { trackEvent } = useGAEventsTracker();
 
   useEffect(() => {
     socket.on('seatList', (data) => {
@@ -68,6 +69,7 @@ const Home = () => {
   };
 
   const handleSearchButtonClick = () => {
+    trackEvent('open_find_my_seat_modal');
     setSearchDialogOpen(true);
   };
 

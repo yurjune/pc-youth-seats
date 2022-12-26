@@ -1,4 +1,8 @@
-export const SERVER_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:5000' : 'http://3.34.59.214:5000';
+export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+export const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+
+export const SERVER_URL = IS_DEVELOPMENT ? 'http://localhost:5000' : 'http://3.34.59.214:5000';
+export const GA_ID = process.env.REACT_APP_GA_ID;
 
 export const ADMIN_PW =
   'cb70c1ecebf67ada2ae0dc35835af04aef5b192c6ae70a2ba82ed5734702f9c4b1340e804fbdc98a36196623e11091565ef8bc1d18f75813a20fbe5a6067e3f5';

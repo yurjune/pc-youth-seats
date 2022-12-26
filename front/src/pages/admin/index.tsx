@@ -1,17 +1,16 @@
 import { useAtomValue } from 'jotai';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DeleteDialog, RedeemusDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
 import { Checkbox } from '../../components/checkbox';
 import { isMasterAtom } from '../../jotai';
 import service from '../../service';
-import { useSeats } from '../../shared/hooks';
+import { useGAEventsTracker, useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
 import type { CheckboxProps } from '../../components/checkbox';
 import { Seats } from '../../shared/models';
-import clsx from 'clsx';
 
 const Admin = () => {
   const isMaster = useAtomValue(isMasterAtom);
@@ -19,6 +18,7 @@ const Admin = () => {
   const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();
   const [lastWeekCheckboxChecked, setLastWeekCheckboxChecked] = useState(false);
   const navigate = useNavigate();
+  const { trackEvent } = useGAEventsTracker();
 
   const { activeSeats, totalSeats } = useMemo(() => {
     if (lastWeekCheckboxChecked) {
@@ -78,6 +78,10 @@ const Admin = () => {
   };
 
   const handleLastWeekCheckboxChange: CheckboxProps['onChange'] = (e) => {
+    if (e.target.checked) {
+      trackEvent('see_last_week_seats');
+    }
+
     setLastWeekCheckboxChecked(e.target.checked);
   };
 
