@@ -8,7 +8,13 @@ const schedule = require('node-schedule');
 const helmet = require('helmet');
 const cors = require('cors');
 const history = require('connect-history-api-fallback');
-const { checkIsAvailableForReservation, checkIsLateReservation } = require('./utils/time');
+const {
+  checkIsAvailableForReservation,
+  checkIsLateReservation,
+  getYearMonthDate,
+  getKoreanTime,
+} = require('./utils/time');
+const { logWithTime } = require('./utils/logWithTime');
 
 let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
 let lateSeatIds = [];
@@ -26,22 +32,34 @@ app.set('port', process.env.PORT || 5000);
 // 00 00 00 * * 1
 // 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
 schedule.scheduleJob('00 00 15 * * 0', () => {
+  fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
+    if (err) return console.log('시온채플 좌석 리셋 실패');
+
+    fs.writeFile('./json/seats.json', result, (err) => {
+      lateSeatIds = [];
+      absentSeatIds = [];
+      console.log('시온채플 좌석 리셋 완료');
+    });
+  });
+
   fs.readFile('./json/seats.json', 'utf8', (err, result) => {
     fs.writeFile('./json/seats_last_week.json', result, (err) => {
       console.log('지난주 좌석 저장 완료');
     });
+
+    fs.writeFile(`../../seats_history/seats_${getYearMonthDate()}.json`, result, (err) => {
+      if (err) return console.log(`좌석 히스토리 저장 실패`);
+      console.log(`좌석 히스토리 저장 완료`);
+    });
   });
+});
 
-  fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
-    fs.writeFile('./json/seats.json', result, (err) => {
-      if (err) {
-        console.log('시온 데이터 리셋 실패');
-        return;
-      }
+schedule.scheduleJob('00 00 * * * *', () => {
+  fs.readFile('./json/seats.json', 'utf8', (err, result) => {
+    const { hour } = getKoreanTime();
 
-      lateSeatIds = [];
-      absentSeatIds = [];
-      console.log('시온 데이터 리셋 완료');
+    fs.writeFile(`../../seats_backup/seats_backup_${hour}.json`, result, (err) => {
+      if (err) return console.log(`좌석 백업 실패`);
     });
   });
 });
@@ -165,7 +183,7 @@ app.put('/api/makeReservation', (req, res) => {
       }
 
       res.send({ ok: true, message: '예약 되었습니다.' });
-      console.log('JSON FILE 수정 완료');
+      logWithTime(`예약완료: ${params.seatId}, ${params.name}, ${params.pw}`);
     });
   });
 });
@@ -206,7 +224,7 @@ app.put('/api/cancelReservation', (req, res) => {
           }
 
           res.send({ ok: true, message: '삭제 되었습니다.', defaultSeatActive });
-          console.log('JSON FILE 수정 완료');
+          logWithTime(`삭제완료: ${params.seatId}`);
         });
       });
     });
