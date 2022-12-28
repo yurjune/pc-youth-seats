@@ -22,34 +22,38 @@ let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
 let lateSeatIds: string[] = [];
 let absentSeatIds: string[] = [];
 
+// paths
+const jsonDirectory = path.join(__dirname, '../json');
+const historyDirectory = path.join(__dirname, '../../../seats_history');
+const backupDirectory = path.join(__dirname, '../../../seats_backup');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(cors());
 app.use(history());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 app.use(helmet());
 app.set('port', process.env.PORT || 5000);
 
 // 00 00 00 * * 1
 // 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
 schedule.scheduleJob('00 00 15 * * 0', () => {
-  fs.readFile(`./json/${seatsMode}`, 'utf8', (err, result) => {
+  fs.readFile(`${jsonDirectory}/${seatsMode}`, 'utf8', (err, result) => {
     if (err) return console.log('시온채플 좌석 리셋 실패');
 
-    fs.writeFile('./json/seats.json', result, () => {
+    fs.writeFile(`${jsonDirectory}/seats.json`, result, () => {
       lateSeatIds = [];
       absentSeatIds = [];
       console.log('시온채플 좌석 리셋 완료');
     });
   });
 
-  fs.readFile('./json/seats.json', 'utf8', (err, result) => {
-    fs.writeFile('./json/seats_last_week.json', result, () => {
+  fs.readFile(`${jsonDirectory}/seats.json`, 'utf8', (err, result) => {
+    fs.writeFile(`${jsonDirectory}/seats_last_week.json`, result, () => {
       console.log('지난주 좌석 저장 완료');
     });
 
-    fs.writeFile(`../../seats_history/seats_${getYearMonthDate()}.json`, result, (err) => {
+    fs.writeFile(`${historyDirectory}/seats_${getYearMonthDate()}.json`, result, (err) => {
       if (err) return console.log(`좌석 히스토리 저장 실패`);
       console.log(`좌석 히스토리 저장 완료`);
     });
@@ -57,10 +61,10 @@ schedule.scheduleJob('00 00 15 * * 0', () => {
 });
 
 schedule.scheduleJob('00 00 * * * *', () => {
-  fs.readFile('./json/seats.json', 'utf8', (err, result) => {
+  fs.readFile(`${jsonDirectory}/seats.json`, 'utf8', (err, result) => {
     const { hour } = getKoreanTime();
 
-    fs.writeFile(`../../seats_backup/seats_backup_${hour}.json`, result, (err) => {
+    fs.writeFile(`${backupDirectory}/seats_backup_${hour}.json`, result, (err) => {
       if (err) return console.log(`좌석 백업 실패`);
     });
   });
@@ -121,13 +125,13 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get('/api/getSeats', (req, res) => {
-  const jsonFile = fs.readFileSync('./json/seats.json', 'utf8');
+  const jsonFile = fs.readFileSync(`${jsonDirectory}/seats.json`, 'utf8');
   const jsonData = JSON.parse(jsonFile);
   res.send(jsonData);
 });
 
 app.get('/api/getLastWeekSeats', (req, res) => {
-  const jsonFile = fs.readFileSync('./json/seats_last_week.json', 'utf8');
+  const jsonFile = fs.readFileSync(`${jsonDirectory}/seats_last_week.json`, 'utf8');
   const jsonData = JSON.parse(jsonFile);
   res.send(jsonData);
 });
@@ -136,7 +140,7 @@ app.post('/api/searchSeat', (req, res) => {
   const { name, pw } = req.body.params;
   const seatPlace = 'seats.json';
 
-  fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
+  fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
     const showData: Seats = JSON.parse(data);
     const lineList = Object.keys(showData);
 
@@ -163,7 +167,8 @@ app.put('/api/makeReservation', (req, res) => {
 
   const params = req.body.params;
   const seatPlace = 'seats.json';
-  fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
+
+  fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
     const showData: Seats = JSON.parse(data);
 
     for (let i in showData[params.seat]) {
@@ -179,7 +184,7 @@ app.put('/api/makeReservation', (req, res) => {
       }
     }
 
-    fs.writeFile(`./json/${seatPlace}`, JSON.stringify(showData), (err) => {
+    fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
       if (err) {
         res.send({ ok: false, message: 'Something went wrong.' });
         return;
@@ -196,7 +201,7 @@ app.put('/api/cancelReservation', (req, res) => {
   const seatPlace = 'seats.json';
 
   fsp
-    .readFile(`./json/${seatsMode}`, 'utf8')
+    .readFile(`${jsonDirectory}/${seatsMode}`, 'utf8')
     .then((el) => {
       let parseEl: Seats = JSON.parse(el);
       let defaultSeatActive = 0;
@@ -212,7 +217,7 @@ app.put('/api/cancelReservation', (req, res) => {
       return { defaultSeatActive, defaultSeatName };
     })
     .then(({ defaultSeatActive, defaultSeatName }) => {
-      fs.readFile(`./json/${seatPlace}`, 'utf8', (err, data) => {
+      fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
         const showData = JSON.parse(data);
         for (let i in showData[params.seat]) {
           if (showData[params.seat][i].id === params.seatId) {
@@ -222,7 +227,7 @@ app.put('/api/cancelReservation', (req, res) => {
           }
         }
 
-        fs.writeFile(`./json/${seatPlace}`, JSON.stringify(showData), (err) => {
+        fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
           if (err) {
             res.send({ ok: false, message: 'Something went wrong', defaultSeatActive, defaultSeatName });
             return;

@@ -8,7 +8,7 @@
     "build": "tsc --build",
     "nodemon": "nodemon ./dist/app.js",
     "start": "pm2 start ./dist/app.js",
-    "restart": "pm2 start ./dist/app.js"
+    "restart": "pm2 restart ./dist/app.js"
   },
   "author": "",
   "license": "ISC",

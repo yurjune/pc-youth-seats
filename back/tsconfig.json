@@ -9,6 +9,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true /* 모든 선언 파일(*.d.ts)의 타입 검사 생략 */
   },
-  "include": ["./**/*"],
+  "include": ["./src/**/*"],
   "exclude": ["node_modules"]
 }
