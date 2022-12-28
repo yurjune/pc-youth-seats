@@ -1,11 +1,11 @@
-const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-const timezone = require('dayjs/plugin/timezone');
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-const getKoreanTime = () => {
+export const getKoreanTime = () => {
   const dayjsKorea = dayjs().tz('Asia/Seoul');
   const year = dayjsKorea.year();
   const month = dayjsKorea.month();
@@ -17,7 +17,7 @@ const getKoreanTime = () => {
   return { year, month, date, day, hour, minute };
 };
 
-const checkIsAvailableForReservation = () => {
+export const checkIsAvailableForReservation = () => {
   const { day, hour } = getKoreanTime();
 
   // 월요일 00시 ~ 21시 예약불가
@@ -28,7 +28,7 @@ const checkIsAvailableForReservation = () => {
   return true;
 };
 
-const checkIsLateReservation = () => {
+export const checkIsLateReservation = () => {
   const { day, hour, minute } = getKoreanTime();
 
   if (day !== 0) {
@@ -47,18 +47,11 @@ const checkIsLateReservation = () => {
   return false;
 };
 
-const getYearMonthDate = () => {
+export const getYearMonthDate = () => {
   const { year: _year, month: _month, date: _date } = getKoreanTime();
   const year = _year.toString().slice(2);
   const month = _month < 10 ? `0${_month + 1}` : _month + 1;
   const date = _date < 10 ? `0${_date}` : _date;
   const yearMonthDate = `${year}${month}${date}`;
   return yearMonthDate; // 230101
-};
-
-module.exports = {
-  getKoreanTime,
-  checkIsAvailableForReservation,
-  checkIsLateReservation,
-  getYearMonthDate,
 };
