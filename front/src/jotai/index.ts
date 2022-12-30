@@ -14,4 +14,3 @@ export const deleteDialogOpenAtom = atom(false);
 export const redeemusDialogOpenAtom = atom(false);
 export const adminDialogOpenAtom = atom(false);
 export const adminRadioDialogOpenAtom = atom(false);
-export const searchDialogOpenAtom = atom(false);

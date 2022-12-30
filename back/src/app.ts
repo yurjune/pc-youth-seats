@@ -136,29 +136,6 @@ app.get('/api/getLastWeekSeats', (req, res) => {
   res.send(jsonData);
 });
 
-app.post('/api/searchSeat', (req, res) => {
-  const { name, pw } = req.body.params;
-  const seatPlace = 'seats.json';
-
-  fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
-    const showData: Seats = JSON.parse(data);
-    const lineList = Object.keys(showData);
-
-    for (const line of lineList) {
-      const seat = showData[line].find((item) => {
-        return item.name === name && item.pw === pw;
-      });
-
-      if (seat) {
-        res.send(seat.id);
-        return;
-      }
-    }
-
-    res.send(false);
-  });
-});
-
 app.put('/api/makeReservation', (req, res) => {
   if (!checkIsAvailableForReservation()) {
     res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });

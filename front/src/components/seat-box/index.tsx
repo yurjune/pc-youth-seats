@@ -37,7 +37,7 @@ interface SeatBoxProps {
 export const SeatBox = (props: SeatBoxProps) => {
   const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
   const { seat_active, id, name } = seat;
-  const { isUserMode, isAttendanceMode } = useMode();
+  const { isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
@@ -127,7 +127,6 @@ export const SeatBox = (props: SeatBoxProps) => {
   });
 
   const isDisabled = seat_active === 2 || seat_active === 6;
-  const isRenderName = !isUserMode || seat_active === 4;
 
   return (
     <div className={cls} onClick={handleSeatClick}>
@@ -135,7 +134,7 @@ export const SeatBox = (props: SeatBoxProps) => {
         <>
           {id}
           <br />
-          {isRenderName && name}
+          {name}
         </>
       )}
     </div>

@@ -20,20 +20,6 @@
   border: 2px solid $title-color;
   border-radius: 2px;
   position: relative;
-
-  .searchButton {
-    position: absolute;
-    left: 1px;
-    top: 2px;
-    bottom: 2px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #228d58;
-
-    &:hover {
-      background-color: rgba(34, 141, 88, 0.1);
-    }
-  }
 }
 
 .seatContainer {
@@ -79,10 +65,6 @@
 
   .title {
     font-size: 1.6rem;
-
-    .searchButton {
-      font-size: 0.85rem;
-    }
   }
 
   .seatContainer {
@@ -106,10 +88,6 @@
 
   .title {
     font-size: 2rem;
-
-    .searchButton {
-      font-size: 1rem;
-    }
   }
 
   .seatContainer {

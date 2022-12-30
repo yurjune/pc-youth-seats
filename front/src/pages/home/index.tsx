@@ -1,5 +1,4 @@
 import { useAtomValue } from 'jotai';
-import { Button } from '@mui/material';
 import { useUpdateAtom } from 'jotai/utils';
 import { useEffect, useMemo } from 'react';
 import {
@@ -8,14 +7,13 @@ import {
   DeleteDialog,
   RedeemusDialog,
   ReserveDialog,
-  SearchDialog,
   SeatBox,
   SeatInfo,
   Toaster,
 } from '../../components';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom, searchDialogOpenAtom } from '../../jotai';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../jotai';
 import service from '../../service';
-import { useSeats, useGAEventsTracker } from '../../shared/hooks';
+import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
@@ -23,12 +21,10 @@ import styles from './index.module.scss';
 
 const Home = () => {
   const isMaster = useAtomValue(isMasterAtom);
-  const setSearchDialogOpen = useUpdateAtom(searchDialogOpenAtom);
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
   const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const [seats, setSeats, modifySeats] = useSeats();
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
-  const { trackEvent } = useGAEventsTracker();
 
   useEffect(() => {
     socket.on('seatList', (data) => {
@@ -68,11 +64,6 @@ const Home = () => {
     ));
   };
 
-  const handleSearchButtonClick = () => {
-    trackEvent('open_find_my_seat_modal');
-    setSearchDialogOpen(true);
-  };
-
   const handleEntranceClick = () => {
     if (isMaster) {
       setAdminRadioDialogOpen(true);
@@ -86,9 +77,6 @@ const Home = () => {
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.title}>
-            <Button onClick={handleSearchButtonClick} className={styles.searchButton}>
-              내 좌석 찾기
-            </Button>
             <span className={styles.text}>강단</span>
           </div>
           <div className={styles.seatContainer}>{renderSeats()}</div>
@@ -110,7 +98,6 @@ const Home = () => {
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />
-      <SearchDialog />
       <AdminDialog />
       <AdminRadioDialog />
     </>
