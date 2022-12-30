@@ -20,6 +20,7 @@ export const getNumberOfSeats = (seats: Seats | undefined) => {
         activeSeats += 1;
       }
 
+      // 교역자 3석, 방송팀 1석, 새가족석 2석 = 총 6석
       if (seat_active === 4 && name !== '') {
         activeSeats += 1;
       }

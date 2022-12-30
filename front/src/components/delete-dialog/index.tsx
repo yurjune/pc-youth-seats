@@ -53,7 +53,7 @@ export const DeleteDialog = () => {
         socket.emit('seatRemoved', {
           ...params,
           seat_active: result.defaultSeatActive,
-          name: '',
+          name: result.defaultSeatName,
           pw: '',
         });
 
@@ -87,7 +87,7 @@ export const DeleteDialog = () => {
         socket.emit('seatRemoved', {
           ...params,
           seat_active: result.defaultSeatActive,
-          name: '',
+          name: result.defaultSeatName,
           pw: '',
           ignoreIsLate,
         });
