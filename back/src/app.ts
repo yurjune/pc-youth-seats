@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 const app = express();
 import fs from 'fs';
 const fsp = fs.promises;
@@ -16,7 +16,19 @@ import {
   getKoreanTime,
   logWithTime,
 } from './utils';
-import { Seats } from './models';
+import {
+  CancelReservationReq,
+  CancelReservationRes,
+  ClientToServerEvents,
+  GetLastWeekSeatsRes,
+  GetSeatsRes,
+  MakeReservationReq,
+  MakeReservationRes,
+  Seats,
+  ServerToClientEvents,
+  TypedReq,
+  TypedRes,
+} from './models';
 
 let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
 let lateSeatIds: string[] = [];
@@ -74,7 +86,7 @@ const expressServer = app.listen(app.get('port'), () => {
   console.log('WebServer Port: ' + app.get('port'));
 });
 
-const io = new Server(expressServer, { path: '/socket.io' });
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
   socket.on('seatBoxRendered', () => {
     io.emit('lateSeatList', lateSeatIds);
@@ -124,19 +136,19 @@ app.all('/*', (req, res, next) => {
   next();
 });
 
-app.get('/api/getSeats', (req, res) => {
+app.get('/api/getSeats', (req: Request, res: TypedRes<GetSeatsRes>) => {
   const jsonFile = fs.readFileSync(`${jsonDirectory}/seats.json`, 'utf8');
-  const jsonData = JSON.parse(jsonFile);
+  const jsonData: Seats = JSON.parse(jsonFile);
   res.send(jsonData);
 });
 
-app.get('/api/getLastWeekSeats', (req, res) => {
+app.get('/api/getLastWeekSeats', (req: Request, res: TypedRes<GetLastWeekSeatsRes>) => {
   const jsonFile = fs.readFileSync(`${jsonDirectory}/seats_last_week.json`, 'utf8');
-  const jsonData = JSON.parse(jsonFile);
+  const jsonData: Seats = JSON.parse(jsonFile);
   res.send(jsonData);
 });
 
-app.put('/api/makeReservation', (req, res) => {
+app.put('/api/makeReservation', (req: TypedReq<MakeReservationReq>, res: TypedRes<MakeReservationRes>) => {
   if (!checkIsAvailableForReservation()) {
     res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
     return;
@@ -173,7 +185,7 @@ app.put('/api/makeReservation', (req, res) => {
   });
 });
 
-app.put('/api/cancelReservation', (req, res) => {
+app.put('/api/cancelReservation', (req: TypedReq<CancelReservationReq>, res: TypedRes<CancelReservationRes>) => {
   const params = req.body.params;
   const seatPlace = 'seats.json';
 

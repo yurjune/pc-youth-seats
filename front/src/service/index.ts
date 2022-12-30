@@ -1,15 +1,16 @@
-import { Seats } from '../shared/models';
-import { requests } from './client';
 import {
   CancelReservationReqDto,
   CancelReservationResDto,
+  GetLastWeekSeatsResDto,
+  GetSeatsResDto,
   MakeReservationReqDto,
   MakeReservationResDto,
-} from './service.dto';
+} from '../shared/models';
+import { requests } from './client';
 
 export default {
-  getSeats: (): Promise<Seats> => requests.get('/getSeats'),
-  getLastWeekSeats: (): Promise<Seats> => requests.get('/getLastWeekSeats'),
+  getSeats: (): Promise<GetSeatsResDto> => requests.get('/getSeats'),
+  getLastWeekSeats: (): Promise<GetLastWeekSeatsResDto> => requests.get('/getLastWeekSeats'),
 
   makeReservation: (params: MakeReservationReqDto): Promise<MakeReservationResDto> =>
     requests.put('/makeReservation', { params }),
