@@ -11,7 +11,7 @@ type GetLastWeekSeatsResDto = Seats;
 type MakeReservationReqDto = SeatParams;
 type MakeReservationResDto = ResWithMessage;
 
-type CancelReservationReqDto = Pick<SeatParams, 'seat' | 'seatId' | 'ignoreIsLate'>;
+type CancelReservationReqDto = Pick<SeatParams, 'id' | 'line' | 'ignoreIsLate'>;
 type CancelReservationResDto = ResWithMessage & {
   defaultSeatActive: number;
   defaultSeatName: string;

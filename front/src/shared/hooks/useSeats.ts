@@ -10,7 +10,7 @@ export const useSeats = () => {
     }
 
     const newSeat = {
-      id: params.seatId,
+      id: params.id,
       seat_active: params.seat_active,
       seat_num: 100, // TODO
       name: params.name,
@@ -22,15 +22,15 @@ export const useSeats = () => {
         return;
       }
 
-      const newLine = prev[params.seat]?.map((seat) => {
-        if (seat.id === params.seatId) {
+      const newLine = prev[params.line]?.map((seat) => {
+        if (seat.id === params.id) {
           return newSeat;
         }
 
         return seat;
       });
 
-      return { ...prev, [params.seat]: newLine };
+      return { ...prev, [params.line]: newLine };
     });
   };
 

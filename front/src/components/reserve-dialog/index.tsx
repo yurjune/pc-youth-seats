@@ -61,11 +61,11 @@ export const ReserveDialog = () => {
 
     try {
       const params = {
+        id: selectedSeat.id,
+        seat_active: 5,
         name,
         pw: encrypt(pw),
-        seat: selectedSeatLine,
-        seatId: selectedSeat.id,
-        seat_active: 5,
+        line: selectedSeatLine,
       };
       const result = await service.makeReservation(params);
       const { ok, message } = result;
@@ -99,11 +99,11 @@ export const ReserveDialog = () => {
 
     try {
       const params = {
+        id: selectedSeat.id,
+        seat_active: 5,
         name,
         pw: ADMIN_PW,
-        seat: selectedSeatLine,
-        seatId: selectedSeat.id,
-        seat_active: 5,
+        line: selectedSeatLine,
       };
       const result = await service.makeReservation(params);
       const { ok, message } = result;

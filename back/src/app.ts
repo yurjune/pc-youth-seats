@@ -97,7 +97,7 @@ io.on('connection', (socket) => {
     io.emit('seatList', data);
 
     if (!data.ignoreIsLate && checkIsLateReservation()) {
-      lateSeatIds.push(data.seatId);
+      lateSeatIds.push(data.id);
       io.emit('lateSeatList', lateSeatIds);
     }
   });
@@ -105,11 +105,11 @@ io.on('connection', (socket) => {
   socket.on('seatRemoved', (data) => {
     io.emit('seatList', data);
 
-    absentSeatIds = absentSeatIds.filter((id) => id !== data.seatId);
+    absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
     io.emit('absentSeatList', absentSeatIds);
 
     if (!data.ignoreIsLate && checkIsLateReservation()) {
-      lateSeatIds.push(data.seatId);
+      lateSeatIds.push(data.id);
       io.emit('lateSeatList', lateSeatIds);
     }
   });
@@ -160,16 +160,16 @@ app.put('/api/makeReservation', (req: TypedReq<MakeReservationReq>, res: TypedRe
   fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
     const showData: Seats = JSON.parse(data);
 
-    for (let i in showData[params.seat]) {
-      if (showData[params.seat][i].id === params.seatId) {
-        if (showData[params.seat][i].seat_active === 5) {
+    for (let i in showData[params.line]) {
+      if (showData[params.line][i].id === params.id) {
+        if (showData[params.line][i].seat_active === 5) {
           res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
           return;
         }
 
-        showData[params.seat][i].pw = params.pw;
-        showData[params.seat][i].name = params.name;
-        showData[params.seat][i].seat_active = params.seat_active;
+        showData[params.line][i].seat_active = params.seat_active;
+        showData[params.line][i].name = params.name;
+        showData[params.line][i].pw = params.pw;
       }
     }
 
@@ -180,7 +180,7 @@ app.put('/api/makeReservation', (req: TypedReq<MakeReservationReq>, res: TypedRe
       }
 
       res.send({ ok: true, message: '예약 되었습니다.' });
-      logWithTime(`예약완료: ${params.seatId}, ${params.name}, ${params.pw}`);
+      logWithTime(`예약완료: ${params.id}, ${params.name}, ${params.pw}`);
     });
   });
 });
@@ -196,10 +196,10 @@ app.put('/api/cancelReservation', (req: TypedReq<CancelReservationReq>, res: Typ
       let defaultSeatActive = 0;
       let defaultSeatName = '';
 
-      for (let i in parseEl[params.seat]) {
-        if (parseEl[params.seat][i].id === params.seatId) {
-          defaultSeatActive = parseEl[params.seat][i].seat_active;
-          defaultSeatName = parseEl[params.seat][i].name;
+      for (let i in parseEl[params.line]) {
+        if (parseEl[params.line][i].id === params.id) {
+          defaultSeatActive = parseEl[params.line][i].seat_active;
+          defaultSeatName = parseEl[params.line][i].name;
         }
       }
 
@@ -208,11 +208,11 @@ app.put('/api/cancelReservation', (req: TypedReq<CancelReservationReq>, res: Typ
     .then(({ defaultSeatActive, defaultSeatName }) => {
       fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
         const showData = JSON.parse(data);
-        for (let i in showData[params.seat]) {
-          if (showData[params.seat][i].id === params.seatId) {
-            showData[params.seat][i].pw = '';
-            showData[params.seat][i].name = defaultSeatName;
-            showData[params.seat][i].seat_active = defaultSeatActive;
+        for (let i in showData[params.line]) {
+          if (showData[params.line][i].id === params.id) {
+            showData[params.line][i].seat_active = defaultSeatActive;
+            showData[params.line][i].name = defaultSeatName;
+            showData[params.line][i].pw = '';
           }
         }
 
@@ -223,7 +223,7 @@ app.put('/api/cancelReservation', (req: TypedReq<CancelReservationReq>, res: Typ
           }
 
           res.send({ ok: true, message: '삭제 되었습니다.', defaultSeatActive, defaultSeatName });
-          logWithTime(`삭제완료: ${params.seatId}`);
+          logWithTime(`삭제완료: ${params.id}`);
         });
       });
     });

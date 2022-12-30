@@ -39,8 +39,8 @@ export const DeleteDialog = () => {
 
     try {
       const params = {
-        seat: selectedSeatLine,
-        seatId: selectedSeat.id,
+        id: selectedSeat.id,
+        line: selectedSeatLine,
       };
       const result = await service.cancelReservation(params);
       const { ok, message } = result;
@@ -52,9 +52,9 @@ export const DeleteDialog = () => {
       if (ok) {
         socket.emit('seatRemoved', {
           ...params,
+          seat_active: result.defaultSeatActive,
           name: '',
           pw: '',
-          seat_active: result.defaultSeatActive,
         });
 
         resetAllStates();
@@ -72,8 +72,8 @@ export const DeleteDialog = () => {
 
     try {
       const params = {
-        seat: selectedSeatLine,
-        seatId: selectedSeat.id,
+        id: selectedSeat.id,
+        line: selectedSeatLine,
       };
       const result = await service.cancelReservation(params);
       const { ok, message } = result;
@@ -86,9 +86,9 @@ export const DeleteDialog = () => {
         const ignoreIsLate = isAttendanceMode ? true : false;
         socket.emit('seatRemoved', {
           ...params,
+          seat_active: result.defaultSeatActive,
           name: '',
           pw: '',
-          seat_active: result.defaultSeatActive,
           ignoreIsLate,
         });
 
