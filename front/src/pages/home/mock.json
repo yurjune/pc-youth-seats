@@ -3,8 +3,8 @@
     {
       "id": "A-1",
       "seat_num": 1,
-      "seat_active": 4,
-      "name": "방송팀",
+      "seat_active": 1,
+      "name": "",
       "pw": ""
     },
     {
@@ -271,36 +271,36 @@
     {
       "id": "B-11",
       "seat_num": 14,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "B-12",
       "seat_num": 15,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "B-13",
       "seat_num": 16,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "B-14",
       "seat_num": 17,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "B-15",
       "seat_num": 18,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
@@ -448,36 +448,36 @@
     {
       "id": "C-11",
       "seat_num": 14,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "C-12",
       "seat_num": 15,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "C-13",
       "seat_num": 16,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "C-14",
       "seat_num": 17,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
       "id": "C-15",
       "seat_num": 18,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 5,
+      "name": "사용자",
       "pw": ""
     },
     {
@@ -667,42 +667,42 @@
     {
       "id": "D-16",
       "seat_num": 20,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-17",
       "seat_num": 21,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-18",
       "seat_num": 22,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-19",
       "seat_num": 23,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-20",
       "seat_num": 24,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-21",
       "seat_num": 25,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     }
@@ -1156,8 +1156,8 @@
     {
       "id": "G-11",
       "seat_num": 14,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 4,
+      "name": "방송팀",
       "pw": ""
     },
     {
@@ -1334,7 +1334,7 @@
       "id": "H-11",
       "seat_num": 14,
       "seat_active": 4,
-      "name": "새가족석",
+      "name": "새가족",
       "pw": ""
     },
     {
@@ -1348,7 +1348,7 @@
       "id": "H-13",
       "seat_num": 16,
       "seat_active": 4,
-      "name": "새가족석",
+      "name": "새가족",
       "pw": ""
     },
     {
@@ -2288,16 +2288,16 @@
     {
       "id": "M-20",
       "seat_num": 24,
-      "seat_active": 5,
-      "name": "테스트",
-      "pw": "1234"
+      "seat_active": 1,
+      "name": "",
+      "pw": ""
     },
     {
       "id": "M-21",
       "seat_num": 25,
-      "seat_active": 5,
-      "name": "테스트",
-      "pw": "1234"
+      "seat_active": 1,
+      "name": "",
+      "pw": ""
     }
   ]
 }
