@@ -116,19 +116,17 @@ export const DeleteDialog = () => {
             inputProps={{ readOnly: true }}
             helperText=' '
           />
-          {!isUserMode && (
-            <TextField
-              value={selectedSeat?.name ?? ''}
-              className={styles.textField}
-              id='name'
-              label='예약자 이름'
-              variant='standard'
-              color='secondary'
-              fullWidth
-              inputProps={{ readOnly: true }}
-              helperText=' '
-            />
-          )}
+          <TextField
+            value={selectedSeat?.name ?? ''}
+            className={styles.textField}
+            id='name'
+            label='예약자 이름'
+            variant='standard'
+            color='secondary'
+            fullWidth
+            inputProps={{ readOnly: true }}
+            helperText=' '
+          />
           {isUserMode && (
             <TextField
               value={pw}
