@@ -37,7 +37,7 @@ interface SeatBoxProps {
 export const SeatBox = (props: SeatBoxProps) => {
   const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
   const { seat_active, id, name } = seat;
-  const { isAttendanceMode } = useMode();
+  const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
@@ -100,12 +100,19 @@ export const SeatBox = (props: SeatBoxProps) => {
         break;
       }
       case 4: {
-        // 교역자, 방송팀, ...
         if (seat.name) {
+          // 교역자, 방송팀, 새가족, ...
           break;
         }
 
-        setRedeemusDialogOpen(true);
+        if (isUserMode) {
+          setRedeemusDialogOpen(true);
+          setSelectedSeat(seat);
+          setSelectedSeatLine(seatLine);
+          break;
+        }
+
+        setReserveDialogOpen(true);
         setSelectedSeat(seat);
         setSelectedSeatLine(seatLine);
         break;
