@@ -44,7 +44,7 @@ export const RedeemusDialog = () => {
             id='redeemus'
             label='리디머스'
             variant='standard'
-            color='success'
+            color='secondary'
             fullWidth
             helperText=' '
           />

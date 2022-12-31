@@ -180,9 +180,7 @@ export const ReserveDialog = () => {
       <DialogContent>
         {isUserMode && (
           <DialogContentText className={styles.contentText}>
-            * 좌석 예약 가능 시간: 매주 월요일 오후 9시 ~ 주일 예배 직전
-            <br />
-            (이외 시간에 예약 시 예약 내용이 삭제 될 수 있으니 주의해 주세요.)
+            * 예약 가능 시간: 매주 월요일 오후 9시 ~ 주일 예배 직전
             <br />* 부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
           </DialogContentText>
         )}
@@ -196,7 +194,7 @@ export const ReserveDialog = () => {
             variant='standard'
             fullWidth
             helperText={nameValidate}
-            color='success'
+            color='secondary'
           />
           {isUserMode && (
             <>
@@ -210,7 +208,7 @@ export const ReserveDialog = () => {
                 variant='standard'
                 fullWidth
                 helperText={pwValidate}
-                color='success'
+                color='secondary'
               />
               <TextField
                 value={pwCheck}
@@ -222,7 +220,7 @@ export const ReserveDialog = () => {
                 variant='standard'
                 fullWidth
                 helperText={pwCheckValidate}
-                color='success'
+                color='secondary'
               />
             </>
           )}

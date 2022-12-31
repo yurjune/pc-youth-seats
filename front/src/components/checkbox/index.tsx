@@ -10,7 +10,7 @@ export const Checkbox = (props: CheckboxProps) => {
   return (
     <FormControlLabel
       className={styles.checkbox}
-      control={<MuiCheckbox color='success' checked={checked} onChange={onChange} />}
+      control={<MuiCheckbox color='secondary' checked={checked} onChange={onChange} />}
       label={label}
     />
   );

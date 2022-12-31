@@ -42,7 +42,7 @@ export const AdminDialog = () => {
             id='pw'
             label='비밀번호'
             variant='standard'
-            color='success'
+            color='secondary'
             type='password'
             fullWidth
             helperText=' '

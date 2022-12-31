@@ -11,10 +11,10 @@ export const SeatInfo = () => {
         <div className={clsx(styles.seat, styles['active-1'])} />
         <span>선택 가능</span>
       </div>
-      <div className={styles.box}>
+      {/* <div className={styles.box}>
         <div className={clsx(styles.seat, styles['active-2'])} />
         <span>선택 불가</span>
-      </div>
+      </div> */}
       <div className={styles.box}>
         <div className={clsx(styles.seat, styles['active-4'])} />
         <span>지정 좌석</span>
