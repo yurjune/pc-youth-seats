@@ -5,18 +5,6 @@ import timezone from 'dayjs/plugin/timezone';
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export const getKoreanTime = () => {
-  const dayjsKorea = dayjs().tz('Asia/Seoul');
-  const year = dayjsKorea.year();
-  const month = dayjsKorea.month();
-  const date = dayjsKorea.date();
-  const day = dayjsKorea.day();
-  const hour = dayjsKorea.hour();
-  const minute = dayjsKorea.minute();
-
-  return { year, month, date, day, hour, minute };
-};
-
 export const checkIsAvailableForReservation = () => {
   const { day, hour } = getKoreanTime();
 
@@ -45,6 +33,18 @@ export const checkIsLateReservation = () => {
   }
 
   return false;
+};
+
+export const getKoreanTime = () => {
+  const dayjsKorea = dayjs().tz('Asia/Seoul');
+  const year = dayjsKorea.year();
+  const month = dayjsKorea.month();
+  const date = dayjsKorea.date();
+  const day = dayjsKorea.day();
+  const hour = dayjsKorea.hour();
+  const minute = dayjsKorea.minute();
+
+  return { year, month, date, day, hour, minute };
 };
 
 export const getYearMonthDate = () => {
