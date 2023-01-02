@@ -11,7 +11,7 @@ import {
 } from '../../jotai';
 import { useMode } from '../../shared/hooks';
 import { Seat } from '../../shared/models';
-import { checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utilities';
+import { appointedSeats, checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
 
@@ -100,8 +100,7 @@ export const SeatBox = (props: SeatBoxProps) => {
         break;
       }
       case 4: {
-        if (seat.name) {
-          // 교역자, 방송팀, 새가족, ...
+        if (appointedSeats.includes(name)) {
           break;
         }
 
