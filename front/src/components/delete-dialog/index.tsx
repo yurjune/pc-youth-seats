@@ -7,7 +7,7 @@ import { useInput, useMode } from '../../shared/hooks';
 import service from '../../service';
 import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
-import { ADMIN_PW } from '../../shared/constants';
+import { env } from '../../shared/constants';
 
 export const DeleteDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();
@@ -32,7 +32,7 @@ export const DeleteDialog = () => {
       return;
     }
 
-    if (encrypt(pw) !== ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
+    if (encrypt(pw) !== env.ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
       toast.error('비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.', { id: '1' });
       return;
     }

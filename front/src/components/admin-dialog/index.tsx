@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput } from '../../shared/hooks';
 import { encrypt } from '../../shared/utilities';
-import { ADMIN_PW } from '../../shared/constants';
+import { env } from '../../shared/constants';
 
 export const AdminDialog = () => {
   const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
@@ -20,7 +20,7 @@ export const AdminDialog = () => {
   };
 
   const handleOkClick = () => {
-    if (encrypt(pw) === ADMIN_PW) {
+    if (encrypt(pw) === env.ADMIN_PW) {
       setIsMaster(true);
       setRadioDialogOpen(true);
       handleClose();

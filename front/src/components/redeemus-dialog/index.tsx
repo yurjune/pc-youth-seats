@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
 import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
-import { REDEEMUS_PW } from '../../shared/constants';
+import { env } from '../../shared/constants';
 import { useInput } from '../../shared/hooks';
 import { encrypt } from '../../shared/utilities';
 import styles from './index.module.scss';
@@ -15,7 +15,7 @@ export const RedeemusDialog = () => {
   const [pw, handlePw, setPw] = useInput();
 
   const handleOkClick = () => {
-    if (encrypt(pw) === REDEEMUS_PW) {
+    if (encrypt(pw) === env.REDEEMUS_PW) {
       setOpen(false);
       setPw('');
       setReserveDialogOpen(true);

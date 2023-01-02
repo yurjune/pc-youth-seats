@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import service from '../../service';
 import { encrypt, reportErrorMessage } from '../../shared/utilities';
 import socket from '../../socket';
-import { ADMIN_PW } from '../../shared/constants';
+import { env } from '../../shared/constants';
 
 export const ReserveDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();
@@ -102,7 +102,7 @@ export const ReserveDialog = () => {
         id: selectedSeat.id,
         seat_active: 5,
         name,
-        pw: ADMIN_PW,
+        pw: env.ADMIN_PW,
         line: selectedSeatLine,
       };
       const result = await service.makeReservation(params);

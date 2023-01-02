@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { SERVER_URL } from '../shared/constants';
+import { env } from '../shared/constants';
 
 const axiosConfig: AxiosRequestConfig = {
-  baseURL: `${SERVER_URL}/api`,
+  baseURL: `${env.SERVER_URL}/api`,
 };
 const client = axios.create(axiosConfig);
 
