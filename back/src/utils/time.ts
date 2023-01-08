@@ -23,8 +23,8 @@ export const checkIsLateReservation = () => {
     return false;
   }
 
-  // 일요일 1:30 이후
-  if (hour === 13 && minute >= 30) {
+  // 일요일 1:20 이후
+  if (hour === 13 && minute >= 20) {
     return true;
   }
 

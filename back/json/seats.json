@@ -3,35 +3,35 @@
     {
       "id": "A-1",
       "seat_num": 1,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "A-2",
       "seat_num": 2,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "A-3",
       "seat_num": 3,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "A-4",
       "seat_num": 4,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "A-5",
       "seat_num": 5,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
@@ -180,35 +180,35 @@
     {
       "id": "B-1",
       "seat_num": 1,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "B-2",
       "seat_num": 2,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "B-3",
       "seat_num": 3,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "B-4",
       "seat_num": 4,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
     {
       "id": "B-5",
       "seat_num": 5,
-      "seat_active": 1,
+      "seat_active": 4,
       "name": "",
       "pw": ""
     },
@@ -490,42 +490,42 @@
     {
       "id": "C-16",
       "seat_num": 20,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "C-17",
       "seat_num": 21,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "C-18",
       "seat_num": 22,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "C-19",
       "seat_num": 23,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "C-20",
       "seat_num": 24,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "C-21",
       "seat_num": 25,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     }
@@ -667,42 +667,42 @@
     {
       "id": "D-16",
       "seat_num": 20,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-17",
       "seat_num": 21,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-18",
       "seat_num": 22,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-19",
       "seat_num": 23,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-20",
       "seat_num": 24,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     },
     {
       "id": "D-21",
       "seat_num": 25,
-      "seat_active": 4,
+      "seat_active": 1,
       "name": "",
       "pw": ""
     }
