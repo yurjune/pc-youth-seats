@@ -47,9 +47,9 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(helmet());
 app.set('port', process.env.PORT || 5000);
 
-// 00 00 00 * * 1
-// 초 분 시간 일 월 요일  // EC2 인스턴스는 9시간이 늦다 고로 원하는 시간의 -9를 하면 됨
-schedule.scheduleJob('00 00 15 * * 0', () => {
+// 초 분 시간 일 월 요일
+// 월요일 자정에 초기화
+schedule.scheduleJob('00 00 00 * * 1', () => {
   fs.readFile(`${jsonDirectory}/${seatsMode}`, 'utf8', (err, result) => {
     if (err) return console.log('시온채플 좌석 리셋 실패');
 
