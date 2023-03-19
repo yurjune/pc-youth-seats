@@ -1340,8 +1340,8 @@
     {
       "id": "H-12",
       "seat_num": 15,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 4,
+      "name": "새가족",
       "pw": ""
     },
     {
@@ -1354,15 +1354,15 @@
     {
       "id": "H-14",
       "seat_num": 17,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 4,
+      "name": "새가족",
       "pw": ""
     },
     {
       "id": "H-15",
       "seat_num": 18,
-      "seat_active": 1,
-      "name": "",
+      "seat_active": 4,
+      "name": "새가족",
       "pw": ""
     },
     {
