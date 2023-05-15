@@ -8,7 +8,8 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  seatBoxRendered: () => void;
+  showLateSeats: () => void;
+  showAbsentSeats: () => void;
   seatReserved: (arg: SeatParams) => void;
   seatRemoved: (arg: SeatParams) => void;
   lateSeatRemoved: (arg: string) => void;

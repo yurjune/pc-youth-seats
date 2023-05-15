@@ -88,13 +88,19 @@ const expressServer = app.listen(app.get('port'), () => {
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, { path: '/socket.io' });
 io.on('connection', (socket) => {
-  socket.on('seatBoxRendered', () => {
+  socket.on('showLateSeats', () => {
     io.emit('lateSeatList', lateSeatIds);
+  });
+
+  socket.on('showAbsentSeats', () => {
     io.emit('absentSeatList', absentSeatIds);
   });
 
   socket.on('seatReserved', (data) => {
     io.emit('seatList', data);
+
+    absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
+    io.emit('absentSeatList', absentSeatIds);
 
     if (!data.ignoreIsLate && checkIsLateReservation()) {
       lateSeatIds.push(data.id);

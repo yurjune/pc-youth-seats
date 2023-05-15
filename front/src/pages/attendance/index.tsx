@@ -35,7 +35,9 @@ const Attendance = () => {
   }, []);
 
   useEffect(() => {
-    socket.emit('seatBoxRendered');
+    socket.emit('showLateSeats');
+    socket.emit('showAbsentSeats');
+
     socket.on('lateSeatList', (data) => {
       setLateSeatIds(data);
     });

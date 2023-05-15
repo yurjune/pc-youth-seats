@@ -13,6 +13,7 @@
   text-align: center;
   border-radius: 3px;
   cursor: default;
+  background: $active1-color;
 
   &.active-1 {
     background: $active1-color;
@@ -54,21 +55,22 @@
 
   &.active-6 {
     background: transparent;
+    pointer-events: none;
   }
-}
 
-.lastWeek {
-  cursor: default !important;
-}
+  &.lastWeek {
+    cursor: default !important;
+  }
 
-.late {
-  background: $late-color;
-  cursor: pointer;
-}
+  &.late {
+    background: $late-color;
+    cursor: pointer;
+  }
 
-.absent {
-  background: $absent-color;
-  cursor: pointer;
+  &.absent {
+    background: $absent-color;
+    cursor: pointer;
+  }
 }
 
 @include md {

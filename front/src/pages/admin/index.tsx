@@ -17,6 +17,7 @@ const Admin = () => {
   const [seats, setSeats, modifySeats] = useSeats();
   const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();
   const [lastWeekCheckboxChecked, setLastWeekCheckboxChecked] = useState(false);
+  const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
   const navigate = useNavigate();
   const { trackEvent } = useGAEventsTracker();
 
@@ -38,6 +39,15 @@ const Admin = () => {
   useEffect(() => {
     socket.on('seatList', (data) => {
       modifySeats(data);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    socket.emit('showAbsentSeats');
+
+    socket.on('absentSeatList', (data) => {
+      setAbsentSeatIds(data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -69,7 +79,15 @@ const Admin = () => {
               return <div key={idx} className={styles['active-0']} />;
             }
 
-            return <SeatBox key={idx} seat={seat} seatLine={line} isLastWeekMode={lastWeekCheckboxChecked} />;
+            return (
+              <SeatBox
+                key={idx}
+                seat={seat}
+                seatLine={line}
+                absentSeatIds={absentSeatIds}
+                isLastWeekMode={lastWeekCheckboxChecked}
+              />
+            );
           })}
         </div>
         {line === 'seat_line_6' && <br />}

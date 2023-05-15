@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { useMode } from '../../shared/hooks';
 
 export const SeatInfo = () => {
-  const { isAdminMode, isAttendanceMode } = useMode();
+  const { isUserMode, isAdminMode, isAttendanceMode } = useMode();
 
   return (
     <div className={styles.container}>
@@ -23,23 +23,27 @@ export const SeatInfo = () => {
         <div className={clsx(styles.seat, styles['active-5'])} />
         <span>선택 완료</span>
       </div>
-      {isAdminMode ? (
-        <div className={styles.box}>
-          <div className={clsx(styles.seat, styles.lastWeek)} />
-          <span>지난주</span>
-        </div>
-      ) : null}
       {isAttendanceMode ? (
         <>
           <div className={styles.box}>
             <div className={clsx(styles.seat, styles.late)} />
             <span>늦은 예약</span>
           </div>
+        </>
+      ) : null}
+      {!isUserMode ? (
+        <>
           <div className={styles.box}>
             <div className={clsx(styles.seat, styles.absent)} />
-            <span>미출석</span>
+            <span>미출석자</span>
           </div>
         </>
+      ) : null}
+      {isAdminMode ? (
+        <div className={styles.box}>
+          <div className={clsx(styles.seat, styles.lastWeek)} />
+          <span>지난 주</span>
+        </div>
       ) : null}
     </div>
   );

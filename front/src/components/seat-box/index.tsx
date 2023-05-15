@@ -47,26 +47,26 @@ export const SeatBox = (props: SeatBoxProps) => {
   const [isAbsent, setIsAbsent] = useState(false);
 
   useLayoutEffect(() => {
-    if (!isAttendanceMode) {
-      return;
-    }
-
-    setIsLate(false);
-    for (const id of lateSeatIds) {
-      if (id === seat.id) {
-        setIsLate(true);
-        return;
+    if (isAttendanceMode) {
+      setIsLate(false);
+      for (const id of lateSeatIds) {
+        if (id === seat.id) {
+          setIsLate(true);
+          return;
+        }
       }
     }
 
-    setIsAbsent(false);
-    for (const id of absentSeatIds) {
-      if (id === seat.id) {
-        setIsAbsent(true);
-        return;
+    if (!isUserMode) {
+      setIsAbsent(false);
+      for (const id of absentSeatIds) {
+        if (id === seat.id) {
+          setIsAbsent(true);
+          return;
+        }
       }
     }
-  }, [isAttendanceMode, seat, lateSeatIds, absentSeatIds]);
+  }, [isAttendanceMode, isUserMode, seat, lateSeatIds, absentSeatIds]);
 
   const handleSeatClick = async () => {
     if (isLastWeekMode) {
@@ -126,10 +126,10 @@ export const SeatBox = (props: SeatBoxProps) => {
   };
 
   const cls = clsx(styles.seat, {
-    [styles[`active-${seat_active}`]]: !isLate && !isAbsent,
+    [styles[`active-${seat_active}`]]: isLastWeekMode || (!isLate && !isAbsent),
     [styles.lastWeek]: isLastWeekMode,
     [styles.late]: isLate,
-    [styles.absent]: !isLate && isAbsent,
+    [styles.absent]: !isLate && !isLastWeekMode && isAbsent,
   });
 
   const isDisabled = seat_active === 2 || seat_active === 6;
