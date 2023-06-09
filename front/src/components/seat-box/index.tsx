@@ -52,7 +52,8 @@ export const SeatBox = (props: SeatBoxProps) => {
     }
 
     if (!checkIsAvailableForReservation()) {
-      toast.error('예약 가능한 시간대가 아닙니다.', { id: '1' });
+      const message = '예약 가능한 시간대가 아닙니다.';
+      toast.error(message, { id: message });
       return;
     }
 
@@ -67,7 +68,7 @@ export const SeatBox = (props: SeatBoxProps) => {
         return;
       }
     } catch (error) {
-      reportErrorMessage(error, '2');
+      reportErrorMessage(error);
     }
 
     switch (seat_active) {

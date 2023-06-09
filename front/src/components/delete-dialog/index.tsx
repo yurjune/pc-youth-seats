@@ -33,7 +33,8 @@ export const DeleteDialog = () => {
     }
 
     if (encrypt(pw) !== env.ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
-      toast.error('비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.', { id: '1' });
+      const message = '비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.';
+      toast.error(message, { id: message });
       return;
     }
 
@@ -45,10 +46,6 @@ export const DeleteDialog = () => {
       const result = await api.cancelReservation(params);
       const { ok, message } = result;
 
-      if (!ok) {
-        toast.error(message, { id: '2' });
-      }
-
       if (ok) {
         socket.emit('seatRemoved', {
           ...params,
@@ -58,10 +55,12 @@ export const DeleteDialog = () => {
         });
 
         resetAllStates();
-        toast.success(message, { id: '3' });
+        toast.success(message, { id: message });
+      } else {
+        toast.error(message, { id: message });
       }
     } catch (error) {
-      reportErrorMessage(error, '4');
+      reportErrorMessage(error);
     }
   };
 
@@ -78,10 +77,6 @@ export const DeleteDialog = () => {
       const result = await api.cancelReservation(params);
       const { ok, message } = result;
 
-      if (!ok) {
-        toast.error(message, { id: '2' });
-      }
-
       if (ok) {
         const ignoreIsLate = isAttendanceMode ? true : false;
         socket.emit('seatRemoved', {
@@ -93,10 +88,12 @@ export const DeleteDialog = () => {
         });
 
         resetAllStates();
-        toast.success(message, { id: '3' });
+        toast.success(message, { id: message });
+      } else {
+        toast.error(message, { id: message });
       }
     } catch (error) {
-      reportErrorMessage(error, '4');
+      reportErrorMessage(error);
     }
   };
 

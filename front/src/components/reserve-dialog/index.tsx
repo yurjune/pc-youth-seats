@@ -63,20 +63,15 @@ export const ReserveDialog = () => {
       const result = await api.makeReservation(params);
       const { ok, message } = result;
 
-      if (!ok) {
-        toast.error(message, { id: '3' });
-        return;
-      }
-
       if (ok) {
         socket.emit('seatReserved', params);
-        toast.success(message, { id: '4' });
-
         resetAllStates();
-        return;
+        toast.success(message, { id: message });
+      } else {
+        toast.error(message, { id: message });
       }
     } catch (error) {
-      reportErrorMessage(error, '5');
+      reportErrorMessage(error);
     }
   };
 
@@ -103,24 +98,20 @@ export const ReserveDialog = () => {
       const result = await api.makeReservation(params);
       const { ok, message } = result;
 
-      if (!ok) {
-        toast.error(message, { id: message });
-        return;
-      }
-
       if (ok) {
         const ignoreIsLate = isAttendanceMode ? true : false;
         socket.emit('seatReserved', {
           ...params,
           ignoreIsLate,
         });
-        toast.success(message, { id: message });
 
         resetAllStates();
-        return;
+        toast.success(message, { id: message });
+      } else {
+        toast.error(message, { id: message });
       }
     } catch (error) {
-      reportErrorMessage(error, '1');
+      reportErrorMessage(error);
     }
   };
 

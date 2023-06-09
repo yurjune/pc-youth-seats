@@ -1,15 +1,9 @@
 import toast from 'react-hot-toast';
 
-const getErrorMessage = (error: unknown) => {
-  if (error instanceof Error) {
-    return error.message;
-  }
+const getErrorMessage = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
-  return String(error);
-};
-
-export const reportErrorMessage = (error: unknown, id: string) => {
+export const reportErrorMessage = (error: unknown) => {
   const message = getErrorMessage(error);
-  console.error(message);
-  toast.error(message, { id });
+  console.error(error);
+  toast.error(message, { id: message });
 };

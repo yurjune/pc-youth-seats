@@ -22,7 +22,8 @@ export const RedeemusDialog = () => {
       return;
     }
 
-    toast.error('비밀번호가 틀렸습니다.', { id: '1' });
+    const message = '비밀번호가 틀렸습니다.';
+    toast.error(message, { id: message });
   };
 
   const handleClose = () => {

@@ -27,7 +27,8 @@ export const AdminDialog = () => {
       return;
     }
 
-    toast.error('비밀번호를 확인해주세요.', { id: '1' });
+    const message = '비밀번호를 확인해주세요.';
+    toast.error(message, { id: message });
   };
 
   return (
