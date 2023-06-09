@@ -11,8 +11,8 @@ export const getNumberOfSeats = (seats: Seats | undefined) => {
     return { activeSeats, totalSeats };
   }
 
-  Object.keys(seats).map((line) => {
-    seats[line].map((seat) => {
+  Object.keys(seats).forEach((line) => {
+    seats[line].forEach((seat) => {
       const { seat_active, name } = seat;
 
       if ([1, 4, 5].includes(seat_active)) {

@@ -19,16 +19,10 @@ export const useSeats = () => {
 
     setSeats((prev) => {
       if (prev == null) {
-        return;
+        return prev;
       }
 
-      const newLine = prev[params.line]?.map((seat) => {
-        if (seat.id === params.id) {
-          return newSeat;
-        }
-
-        return seat;
-      });
+      const newLine = prev[params.line]?.map((seat) => (seat.id === params.id ? newSeat : seat));
 
       return { ...prev, [params.line]: newLine };
     });
