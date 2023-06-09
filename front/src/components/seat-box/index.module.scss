@@ -12,12 +12,13 @@
   color: #fff;
   text-align: center;
   border-radius: 3px;
-  cursor: default;
+  cursor: pointer;
   background: $active1-color;
+}
 
+.seat {
   &.active-1 {
     background: $active1-color;
-    cursor: pointer;
 
     &:not(.lastWeek) {
       @media (hover: hover) {
@@ -34,12 +35,10 @@
 
   &.active-4 {
     background: $active4-color;
-    cursor: pointer;
   }
 
   &.active-5:not(.lastWeek) {
     background: $active5-color;
-    cursor: pointer;
 
     @media (hover: hover) {
       &:hover {
@@ -50,26 +49,22 @@
 
   &.active-5.lastWeek {
     background: $lastWeek-color;
-    cursor: pointer;
   }
 
   &.active-6 {
     background: transparent;
-    pointer-events: none;
   }
 
   &.lastWeek {
-    cursor: default !important;
+    cursor: default;
   }
 
   &.late {
     background: $late-color;
-    cursor: pointer;
   }
 
   &.absent {
     background: $absent-color;
-    cursor: pointer;
   }
 }
 

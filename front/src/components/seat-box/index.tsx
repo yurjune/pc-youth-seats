@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { useUpdateAtom } from 'jotai/utils';
-import { useLayoutEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
   deleteDialogOpenAtom,
@@ -36,37 +35,16 @@ interface SeatBoxProps {
  */
 export const SeatBox = (props: SeatBoxProps) => {
   const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
-  const { seat_active, id, name } = seat;
   const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
   const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
-  const [isLate, setIsLate] = useState(false);
-  const [isAbsent, setIsAbsent] = useState(false);
 
-  useLayoutEffect(() => {
-    if (isAttendanceMode) {
-      setIsLate(false);
-      for (const id of lateSeatIds) {
-        if (id === seat.id) {
-          setIsLate(true);
-          return;
-        }
-      }
-    }
-
-    if (!isUserMode) {
-      setIsAbsent(false);
-      for (const id of absentSeatIds) {
-        if (id === seat.id) {
-          setIsAbsent(true);
-          return;
-        }
-      }
-    }
-  }, [isAttendanceMode, isUserMode, seat, lateSeatIds, absentSeatIds]);
+  const { seat_active, id, name } = seat;
+  const isLate = isAttendanceMode && lateSeatIds.includes(seat.id);
+  const isAbsent = !isLate && !isUserMode && absentSeatIds.includes(seat.id);
 
   const handleSeatClick = async () => {
     if (isLastWeekMode) {
@@ -106,12 +84,10 @@ export const SeatBox = (props: SeatBoxProps) => {
 
         if (isUserMode) {
           setRedeemusDialogOpen(true);
-          setSelectedSeat(seat);
-          setSelectedSeatLine(seatLine);
-          break;
+        } else {
+          setReserveDialogOpen(true);
         }
 
-        setReserveDialogOpen(true);
         setSelectedSeat(seat);
         setSelectedSeatLine(seatLine);
         break;
@@ -129,7 +105,7 @@ export const SeatBox = (props: SeatBoxProps) => {
     [styles[`active-${seat_active}`]]: isLastWeekMode || (!isLate && !isAbsent),
     [styles.lastWeek]: isLastWeekMode,
     [styles.late]: isLate,
-    [styles.absent]: !isLate && !isLastWeekMode && isAbsent,
+    [styles.absent]: isAbsent && !isLastWeekMode,
   });
 
   const isDisabled = seat_active === 2 || seat_active === 6;
