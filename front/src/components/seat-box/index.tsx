@@ -7,10 +7,10 @@ import {
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
-} from '../../jotai';
+} from '../../shared/atoms';
 import { useMode } from '../../shared/hooks';
-import { Seat } from '../../shared/models';
-import { appointedSeats, checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utilities';
+import type { Seat } from '../../shared/models';
+import { appointedSeats, checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
 

@@ -10,7 +10,7 @@ import {
   RadioGroupProps,
 } from '@mui/material';
 import { useAtom } from 'jotai';
-import { adminRadioDialogOpenAtom } from '../../jotai';
+import { adminRadioDialogOpenAtom } from '../../shared/atoms';
 import styles from './index.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';

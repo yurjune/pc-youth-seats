@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { useLocation } from 'react-router-dom';
-import { isMasterAtom } from '../../jotai';
+import { isMasterAtom } from '../atoms';
 
 export const useMode = () => {
   const isMaster = useAtomValue(isMasterAtom);

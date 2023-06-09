@@ -2,10 +2,10 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } 
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
-import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../jotai';
+import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../shared/atoms';
 import { env } from '../../shared/constants';
 import { useInput } from '../../shared/hooks';
-import { encrypt } from '../../shared/utilities';
+import { encrypt } from '../../shared/utils';
 import styles from './index.module.scss';
 
 export const RedeemusDialog = () => {

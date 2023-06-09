@@ -1,10 +1,10 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
-import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
+import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
 import { useInputValidate, useMode } from '../../shared/hooks';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
-import service from '../../service';
+import api from '../../shared/api';
 import {
   encrypt,
   getErrorFromValidators,
@@ -12,7 +12,7 @@ import {
   validateName,
   validatePw,
   validatePwCheck,
-} from '../../shared/utilities';
+} from '../../shared/utils';
 import socket from '../../socket';
 import { env } from '../../shared/constants';
 
@@ -60,7 +60,7 @@ export const ReserveDialog = () => {
         pw: encrypt(pw),
         line: selectedSeatLine,
       };
-      const result = await service.makeReservation(params);
+      const result = await api.makeReservation(params);
       const { ok, message } = result;
 
       if (!ok) {
@@ -100,7 +100,7 @@ export const ReserveDialog = () => {
         pw: env.ADMIN_PW,
         line: selectedSeatLine,
       };
-      const result = await service.makeReservation(params);
+      const result = await api.makeReservation(params);
       const { ok, message } = result;
 
       if (!ok) {

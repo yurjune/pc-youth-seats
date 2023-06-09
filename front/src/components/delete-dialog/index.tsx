@@ -1,11 +1,11 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
 import { useAtom } from 'jotai';
-import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../jotai';
+import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
 import styles from './index.module.scss';
 import toast from 'react-hot-toast';
 import { useInput, useMode } from '../../shared/hooks';
-import service from '../../service';
-import { encrypt, reportErrorMessage } from '../../shared/utilities';
+import api from '../../shared/api';
+import { encrypt, reportErrorMessage } from '../../shared/utils';
 import socket from '../../socket';
 import { env } from '../../shared/constants';
 
@@ -42,7 +42,7 @@ export const DeleteDialog = () => {
         id: selectedSeat.id,
         line: selectedSeatLine,
       };
-      const result = await service.cancelReservation(params);
+      const result = await api.cancelReservation(params);
       const { ok, message } = result;
 
       if (!ok) {
@@ -75,7 +75,7 @@ export const DeleteDialog = () => {
         id: selectedSeat.id,
         line: selectedSeatLine,
       };
-      const result = await service.cancelReservation(params);
+      const result = await api.cancelReservation(params);
       const { ok, message } = result;
 
       if (!ok) {

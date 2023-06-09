@@ -10,10 +10,10 @@ import {
   SeatBox,
   SeatInfo,
 } from '../../components';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../jotai';
-import service from '../../service';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../shared/atoms';
+import api from '../../shared/api';
 import { useSeats } from '../../shared/hooks';
-import { getNumberOfSeats } from '../../shared/utilities';
+import { getNumberOfSeats } from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
 import type { Seats } from '../../shared/models';
@@ -36,7 +36,7 @@ export const Home = () => {
 
   useEffect(() => {
     // setSeats(mockSeats);
-    service
+    api
       .getSeats()
       .then((data) => setSeats(data))
       .catch((error) => console.error(error));

@@ -1,3 +1,3 @@
 export * from './seat.model';
 export * from './socket.model';
-export * from './service.dto';
+export * from './api.dto';
