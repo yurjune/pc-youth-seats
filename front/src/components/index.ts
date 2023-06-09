@@ -6,3 +6,4 @@ export * from './reserve-dialog';
 export * from './seat-box';
 export * from './seat-info';
 export * from './toaster';
+export * from './checkbox';

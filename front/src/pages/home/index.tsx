@@ -9,7 +9,6 @@ import {
   ReserveDialog,
   SeatBox,
   SeatInfo,
-  Toaster,
 } from '../../components';
 import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../jotai';
 import service from '../../service';
@@ -17,13 +16,15 @@ import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
+import type { Seats } from '../../shared/models';
 // import mockSeats from './mock.json';
 
-const Home = () => {
+export const Home = () => {
+  const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
   const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
-  const [seats, setSeats, modifySeats] = useSeats();
+
   const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
   useEffect(() => {
@@ -43,7 +44,7 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderSeats = () => {
+  const renderSeats = (seats: Seats | undefined) => {
     if (seats == null) {
       return;
     }
@@ -67,9 +68,9 @@ const Home = () => {
   const handleEntranceClick = () => {
     if (isMaster) {
       setAdminRadioDialogOpen(true);
-      return;
+    } else {
+      setAdminDialogOpen(true);
     }
-    setAdminDialogOpen(true);
   };
 
   return (
@@ -79,7 +80,7 @@ const Home = () => {
           <div className={styles.title}>
             <span className={styles.text}>강단</span>
           </div>
-          <div className={styles.seatContainer}>{renderSeats()}</div>
+          <div className={styles.seatContainer}>{renderSeats(seats)}</div>
           <div className={styles.title} onClick={handleEntranceClick}>
             입구
           </div>
@@ -94,7 +95,6 @@ const Home = () => {
           <strong>{totalSeats}</strong>
         </div>
       </div>
-      <Toaster />
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />
@@ -103,5 +103,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;

@@ -1,24 +1,25 @@
 import { useAtomValue } from 'jotai';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DeleteDialog, RedeemusDialog, ReserveDialog, SeatBox, SeatInfo, Toaster } from '../../components';
+import { DeleteDialog, RedeemusDialog, ReserveDialog, SeatBox, SeatInfo, Checkbox } from '../../components';
 import { isMasterAtom } from '../../jotai';
 import service from '../../service';
 import { useSeats } from '../../shared/hooks';
 import { getNumberOfSeats } from '../../shared/utilities';
 import socket from '../../socket';
 import styles from './index.module.scss';
-import { Checkbox } from '../../components/checkbox';
-import type { CheckboxProps } from '../../components/checkbox';
+import type { CheckboxProps } from '../../components';
+import type { Seats } from '../../shared/models';
 
-const Attendance = () => {
-  const isMaster = useAtomValue(isMasterAtom);
-  const [seats, setSeats, modifySeats] = useSeats();
-  const [absentCheckboxChecked, setAbsentCheckboxChecked] = useState(false);
-  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
-  const navigate = useNavigate();
+export const Attendance = () => {
   const [lateSeatIds, setLateSeatIds] = useState<string[]>([]);
   const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
+  const [checked, setChecked] = useState(false);
+  const [seats, setSeats, modifySeats] = useSeats();
+  const isMaster = useAtomValue(isMasterAtom);
+  const navigate = useNavigate();
+
+  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
   useEffect(() => {
     if (!isMaster) {
@@ -31,10 +32,7 @@ const Attendance = () => {
     socket.on('seatList', (data) => {
       modifySeats(data);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  useEffect(() => {
     socket.emit('showLateSeats');
     socket.emit('showAbsentSeats');
 
@@ -44,6 +42,7 @@ const Attendance = () => {
     socket.on('absentSeatList', (data) => {
       setAbsentSeatIds(data);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -55,7 +54,7 @@ const Attendance = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderSeats = () => {
+  const renderSeats = (seats: Seats | undefined) => {
     if (seats == null) {
       return;
     }
@@ -75,7 +74,7 @@ const Attendance = () => {
                 seatLine={line}
                 lateSeatIds={lateSeatIds}
                 absentSeatIds={absentSeatIds}
-                isAbsentMode={absentCheckboxChecked}
+                isAbsentMode={checked}
               />
             );
           })}
@@ -85,8 +84,8 @@ const Attendance = () => {
     ));
   };
 
-  const handleAbsentCheckboxChange: CheckboxProps['onChange'] = (e) => {
-    setAbsentCheckboxChecked(e.target.checked);
+  const handleCheckboxChange: CheckboxProps['onChange'] = (e) => {
+    setChecked(e.target.checked);
   };
 
   return (
@@ -96,8 +95,8 @@ const Attendance = () => {
           <div className={styles.title}>
             <span className={styles.text}>강단</span>
           </div>
-          <div className={styles.seatContainer}>{renderSeats()}</div>
-          <Checkbox label='미출석자 수정하기' checked={absentCheckboxChecked} onChange={handleAbsentCheckboxChange} />
+          <div className={styles.seatContainer}>{renderSeats(seats)}</div>
+          <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
           <div className={styles.title}>입구</div>
         </div>
         <div className={styles.info}>
@@ -110,12 +109,9 @@ const Attendance = () => {
           <strong>{totalSeats}</strong>
         </div>
       </div>
-      <Toaster />
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />
     </>
   );
 };
-
-export default Attendance;
