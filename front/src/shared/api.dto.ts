@@ -1,4 +1,4 @@
-import { SeatParams, Seats } from './seat.model';
+import { SeatParams, Seats } from './models/seat.model';
 
 type ResWithMessage = {
   ok: boolean;

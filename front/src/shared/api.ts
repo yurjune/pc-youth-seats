@@ -5,29 +5,26 @@ import {
   GetSeatsResDto,
   MakeReservationReqDto,
   MakeReservationResDto,
-} from './models';
-import axios, { AxiosRequestConfig } from 'axios';
+} from './api.dto';
+import axios from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+
 import { env } from './constants';
 
 const axiosConfig: AxiosRequestConfig = {
   baseURL: `${env.SERVER_URL}/api`,
 };
 const client = axios.create(axiosConfig);
-
-const requests = {
-  get: <T>(url: string) => client.get<T>(url).then((response) => response.data),
-  post: <T, U>(url: string, body: T) => client.post<U>(url, body).then((response) => response.data),
-  put: <T, U>(url: string, body: T) => client.put<U>(url, body).then((response) => response.data),
-};
+const responseBody = (response: AxiosResponse) => response.data;
 
 const api = {
-  getSeats: (): Promise<GetSeatsResDto> => requests.get('/getSeats'),
-  getLastWeekSeats: (): Promise<GetLastWeekSeatsResDto> => requests.get('/getLastWeekSeats'),
+  getSeats: (): Promise<GetSeatsResDto> => client.get('/getSeats').then(responseBody),
+  getLastWeekSeats: (): Promise<GetLastWeekSeatsResDto> => client.get('/getLastWeekSeats').then(responseBody),
 
   makeReservation: (params: MakeReservationReqDto): Promise<MakeReservationResDto> =>
-    requests.put('/makeReservation', { params }),
+    client.put('/makeReservation', { params }).then(responseBody),
   cancelReservation: (params: CancelReservationReqDto): Promise<CancelReservationResDto> =>
-    requests.put('/cancelReservation', { params }),
+    client.put('/cancelReservation', { params }).then(responseBody),
 };
 
 export default api;
