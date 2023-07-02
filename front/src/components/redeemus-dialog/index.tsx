@@ -1,8 +1,19 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from '@mui/material';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
-import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '../../shared/atoms';
+import {
+  redeemusDialogOpenAtom,
+  reserveDialogOpenAtom,
+  selectedSeatAtom,
+} from '../../shared/atoms';
 import { env } from '../../shared/constants';
 import { useInput } from '../../shared/hooks';
 import { encrypt } from '../../shared/utils';

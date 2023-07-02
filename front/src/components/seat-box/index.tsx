@@ -10,7 +10,11 @@ import {
 } from '../../shared/atoms';
 import { useMode } from '../../shared/hooks';
 import type { Seat } from '../../shared/models';
-import { appointedSeats, checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utils';
+import {
+  appointedSeats,
+  checkIsAvailableForReservation,
+  reportErrorMessage,
+} from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
 
@@ -34,7 +38,14 @@ interface SeatBoxProps {
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {
-  const { seat, seatLine, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
+  const {
+    seat,
+    seatLine,
+    lateSeatIds = [],
+    absentSeatIds = [],
+    isAbsentMode = false,
+    isLastWeekMode = false,
+  } = props;
   const { isUserMode, isAttendanceMode } = useMode();
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);

@@ -1,4 +1,8 @@
-import { Checkbox as MuiCheckbox, CheckboxProps as MuiCheckboxProps, FormControlLabel } from '@mui/material';
+import {
+  Checkbox as MuiCheckbox,
+  CheckboxProps as MuiCheckboxProps,
+  FormControlLabel,
+} from '@mui/material';
 import styles from './index.module.scss';
 
 export interface CheckboxProps extends Pick<MuiCheckboxProps, 'checked' | 'onChange'> {

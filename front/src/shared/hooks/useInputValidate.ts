@@ -9,7 +9,10 @@ export type StateValidator = {
 
 export const INITIAL_ERROR = ' ';
 
-export const useInputValidate = (validator: (v: string) => Either<string, string>, initialState?: string) => {
+export const useInputValidate = (
+  validator: (v: string) => Either<string, string>,
+  initialState?: string,
+) => {
   const [value, setValue] = useState(initialState ?? '');
   const [error, setError] = useState(initialState ?? INITIAL_ERROR);
 

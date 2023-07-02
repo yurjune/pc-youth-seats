@@ -1,4 +1,12 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+  TextField,
+} from '@mui/material';
 import { useAtom } from 'jotai';
 import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
 import { useInputValidate, useMode } from '../../shared/hooks';
@@ -23,7 +31,9 @@ export const ReserveDialog = () => {
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
   const [name, handleNameChange, setName, nameValidator] = useInputValidate(validateName);
   const [pw, handlePwChange, setPw, pwValidator] = useInputValidate(validatePw);
-  const [pwCheck, handlePwCheckChange, setPwCheck, pwCheckValidator] = useInputValidate(validatePwCheck(pw));
+  const [pwCheck, handlePwCheckChange, setPwCheck, pwCheckValidator] = useInputValidate(
+    validatePwCheck(pw),
+  );
 
   const handleClose = () => {
     setOpen(false);
@@ -45,7 +55,9 @@ export const ReserveDialog = () => {
       return;
     }
 
-    const validators = isUserMode ? [nameValidator, pwValidator, pwCheckValidator] : [nameValidator];
+    const validators = isUserMode
+      ? [nameValidator, pwValidator, pwCheckValidator]
+      : [nameValidator];
     const error = getErrorFromValidators(validators);
     if (error) {
       toast.error(error, { id: error });

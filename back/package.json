@@ -8,7 +8,8 @@
     "build": "tsc --build",
     "nodemon": "nodemon ./dist/app.js",
     "start": "pm2 start ./dist/app.js",
-    "restart": "pm2 restart ./dist/app.js"
+    "restart": "pm2 restart ./dist/app.js",
+    "format": "npx prettier --write ./src"
   },
   "author": "",
   "license": "ISC",

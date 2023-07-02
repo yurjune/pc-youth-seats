@@ -4,8 +4,8 @@
   "semi": true,
   "tabWidth": 2,
   "bracketSpacing": true,
-  "jsxBracketSameLine": false,
+  "bracketSameLine": false,
   "trailingComma": "all",
   "endOfLine": "auto",
-  "printWidth": 120
+  "printWidth": 100
 }

@@ -68,7 +68,12 @@ export const Attendance = () => {
     <>
       <Layout>
         <SeatsBody>
-          <RenderedSeats seats={seats} lateSeatIds={lateSeatIds} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
+          <RenderedSeats
+            seats={seats}
+            lateSeatIds={lateSeatIds}
+            absentSeatIds={absentSeatIds}
+            isAbsentMode={checked}
+          />
           <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
         </SeatsBody>
         <div className={styles.info}>

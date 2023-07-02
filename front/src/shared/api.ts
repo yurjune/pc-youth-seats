@@ -19,7 +19,8 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 const api = {
   getSeats: (): Promise<GetSeatsResDto> => client.get('/getSeats').then(responseBody),
-  getLastWeekSeats: (): Promise<GetLastWeekSeatsResDto> => client.get('/getLastWeekSeats').then(responseBody),
+  getLastWeekSeats: (): Promise<GetLastWeekSeatsResDto> =>
+    client.get('/getLastWeekSeats').then(responseBody),
 
   makeReservation: (params: MakeReservationReqDto): Promise<MakeReservationResDto> =>
     client.put('/makeReservation', { params }).then(responseBody),

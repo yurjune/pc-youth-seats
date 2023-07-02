@@ -1,4 +1,11 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from '@mui/material';
 import { useAtom } from 'jotai';
 import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
 import styles from './index.module.scss';

@@ -46,8 +46,16 @@ export const AdminRadioDialog = () => {
       <DialogTitle className={styles.title}>관리자 확인</DialogTitle>
       <DialogContent>
         <RadioGroup name='use-radio-group' defaultValue='1' onChange={updateSelection}>
-          <FormControlLabel value='1' label='관리자 페이지로 이동' control={<Radio color='secondary' />} />
-          <FormControlLabel value='2' label='출석체크 페이지로 이동' control={<Radio color='secondary' />} />
+          <FormControlLabel
+            value='1'
+            label='관리자 페이지로 이동'
+            control={<Radio color='secondary' />}
+          />
+          <FormControlLabel
+            value='2'
+            label='출석체크 페이지로 이동'
+            control={<Radio color='secondary' />}
+          />
         </RadioGroup>
         <DialogActions className={styles.actions}>
           <Button variant='contained' color='success' onClick={handleOkClick}>

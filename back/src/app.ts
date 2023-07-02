@@ -86,7 +86,9 @@ const expressServer = app.listen(app.get('port'), () => {
   console.log('WebServer Port: ' + app.get('port'));
 });
 
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, { path: '/socket.io' });
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, {
+  path: '/socket.io',
+});
 io.on('connection', (socket) => {
   socket.on('showLateSeats', () => {
     io.emit('lateSeatList', lateSeatIds);
@@ -154,83 +156,99 @@ app.get('/api/getLastWeekSeats', (req: Request, res: TypedRes<GetLastWeekSeatsRe
   res.send(jsonData);
 });
 
-app.put('/api/makeReservation', (req: TypedReq<MakeReservationReq>, res: TypedRes<MakeReservationRes>) => {
-  if (!checkIsAvailableForReservation()) {
-    res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
-    return;
-  }
-
-  const params = req.body.params;
-  const seatPlace = 'seats.json';
-
-  fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
-    const showData: Seats = JSON.parse(data);
-
-    for (let i in showData[params.line]) {
-      if (showData[params.line][i].id === params.id) {
-        if (showData[params.line][i].seat_active === 5) {
-          res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
-          return;
-        }
-
-        showData[params.line][i].seat_active = params.seat_active;
-        showData[params.line][i].name = params.name;
-        showData[params.line][i].pw = params.pw;
-      }
+app.put(
+  '/api/makeReservation',
+  (req: TypedReq<MakeReservationReq>, res: TypedRes<MakeReservationRes>) => {
+    if (!checkIsAvailableForReservation()) {
+      res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
+      return;
     }
 
-    fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
-      if (err) {
-        res.send({ ok: false, message: 'Something went wrong.' });
-        return;
-      }
+    const params = req.body.params;
+    const seatPlace = 'seats.json';
 
-      res.send({ ok: true, message: '예약 되었습니다.' });
-      logWithTime(`예약완료: ${params.id}, ${params.name}, ${params.pw}`);
-    });
-  });
-});
+    fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
+      const showData: Seats = JSON.parse(data);
 
-app.put('/api/cancelReservation', (req: TypedReq<CancelReservationReq>, res: TypedRes<CancelReservationRes>) => {
-  const params = req.body.params;
-  const seatPlace = 'seats.json';
-
-  fsp
-    .readFile(`${jsonDirectory}/${seatsMode}`, 'utf8')
-    .then((el) => {
-      let parseEl: Seats = JSON.parse(el);
-      let defaultSeatActive = 0;
-      let defaultSeatName = '';
-
-      for (let i in parseEl[params.line]) {
-        if (parseEl[params.line][i].id === params.id) {
-          defaultSeatActive = parseEl[params.line][i].seat_active;
-          defaultSeatName = parseEl[params.line][i].name;
-        }
-      }
-
-      return { defaultSeatActive, defaultSeatName };
-    })
-    .then(({ defaultSeatActive, defaultSeatName }) => {
-      fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
-        const showData = JSON.parse(data);
-        for (let i in showData[params.line]) {
-          if (showData[params.line][i].id === params.id) {
-            showData[params.line][i].seat_active = defaultSeatActive;
-            showData[params.line][i].name = defaultSeatName;
-            showData[params.line][i].pw = '';
-          }
-        }
-
-        fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
-          if (err) {
-            res.send({ ok: false, message: 'Something went wrong', defaultSeatActive, defaultSeatName });
+      for (let i in showData[params.line]) {
+        if (showData[params.line][i].id === params.id) {
+          if (showData[params.line][i].seat_active === 5) {
+            res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
             return;
           }
 
-          res.send({ ok: true, message: '삭제 되었습니다.', defaultSeatActive, defaultSeatName });
-          logWithTime(`삭제완료: ${params.id}`);
-        });
+          showData[params.line][i].seat_active = params.seat_active;
+          showData[params.line][i].name = params.name;
+          showData[params.line][i].pw = params.pw;
+        }
+      }
+
+      fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
+        if (err) {
+          res.send({ ok: false, message: 'Something went wrong.' });
+          return;
+        }
+
+        res.send({ ok: true, message: '예약 되었습니다.' });
+        logWithTime(`예약완료: ${params.id}, ${params.name}, ${params.pw}`);
       });
     });
-});
+  },
+);
+
+app.put(
+  '/api/cancelReservation',
+  (req: TypedReq<CancelReservationReq>, res: TypedRes<CancelReservationRes>) => {
+    const params = req.body.params;
+    const seatPlace = 'seats.json';
+
+    fsp
+      .readFile(`${jsonDirectory}/${seatsMode}`, 'utf8')
+      .then((el) => {
+        let parseEl: Seats = JSON.parse(el);
+        let defaultSeatActive = 0;
+        let defaultSeatName = '';
+
+        for (let i in parseEl[params.line]) {
+          if (parseEl[params.line][i].id === params.id) {
+            defaultSeatActive = parseEl[params.line][i].seat_active;
+            defaultSeatName = parseEl[params.line][i].name;
+          }
+        }
+
+        return { defaultSeatActive, defaultSeatName };
+      })
+      .then(({ defaultSeatActive, defaultSeatName }) => {
+        fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
+          const showData = JSON.parse(data);
+          for (let i in showData[params.line]) {
+            if (showData[params.line][i].id === params.id) {
+              showData[params.line][i].seat_active = defaultSeatActive;
+              showData[params.line][i].name = defaultSeatName;
+              showData[params.line][i].pw = '';
+            }
+          }
+
+          fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
+            if (err) {
+              res.send({
+                ok: false,
+                message: 'Something went wrong',
+                defaultSeatActive,
+                defaultSeatName,
+              });
+              return;
+            }
+
+            res.send({
+              ok: true,
+              message: '삭제 되었습니다.',
+              defaultSeatActive,
+              defaultSeatName,
+            });
+            logWithTime(`삭제완료: ${params.id}`);
+          });
+        });
+      });
+  },
+);
