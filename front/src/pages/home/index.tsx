@@ -1,10 +1,11 @@
 import { useAtomValue } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import {
   AdminDialog,
   AdminRadioDialog,
   DeleteDialog,
+  Participants,
   RedeemusDialog,
   ReserveDialog,
   SeatBox,
@@ -13,7 +14,6 @@ import {
 import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
 import { useSeats } from '../../shared/hooks';
-import { getNumberOfSeats } from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
 import type { Seats } from '../../shared/models';
@@ -24,8 +24,6 @@ export const Home = () => {
   const isMaster = useAtomValue(isMasterAtom);
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
   const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
-
-  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
   useEffect(() => {
     socket.on('seatList', (data) => {
@@ -88,12 +86,7 @@ export const Home = () => {
         <div className={styles.info}>
           <SeatInfo />
         </div>
-        <div className={styles.participants}>
-          <span>좌석 현황: </span>
-          <strong>{activeSeats}</strong>
-          <span> / </span>
-          <strong>{totalSeats}</strong>
-        </div>
+        <Participants seats={seats} />
       </div>
       <ReserveDialog />
       <DeleteDialog />

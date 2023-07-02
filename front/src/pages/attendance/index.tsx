@@ -1,11 +1,18 @@
 import { useAtomValue } from 'jotai';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DeleteDialog, RedeemusDialog, ReserveDialog, SeatBox, SeatInfo, Checkbox } from '../../components';
+import {
+  DeleteDialog,
+  RedeemusDialog,
+  ReserveDialog,
+  SeatBox,
+  SeatInfo,
+  Checkbox,
+  Participants,
+} from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
 import { useSeats } from '../../shared/hooks';
-import { getNumberOfSeats } from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
 import type { CheckboxProps } from '../../components';
@@ -18,8 +25,6 @@ export const Attendance = () => {
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
   const navigate = useNavigate();
-
-  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
 
   useEffect(() => {
     if (!isMaster) {
@@ -102,12 +107,7 @@ export const Attendance = () => {
         <div className={styles.info}>
           <SeatInfo />
         </div>
-        <div className={styles.participants}>
-          <span>좌석 현황: </span>
-          <strong>{activeSeats}</strong>
-          <span> / </span>
-          <strong>{totalSeats}</strong>
-        </div>
+        <Participants seats={seats} />
       </div>
       <ReserveDialog />
       <DeleteDialog />

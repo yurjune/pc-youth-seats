@@ -1,0 +1,14 @@
+@import '../../styles/color.scss';
+
+.participants {
+  color: $active1-color;
+  text-align: center;
+
+  strong {
+    font-weight: bolder;
+
+    &:first-of-type {
+      color: $active5-color;
+    }
+  }
+}
