@@ -18,7 +18,6 @@ import api from '../../shared/api';
 import { useSeats } from '../../shared/hooks';
 import socket from '../../socket';
 import styles from './index.module.scss';
-// import mockSeats from './mock.json';
 
 export const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();
@@ -34,7 +33,6 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    // setSeats(mockSeats);
     api
       .getSeats()
       .then((data) => setSeats(data))
