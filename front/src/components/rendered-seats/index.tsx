@@ -44,5 +44,5 @@ export const RenderedSeats = (props: RenderedSeatsProps) => {
     ));
   };
 
-  return <div>{renderSeats(seats)}</div>;
+  return <div className={styles.container}>{renderSeats(seats)}</div>;
 };

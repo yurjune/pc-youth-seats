@@ -12,37 +12,9 @@
   margin: 0 auto;
 }
 
-.title {
-  color: $title-color;
-  font-size: 1.3rem;
-  text-align: center;
-  border: 2px solid $title-color;
-  border-radius: 2px;
-  position: relative;
-}
-
-.seatContainer {
-  width: 700px;
-  margin: 0 auto;
-  padding: 16px 0;
-}
-
 .info {
   min-width: 440px;
   margin: 8px 0 8px;
-}
-
-.count {
-  color: $active1-color;
-  text-align: center;
-
-  strong {
-    font-weight: bolder;
-
-    &:first-of-type {
-      color: $active5-color;
-    }
-  }
 }
 
 @include md {
@@ -51,27 +23,11 @@
     min-width: 930px;
     width: 100%;
   }
-
-  .title {
-    font-size: 1.6rem;
-  }
-
-  .seatContainer {
-    width: 930px;
-  }
 }
 
 @include lg {
   .wrapper {
     max-width: 1350px;
     min-width: 1200px;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .seatContainer {
-    width: 1200px;
   }
 }

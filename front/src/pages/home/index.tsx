@@ -10,6 +10,7 @@ import {
   RenderedSeats,
   ReserveDialog,
   SeatInfo,
+  SeatsBody,
 } from '../../components';
 import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -53,20 +54,14 @@ export const Home = () => {
     <>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          <div className={styles.title}>
-            <span className={styles.text}>강단</span>
-          </div>
-          <div className={styles.seatContainer}>
+          <SeatsBody onEntranceClick={handleEntranceClick}>
             <RenderedSeats seats={seats} />
+          </SeatsBody>
+          <div className={styles.info}>
+            <SeatInfo />
           </div>
-          <div className={styles.title} onClick={handleEntranceClick}>
-            입구
-          </div>
+          <Participants seats={seats} />
         </div>
-        <div className={styles.info}>
-          <SeatInfo />
-        </div>
-        <Participants seats={seats} />
       </div>
       <ReserveDialog />
       <DeleteDialog />

@@ -1,0 +1,23 @@
+@import '../../styles/responsive.scss';
+@import '../../styles/color.scss';
+
+.title {
+  color: $title-color;
+  font-size: 1.3rem;
+  text-align: center;
+  border: 2px solid $title-color;
+  border-radius: 2px;
+  position: relative;
+}
+
+@include md {
+  .title {
+    font-size: 1.6rem;
+  }
+}
+
+@include lg {
+  .title {
+    font-size: 2rem;
+  }
+}

@@ -12,22 +12,6 @@
   margin: 0 auto;
 }
 
-.title {
-  width: 100%;
-  color: $title-color;
-  font-size: 1.3rem;
-  text-align: center;
-  border: 2px solid $title-color;
-  border-radius: 2px;
-  position: relative;
-}
-
-.seatContainer {
-  width: 700px;
-  margin: 0 auto;
-  padding: 16px 0;
-}
-
 .info {
   margin: 8px 0 8px;
 }
@@ -36,15 +20,6 @@
   .wrapper {
     max-width: 1050px;
     min-width: 930px;
-    width: 100%;
-  }
-
-  .title {
-    font-size: 1.6rem;
-  }
-
-  .seatContainer {
-    width: 930px;
   }
 }
 
@@ -52,14 +27,5 @@
   .wrapper {
     max-width: 1350px;
     min-width: 1200px;
-    width: 100%;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .seatContainer {
-    width: 1200px;
   }
 }

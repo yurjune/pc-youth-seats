@@ -9,6 +9,7 @@ import {
   Checkbox,
   Participants,
   RenderedSeats,
+  SeatsBody,
 } from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -75,19 +76,15 @@ export const Admin = () => {
     <>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          <div className={styles.title}>
-            <span className={styles.text}>강단</span>
-          </div>
-          <div className={styles.seatContainer}>
+          <SeatsBody>
             <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
+            <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
+          </SeatsBody>
+          <div className={styles.info}>
+            <SeatInfo />
           </div>
-          <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
-          <div className={styles.title}>입구</div>
+          <Participants seats={currentSeats} />
         </div>
-        <div className={styles.info}>
-          <SeatInfo />
-        </div>
-        <Participants seats={seats} />
       </div>
       <ReserveDialog />
       <DeleteDialog />

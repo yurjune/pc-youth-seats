@@ -9,6 +9,7 @@ import {
   Checkbox,
   Participants,
   RenderedSeats,
+  SeatsBody,
 } from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -66,24 +67,20 @@ export const Attendance = () => {
     <>
       <div className={styles.container}>
         <div className={styles.wrapper}>
-          <div className={styles.title}>
-            <span className={styles.text}>강단</span>
-          </div>
-          <div className={styles.seatContainer}>
+          <SeatsBody>
             <RenderedSeats
               seats={seats}
               lateSeatIds={lateSeatIds}
               absentSeatIds={absentSeatIds}
               isAbsentMode={checked}
             />
+            <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
+          </SeatsBody>
+          <div className={styles.info}>
+            <SeatInfo />
           </div>
-          <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
-          <div className={styles.title}>입구</div>
+          <Participants seats={seats} />
         </div>
-        <div className={styles.info}>
-          <SeatInfo />
-        </div>
-        <Participants seats={seats} />
       </div>
       <ReserveDialog />
       <DeleteDialog />

@@ -1,6 +1,12 @@
 @import '../../styles/responsive.scss';
 @import '../../styles/color.scss';
 
+.container {
+  width: 700px;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
 .line {
   display: flex;
   justify-content: center;
@@ -13,10 +19,20 @@
 }
 
 @include md {
+  .container {
+    width: 930px;
+  }
+
   .line {
     .active-0 {
       width: 10px;
       height: 10px;
     }
+  }
+}
+
+@include lg {
+  .container {
+    width: 1200px;
   }
 }
