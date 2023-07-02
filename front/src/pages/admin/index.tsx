@@ -77,7 +77,7 @@ export const Admin = () => {
     <>
       <Layout>
         <SeatsBody>
-          <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
+          <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isLastWeekMode={checked} />
           <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
         </SeatsBody>
         <div className={styles.info}>
