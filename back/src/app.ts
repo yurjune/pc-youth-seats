@@ -30,7 +30,6 @@ import {
   TypedRes,
 } from './models';
 
-let seatsMode = 'seats(full).json'; // 단계별 좌석 선택 하기 위함
 let lateSeatIds: string[] = [];
 let absentSeatIds: string[] = [];
 
@@ -38,6 +37,9 @@ let absentSeatIds: string[] = [];
 const jsonDirectory = path.join(__dirname, '../json');
 const historyDirectory = path.join(__dirname, '../../../seats_history');
 const backupDirectory = path.join(__dirname, '../../../seats_backup');
+const FULL_SEATS = 'seats(full).json';
+const CURRENT_SEATS = 'seats.json';
+const LAST_WEEK_SEATS = 'seats_last_week.json';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,18 +52,18 @@ app.set('port', process.env.PORT || 5000);
 // 초 분 시간 일 월 요일
 // 월요일 자정에 초기화
 schedule.scheduleJob('00 00 00 * * 1', () => {
-  fs.readFile(`${jsonDirectory}/${seatsMode}`, 'utf8', (err, result) => {
+  fs.readFile(`${jsonDirectory}/${FULL_SEATS}`, 'utf8', (err, result) => {
     if (err) return console.log('시온채플 좌석 리셋 실패');
 
-    fs.writeFile(`${jsonDirectory}/seats.json`, result, () => {
+    fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, result, () => {
       lateSeatIds = [];
       absentSeatIds = [];
       console.log('시온채플 좌석 리셋 완료');
     });
   });
 
-  fs.readFile(`${jsonDirectory}/seats.json`, 'utf8', (err, result) => {
-    fs.writeFile(`${jsonDirectory}/seats_last_week.json`, result, () => {
+  fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, result) => {
+    fs.writeFile(`${jsonDirectory}/${LAST_WEEK_SEATS}`, result, () => {
       console.log('지난주 좌석 저장 완료');
     });
 
@@ -73,7 +75,7 @@ schedule.scheduleJob('00 00 00 * * 1', () => {
 });
 
 schedule.scheduleJob('00 00 * * * *', () => {
-  fs.readFile(`${jsonDirectory}/seats.json`, 'utf8', (err, result) => {
+  fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, result) => {
     const { hour } = getKoreanTime();
 
     fs.writeFile(`${backupDirectory}/seats_backup_${hour}.json`, result, (err) => {
@@ -146,13 +148,13 @@ app.all('/*', (req, res, next) => {
 });
 
 app.get('/api/getSeats', (req: Request, res: TypedRes<GetSeatsRes>) => {
-  const jsonFile = fs.readFileSync(`${jsonDirectory}/seats.json`, 'utf8');
+  const jsonFile = fs.readFileSync(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8');
   const jsonData: Seats = JSON.parse(jsonFile);
   return res.send(jsonData);
 });
 
 app.get('/api/getLastWeekSeats', (req: Request, res: TypedRes<GetLastWeekSeatsRes>) => {
-  const jsonFile = fs.readFileSync(`${jsonDirectory}/seats_last_week.json`, 'utf8');
+  const jsonFile = fs.readFileSync(`${jsonDirectory}/${LAST_WEEK_SEATS}`, 'utf8');
   const jsonData: Seats = JSON.parse(jsonFile);
   return res.send(jsonData);
 });
@@ -165,9 +167,8 @@ app.put(
     }
 
     const params = req.body.params;
-    const seatPlace = 'seats.json';
 
-    fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
+    fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
       const showData: Seats = JSON.parse(data);
 
       for (let i in showData[params.line]) {
@@ -182,7 +183,7 @@ app.put(
         }
       }
 
-      fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
+      fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(showData), (err) => {
         if (err) {
           return res.send({ ok: false, message: 'Something went wrong.' });
         }
@@ -198,10 +199,8 @@ app.put(
   '/api/cancelReservation',
   (req: TypedReq<CancelReservationReq>, res: TypedRes<CancelReservationRes>) => {
     const params = req.body.params;
-    const seatPlace = 'seats.json';
-
     fsp
-      .readFile(`${jsonDirectory}/${seatsMode}`, 'utf8')
+      .readFile(`${jsonDirectory}/${FULL_SEATS}`, 'utf8')
       .then((el) => {
         let parseEl: Seats = JSON.parse(el);
         let defaultSeatActive = 0;
@@ -217,7 +216,7 @@ app.put(
         return { defaultSeatActive, defaultSeatName };
       })
       .then(({ defaultSeatActive, defaultSeatName }) => {
-        fs.readFile(`${jsonDirectory}/${seatPlace}`, 'utf8', (err, data) => {
+        fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
           const showData = JSON.parse(data);
           for (let i in showData[params.line]) {
             if (showData[params.line][i].id === params.id) {
@@ -227,7 +226,7 @@ app.put(
             }
           }
 
-          fs.writeFile(`${jsonDirectory}/${seatPlace}`, JSON.stringify(showData), (err) => {
+          fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(showData), (err) => {
             if (err) {
               return res.send({
                 ok: false,
