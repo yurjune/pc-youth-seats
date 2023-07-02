@@ -164,21 +164,24 @@ app.put(
 
     const { params } = req.body;
     fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
-      const showData: Seats = JSON.parse(data);
+      const parsedJSON: Seats = JSON.parse(data);
 
-      for (let i in showData[params.line]) {
-        if (showData[params.line][i].id === params.id) {
-          if (showData[params.line][i].seat_active === 5) {
-            return res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
-          }
-
-          showData[params.line][i].seat_active = params.seat_active;
-          showData[params.line][i].name = params.name;
-          showData[params.line][i].pw = params.pw;
+      for (const idx in parsedJSON[params.line]) {
+        if (parsedJSON[params.line][idx].id !== params.id) {
+          continue;
         }
+
+        if (parsedJSON[params.line][idx].seat_active === 5) {
+          return res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
+        }
+
+        parsedJSON[params.line][idx].seat_active = params.seat_active;
+        parsedJSON[params.line][idx].name = params.name;
+        parsedJSON[params.line][idx].pw = params.pw;
+        break;
       }
 
-      fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(showData), (err) => {
+      fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(parsedJSON), (err) => {
         if (err) {
           return res.send({ ok: false, message: 'Something went wrong.' });
         }
@@ -201,10 +204,11 @@ app.put(
         let defaultSeatActive = 0;
         let defaultSeatName = '';
 
-        for (let i in parsedJSON[params.line]) {
-          if (parsedJSON[params.line][i].id === params.id) {
-            defaultSeatActive = parsedJSON[params.line][i].seat_active;
-            defaultSeatName = parsedJSON[params.line][i].name;
+        for (const seat of parsedJSON[params.line]) {
+          if (seat.id === params.id) {
+            defaultSeatActive = seat.seat_active;
+            defaultSeatName = seat.name;
+            break;
           }
         }
 
@@ -214,11 +218,12 @@ app.put(
         fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
           const parsedJSON: Seats = JSON.parse(data);
 
-          for (let i in parsedJSON[params.line]) {
-            if (parsedJSON[params.line][i].id === params.id) {
-              parsedJSON[params.line][i].seat_active = defaultSeatActive;
-              parsedJSON[params.line][i].name = defaultSeatName;
-              parsedJSON[params.line][i].pw = '';
+          for (const idx in parsedJSON[params.line]) {
+            if (parsedJSON[params.line][idx].id === params.id) {
+              parsedJSON[params.line][idx].seat_active = defaultSeatActive;
+              parsedJSON[params.line][idx].name = defaultSeatName;
+              parsedJSON[params.line][idx].pw = '';
+              break;
             }
           }
 
