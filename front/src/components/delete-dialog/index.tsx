@@ -27,46 +27,17 @@ export const DeleteDialog = () => {
     setPw('');
   };
 
-  const handleUserOkClick = async () => {
+  const handleOkClick = async () => {
     if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
 
-    if (encrypt(pw) !== env.ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
-      const message = '비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.';
-      toast.error(message, { id: message });
-      return;
-    }
-
-    try {
-      const params = {
-        id: selectedSeat.id,
-        line: selectedSeatLine,
-      };
-      const result = await api.cancelReservation(params);
-      const { ok, message } = result;
-
-      if (ok) {
-        socket.emit('seatRemoved', {
-          ...params,
-          seat_active: result.defaultSeatActive,
-          name: result.defaultSeatName,
-          pw: '',
-        });
-
-        resetAllStates();
-        toast.success(message, { id: message });
-      } else {
+    if (isUserMode) {
+      if (encrypt(pw) !== env.ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
+        const message = '비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.';
         toast.error(message, { id: message });
+        return;
       }
-    } catch (error) {
-      reportErrorMessage(error);
-    }
-  };
-
-  const handleMasterOkClick = async () => {
-    if (selectedSeat == null || selectedSeatLine == null) {
-      return;
     }
 
     try {
@@ -78,13 +49,12 @@ export const DeleteDialog = () => {
       const { ok, message } = result;
 
       if (ok) {
-        const ignoreIsLate = isAttendanceMode ? true : false;
         socket.emit('seatRemoved', {
           ...params,
           seat_active: result.defaultSeatActive,
           name: result.defaultSeatName,
           pw: '',
-          ignoreIsLate,
+          ignoreIsLate: isAttendanceMode,
         });
 
         resetAllStates();
@@ -140,7 +110,7 @@ export const DeleteDialog = () => {
           )}
         </div>
         <DialogActions className={styles.actions}>
-          <Button variant='contained' color='success' onClick={isUserMode ? handleUserOkClick : handleMasterOkClick}>
+          <Button variant='contained' color='success' onClick={handleOkClick}>
             삭제
           </Button>
           <Button variant='contained' color='error' onClick={handleClose}>

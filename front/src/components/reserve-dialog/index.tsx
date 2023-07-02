@@ -40,12 +40,12 @@ export const ReserveDialog = () => {
     setPwCheck('');
   };
 
-  const handleUserOkClick = async () => {
+  const handleOkClick = async () => {
     if (selectedSeat == null || selectedSeatLine == null) {
       return;
     }
 
-    const validators = [nameValidator, pwValidator, pwCheckValidator];
+    const validators = isUserMode ? [nameValidator, pwValidator, pwCheckValidator] : [nameValidator];
     const error = getErrorFromValidators(validators);
     if (error) {
       toast.error(error, { id: error });
@@ -56,54 +56,16 @@ export const ReserveDialog = () => {
       const params = {
         id: selectedSeat.id,
         seat_active: 5,
-        name,
-        pw: encrypt(pw),
         line: selectedSeatLine,
+        name,
+        pw: isUserMode ? encrypt(pw) : env.ADMIN_PW,
       };
+
       const result = await api.makeReservation(params);
       const { ok, message } = result;
 
       if (ok) {
-        socket.emit('seatReserved', params);
-        resetAllStates();
-        toast.success(message, { id: message });
-      } else {
-        toast.error(message, { id: message });
-      }
-    } catch (error) {
-      reportErrorMessage(error);
-    }
-  };
-
-  const handleMasterOkClick = async () => {
-    if (selectedSeat == null || selectedSeatLine == null) {
-      return;
-    }
-
-    const validators = [nameValidator];
-    const error = getErrorFromValidators(validators);
-    if (error) {
-      toast.error(error, { id: error });
-      return;
-    }
-
-    try {
-      const params = {
-        id: selectedSeat.id,
-        seat_active: 5,
-        name,
-        pw: env.ADMIN_PW,
-        line: selectedSeatLine,
-      };
-      const result = await api.makeReservation(params);
-      const { ok, message } = result;
-
-      if (ok) {
-        const ignoreIsLate = isAttendanceMode ? true : false;
-        socket.emit('seatReserved', {
-          ...params,
-          ignoreIsLate,
-        });
+        socket.emit('seatReserved', { ...params, ignoreIsLate: isAttendanceMode });
 
         resetAllStates();
         toast.success(message, { id: message });
@@ -167,7 +129,7 @@ export const ReserveDialog = () => {
           )}
         </div>
         <DialogActions className={styles.actions}>
-          <Button variant='contained' color='success' onClick={isUserMode ? handleUserOkClick : handleMasterOkClick}>
+          <Button variant='contained' color='success' onClick={handleOkClick}>
             예약
           </Button>
           <Button variant='contained' color='error' onClick={handleClose}>
