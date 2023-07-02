@@ -32,19 +32,6 @@
   margin: 8px 0 8px;
 }
 
-.participants {
-  color: $active1-color;
-  text-align: center;
-
-  strong {
-    font-weight: bolder;
-
-    &:first-of-type {
-      color: $active5-color;
-    }
-  }
-}
-
 @include md {
   .wrapper {
     max-width: 1050px;
