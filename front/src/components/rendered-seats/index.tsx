@@ -10,14 +10,8 @@ interface RenderedSeatsProps {
   isLastWeekMode?: boolean;
 }
 
-export const RenderedSeats = (props: RenderedSeatsProps) => {
-  const { seats, lateSeatIds = [], absentSeatIds = [], isAbsentMode = false, isLastWeekMode = false } = props;
-
-  const renderSeats = (seats: Seats | undefined) => {
-    if (seats == null) {
-      return;
-    }
-
+export const RenderedSeats = ({ seats, ...rest }: RenderedSeatsProps) => {
+  const renderSeats = (seats: Seats) => {
     return Object.keys(seats).map((line, idx) => (
       <div key={idx}>
         <div className={styles.line}>
@@ -26,17 +20,7 @@ export const RenderedSeats = (props: RenderedSeatsProps) => {
               return <div key={idx} className={styles['active-0']} />;
             }
 
-            return (
-              <SeatBox
-                key={idx}
-                seat={seat}
-                seatLine={line}
-                lateSeatIds={lateSeatIds}
-                absentSeatIds={absentSeatIds}
-                isAbsentMode={isAbsentMode}
-                isLastWeekMode={isLastWeekMode}
-              />
-            );
+            return <SeatBox key={idx} seat={seat} seatLine={line} {...rest} />;
           })}
         </div>
         {line === 'seat_line_6' && <br />}
@@ -44,5 +28,5 @@ export const RenderedSeats = (props: RenderedSeatsProps) => {
     ));
   };
 
-  return <div className={styles.container}>{renderSeats(seats)}</div>;
+  return <div className={styles.container}>{seats ? renderSeats(seats) : null}</div>;
 };
