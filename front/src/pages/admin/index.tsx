@@ -5,10 +5,10 @@ import {
   DeleteDialog,
   RedeemusDialog,
   ReserveDialog,
-  SeatBox,
   SeatInfo,
   Checkbox,
   Participants,
+  RenderedSeats,
 } from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -63,29 +63,6 @@ export const Admin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderSeats = (seats: Seats | undefined) => {
-    if (seats == null) {
-      return;
-    }
-
-    return Object.keys(seats).map((line, idx) => (
-      <div key={idx}>
-        <div className={styles.line}>
-          {seats[line].map((seat, idx) => {
-            if (seat.seat_active === 0) {
-              return <div key={idx} className={styles['active-0']} />;
-            }
-
-            return (
-              <SeatBox key={idx} seat={seat} seatLine={line} absentSeatIds={absentSeatIds} isLastWeekMode={checked} />
-            );
-          })}
-        </div>
-        {line === 'seat_line_6' && <br />}
-      </div>
-    ));
-  };
-
   const handleCheckboxChange: CheckboxProps['onChange'] = (e) => {
     if (e.target.checked) {
       trackEvent('see_last_week_seats');
@@ -101,7 +78,9 @@ export const Admin = () => {
           <div className={styles.title}>
             <span className={styles.text}>강단</span>
           </div>
-          <div className={styles.seatContainer}>{renderSeats(currentSeats)}</div>
+          <div className={styles.seatContainer}>
+            <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
+          </div>
           <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
           <div className={styles.title}>입구</div>
         </div>

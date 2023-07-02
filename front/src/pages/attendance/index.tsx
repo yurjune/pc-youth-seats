@@ -5,10 +5,10 @@ import {
   DeleteDialog,
   RedeemusDialog,
   ReserveDialog,
-  SeatBox,
   SeatInfo,
   Checkbox,
   Participants,
+  RenderedSeats,
 } from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -16,7 +16,6 @@ import { useSeats } from '../../shared/hooks';
 import socket from '../../socket';
 import styles from './index.module.scss';
 import type { CheckboxProps } from '../../components';
-import type { Seats } from '../../shared/models';
 
 export const Attendance = () => {
   const [lateSeatIds, setLateSeatIds] = useState<string[]>([]);
@@ -59,36 +58,6 @@ export const Attendance = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderSeats = (seats: Seats | undefined) => {
-    if (seats == null) {
-      return;
-    }
-
-    return Object.keys(seats).map((line, idx) => (
-      <div key={idx}>
-        <div className={styles.line}>
-          {seats[line].map((seat, idx) => {
-            if (seat.seat_active === 0) {
-              return <div key={idx} className={styles['active-0']} />;
-            }
-
-            return (
-              <SeatBox
-                key={idx}
-                seat={seat}
-                seatLine={line}
-                lateSeatIds={lateSeatIds}
-                absentSeatIds={absentSeatIds}
-                isAbsentMode={checked}
-              />
-            );
-          })}
-        </div>
-        {line === 'seat_line_6' && <br />}
-      </div>
-    ));
-  };
-
   const handleCheckboxChange: CheckboxProps['onChange'] = (e) => {
     setChecked(e.target.checked);
   };
@@ -100,7 +69,14 @@ export const Attendance = () => {
           <div className={styles.title}>
             <span className={styles.text}>강단</span>
           </div>
-          <div className={styles.seatContainer}>{renderSeats(seats)}</div>
+          <div className={styles.seatContainer}>
+            <RenderedSeats
+              seats={seats}
+              lateSeatIds={lateSeatIds}
+              absentSeatIds={absentSeatIds}
+              isAbsentMode={checked}
+            />
+          </div>
           <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
           <div className={styles.title}>입구</div>
         </div>
