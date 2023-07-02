@@ -10,3 +10,4 @@ export * from './checkbox';
 export * from './participants';
 export * from './rendered-seats';
 export * from './seats-body';
+export * from './layout';

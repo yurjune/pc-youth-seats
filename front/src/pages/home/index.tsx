@@ -5,6 +5,7 @@ import {
   AdminDialog,
   AdminRadioDialog,
   DeleteDialog,
+  Layout,
   Participants,
   RedeemusDialog,
   RenderedSeats,
@@ -52,17 +53,15 @@ export const Home = () => {
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <SeatsBody onEntranceClick={handleEntranceClick}>
-            <RenderedSeats seats={seats} />
-          </SeatsBody>
-          <div className={styles.info}>
-            <SeatInfo />
-          </div>
-          <Participants seats={seats} />
+      <Layout>
+        <SeatsBody onEntranceClick={handleEntranceClick}>
+          <RenderedSeats seats={seats} />
+        </SeatsBody>
+        <div className={styles.info}>
+          <SeatInfo />
         </div>
-      </div>
+        <Participants seats={seats} />
+      </Layout>
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />

@@ -10,6 +10,7 @@ import {
   Participants,
   RenderedSeats,
   SeatsBody,
+  Layout,
 } from '../../components';
 import { isMasterAtom } from '../../shared/atoms';
 import api from '../../shared/api';
@@ -74,18 +75,16 @@ export const Admin = () => {
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <SeatsBody>
-            <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
-            <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
-          </SeatsBody>
-          <div className={styles.info}>
-            <SeatInfo />
-          </div>
-          <Participants seats={currentSeats} />
+      <Layout>
+        <SeatsBody>
+          <RenderedSeats seats={currentSeats} absentSeatIds={absentSeatIds} isAbsentMode={checked} />
+          <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
+        </SeatsBody>
+        <div className={styles.info}>
+          <SeatInfo />
         </div>
-      </div>
+        <Participants seats={currentSeats} />
+      </Layout>
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />

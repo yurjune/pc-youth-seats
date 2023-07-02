@@ -1,31 +1,4 @@
-@import '../../styles/responsive.scss';
-@import '../../styles/color.scss';
-
-.container {
-  overflow-x: auto;
-  padding: 16px 8px;
-}
-
-.wrapper {
-  max-width: 760px;
-  min-width: 700px;
-  margin: 0 auto;
-}
-
 .info {
+  min-width: 440px;
   margin: 8px 0 8px;
-}
-
-@include md {
-  .wrapper {
-    max-width: 1050px;
-    min-width: 930px;
-  }
-}
-
-@include lg {
-  .wrapper {
-    max-width: 1350px;
-    min-width: 1200px;
-  }
 }
