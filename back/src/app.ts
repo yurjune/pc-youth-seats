@@ -1,7 +1,5 @@
-import express, { Request } from 'express';
-const app = express();
+import express from 'express';
 import fs from 'fs';
-const fsp = fs.promises;
 import path from 'path';
 import bodyParser from 'body-parser';
 import schedule from 'node-schedule';
@@ -9,6 +7,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import history from 'connect-history-api-fallback';
 import { Server } from 'socket.io';
+
 import {
   checkIsAvailableForReservation,
   checkIsLateReservation,
@@ -16,7 +15,7 @@ import {
   getKoreanTime,
   logWithTime,
 } from './utils';
-import {
+import type {
   CancelReservationReq,
   CancelReservationRes,
   ClientToServerEvents,
@@ -30,6 +29,8 @@ import {
   TypedRes,
 } from './models';
 
+const app = express();
+const fsPromise = fs.promises;
 let lateSeatIds: string[] = [];
 let absentSeatIds: string[] = [];
 
@@ -91,7 +92,6 @@ const expressServer = app.listen(app.get('port'), () => {
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, {
   path: '/socket.io',
 });
-
 io.on('connection', (socket) => {
   socket.on('showLateSeats', () => {
     io.emit('lateSeatList', lateSeatIds);
@@ -131,12 +131,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('absentSeatModified', (data) => {
-    const absentSeat = absentSeatIds.find((id) => id === data);
-    if (absentSeat) {
-      absentSeatIds = absentSeatIds.filter((id) => id !== data);
-    } else {
-      absentSeatIds.push(data);
-    }
+    const isAbsent = absentSeatIds.some((id) => id === data);
+    absentSeatIds = isAbsent ? absentSeatIds.filter((id) => id !== data) : [...absentSeatIds, data];
     io.emit('absentSeatList', absentSeatIds);
   });
 });
@@ -147,16 +143,16 @@ app.all('/*', (req, res, next) => {
   next();
 });
 
-app.get('/api/getSeats', (req: Request, res: TypedRes<GetSeatsRes>) => {
+app.get('/api/getSeats', (_, res: TypedRes<GetSeatsRes>) => {
   const jsonFile = fs.readFileSync(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8');
-  const jsonData: Seats = JSON.parse(jsonFile);
-  return res.send(jsonData);
+  const parsedJSON = JSON.parse(jsonFile);
+  return res.send(parsedJSON);
 });
 
-app.get('/api/getLastWeekSeats', (req: Request, res: TypedRes<GetLastWeekSeatsRes>) => {
+app.get('/api/getLastWeekSeats', (_, res: TypedRes<GetLastWeekSeatsRes>) => {
   const jsonFile = fs.readFileSync(`${jsonDirectory}/${LAST_WEEK_SEATS}`, 'utf8');
-  const jsonData: Seats = JSON.parse(jsonFile);
-  return res.send(jsonData);
+  const parsedJSON = JSON.parse(jsonFile);
+  return res.send(parsedJSON);
 });
 
 app.put(
@@ -166,8 +162,7 @@ app.put(
       return res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
     }
 
-    const params = req.body.params;
-
+    const { params } = req.body;
     fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
       const showData: Seats = JSON.parse(data);
 
@@ -198,18 +193,18 @@ app.put(
 app.put(
   '/api/cancelReservation',
   (req: TypedReq<CancelReservationReq>, res: TypedRes<CancelReservationRes>) => {
-    const params = req.body.params;
-    fsp
+    const { params } = req.body;
+    fsPromise
       .readFile(`${jsonDirectory}/${FULL_SEATS}`, 'utf8')
-      .then((el) => {
-        let parseEl: Seats = JSON.parse(el);
+      .then((file) => {
+        const parsedJSON: Seats = JSON.parse(file);
         let defaultSeatActive = 0;
         let defaultSeatName = '';
 
-        for (let i in parseEl[params.line]) {
-          if (parseEl[params.line][i].id === params.id) {
-            defaultSeatActive = parseEl[params.line][i].seat_active;
-            defaultSeatName = parseEl[params.line][i].name;
+        for (let i in parsedJSON[params.line]) {
+          if (parsedJSON[params.line][i].id === params.id) {
+            defaultSeatActive = parsedJSON[params.line][i].seat_active;
+            defaultSeatName = parsedJSON[params.line][i].name;
           }
         }
 
@@ -217,16 +212,17 @@ app.put(
       })
       .then(({ defaultSeatActive, defaultSeatName }) => {
         fs.readFile(`${jsonDirectory}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
-          const showData = JSON.parse(data);
-          for (let i in showData[params.line]) {
-            if (showData[params.line][i].id === params.id) {
-              showData[params.line][i].seat_active = defaultSeatActive;
-              showData[params.line][i].name = defaultSeatName;
-              showData[params.line][i].pw = '';
+          const parsedJSON: Seats = JSON.parse(data);
+
+          for (let i in parsedJSON[params.line]) {
+            if (parsedJSON[params.line][i].id === params.id) {
+              parsedJSON[params.line][i].seat_active = defaultSeatActive;
+              parsedJSON[params.line][i].name = defaultSeatName;
+              parsedJSON[params.line][i].pw = '';
             }
           }
 
-          fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(showData), (err) => {
+          fs.writeFile(`${jsonDirectory}/${CURRENT_SEATS}`, JSON.stringify(parsedJSON), (err) => {
             if (err) {
               return res.send({
                 ok: false,
