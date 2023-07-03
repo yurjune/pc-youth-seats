@@ -29,6 +29,9 @@ const saveLastWeekSeats = () => {
       console.log('지난주 좌석 저장 완료');
     });
 
+    if (!fs.existsSync(HISTORY_DIRECTORY)) {
+      fs.mkdirSync(HISTORY_DIRECTORY);
+    }
     fs.writeFile(`${HISTORY_DIRECTORY}/seats_${getYearMonthDate()}.json`, result, (err) => {
       if (err) return console.log(`좌석 히스토리 저장 실패`);
       console.log(`좌석 히스토리 저장 완료`);
@@ -40,6 +43,9 @@ const backupSeats = () => {
   fs.readFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8', (err, result) => {
     const { hour } = getKoreanTime();
 
+    if (!fs.existsSync(BACKUP_DIRECTORY)) {
+      fs.mkdirSync(BACKUP_DIRECTORY);
+    }
     fs.writeFile(`${BACKUP_DIRECTORY}/seats_backup_${hour}.json`, result, (err) => {
       if (err) return console.log(`좌석 백업 실패`);
     });
