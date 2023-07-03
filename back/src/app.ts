@@ -6,10 +6,9 @@ import schedule from 'node-schedule';
 import helmet from 'helmet';
 import cors from 'cors';
 import history from 'connect-history-api-fallback';
-import { Server } from 'socket.io';
+import launchSocketIO from './socket';
 
-import { checkIsLateReservation, getYearMonthDate, getKoreanTime } from './utils';
-import type { ClientToServerEvents, ServerToClientEvents } from './models';
+import { getYearMonthDate, getKoreanTime } from './utils';
 import { cancelReservation, getLastWeekSeats, getSeats, makeReservation } from './controllers';
 import {
   CURRENT_SEATS,
@@ -20,10 +19,10 @@ import {
   JSON_DIRECTORY,
 } from './constants';
 
-const app = express();
-let lateSeatIds: string[] = [];
-let absentSeatIds: string[] = [];
+global.lateSeatIds = [];
+global.absentSeatIds = [];
 
+const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
@@ -67,57 +66,10 @@ schedule.scheduleJob('00 00 * * * *', () => {
   });
 });
 
-const expressServer = app.listen(app.get('port'), () => {
+export const expressServer = app.listen(app.get('port'), () => {
   console.log('WebServer Port: ' + app.get('port'));
 });
-
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(expressServer, {
-  path: '/socket.io',
-});
-io.on('connection', (socket) => {
-  socket.on('showLateSeats', () => {
-    io.emit('lateSeatList', lateSeatIds);
-  });
-
-  socket.on('showAbsentSeats', () => {
-    io.emit('absentSeatList', absentSeatIds);
-  });
-
-  socket.on('seatReserved', (data) => {
-    io.emit('seatList', data);
-
-    absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
-    io.emit('absentSeatList', absentSeatIds);
-
-    if (!data.ignoreIsLate && checkIsLateReservation()) {
-      lateSeatIds.push(data.id);
-      io.emit('lateSeatList', lateSeatIds);
-    }
-  });
-
-  socket.on('seatRemoved', (data) => {
-    io.emit('seatList', data);
-
-    absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
-    io.emit('absentSeatList', absentSeatIds);
-
-    if (!data.ignoreIsLate && checkIsLateReservation()) {
-      lateSeatIds.push(data.id);
-      io.emit('lateSeatList', lateSeatIds);
-    }
-  });
-
-  socket.on('lateSeatRemoved', (data) => {
-    lateSeatIds = lateSeatIds.filter((id) => id !== data);
-    io.emit('lateSeatList', lateSeatIds);
-  });
-
-  socket.on('absentSeatModified', (data) => {
-    const isAbsent = absentSeatIds.some((id) => id === data);
-    absentSeatIds = isAbsent ? absentSeatIds.filter((id) => id !== data) : [...absentSeatIds, data];
-    io.emit('absentSeatList', absentSeatIds);
-  });
-});
+launchSocketIO(expressServer);
 
 app.all('/*', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
