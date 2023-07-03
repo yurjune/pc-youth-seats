@@ -16,8 +16,8 @@ const resetAllSeats = () => {
     if (err) return console.log('시온채플 좌석 리셋 실패');
 
     fs.writeFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, result, () => {
-      global.lateSeatIds = [];
-      global.absentSeatIds = [];
+      lateSeatIds = [];
+      absentSeatIds = [];
       console.log('시온채플 좌석 리셋 완료');
     });
   });

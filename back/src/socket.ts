@@ -10,48 +10,48 @@ const launchSocketIO = (expressServer: Server) => {
 
   io.on('connection', (socket) => {
     socket.on('showLateSeats', () => {
-      io.emit('lateSeatList', global.lateSeatIds);
+      io.emit('lateSeatList', lateSeatIds);
     });
 
     socket.on('showAbsentSeats', () => {
-      io.emit('absentSeatList', global.absentSeatIds);
+      io.emit('absentSeatList', absentSeatIds);
     });
 
     socket.on('seatReserved', (data) => {
       io.emit('seatList', data);
 
-      global.absentSeatIds = global.absentSeatIds.filter((id) => id !== data.id);
-      io.emit('absentSeatList', global.absentSeatIds);
+      absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
+      io.emit('absentSeatList', absentSeatIds);
 
       if (!data.ignoreIsLate && checkIsLateReservation()) {
-        global.lateSeatIds.push(data.id);
-        io.emit('lateSeatList', global.lateSeatIds);
+        lateSeatIds.push(data.id);
+        io.emit('lateSeatList', lateSeatIds);
       }
     });
 
     socket.on('seatRemoved', (data) => {
       io.emit('seatList', data);
 
-      global.absentSeatIds = global.absentSeatIds.filter((id) => id !== data.id);
-      io.emit('absentSeatList', global.absentSeatIds);
+      absentSeatIds = absentSeatIds.filter((id) => id !== data.id);
+      io.emit('absentSeatList', absentSeatIds);
 
       if (!data.ignoreIsLate && checkIsLateReservation()) {
-        global.lateSeatIds.push(data.id);
-        io.emit('lateSeatList', global.lateSeatIds);
+        lateSeatIds.push(data.id);
+        io.emit('lateSeatList', lateSeatIds);
       }
     });
 
     socket.on('lateSeatRemoved', (data) => {
-      global.lateSeatIds = global.lateSeatIds.filter((id) => id !== data);
-      io.emit('lateSeatList', global.lateSeatIds);
+      lateSeatIds = lateSeatIds.filter((id) => id !== data);
+      io.emit('lateSeatList', lateSeatIds);
     });
 
     socket.on('absentSeatModified', (data) => {
-      const isAbsent = global.absentSeatIds.some((id) => id === data);
-      global.absentSeatIds = isAbsent
-        ? global.absentSeatIds.filter((id) => id !== data)
-        : [...global.absentSeatIds, data];
-      io.emit('absentSeatList', global.absentSeatIds);
+      const isAbsent = absentSeatIds.some((id) => id === data);
+      absentSeatIds = isAbsent
+        ? absentSeatIds.filter((id) => id !== data)
+        : [...absentSeatIds, data];
+      io.emit('absentSeatList', absentSeatIds);
     });
   });
 };
