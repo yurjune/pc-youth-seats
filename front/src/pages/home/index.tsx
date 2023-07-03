@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import {
   AdminDialog,
   AdminRadioDialog,
+  FooterNav,
   DeleteDialog,
   Layout,
   Participants,
@@ -51,10 +52,12 @@ export const Home = () => {
         <SeatsBody onEntranceClick={handleEntranceClick}>
           <RenderedSeats seats={seats} />
         </SeatsBody>
-        <div className={styles.info}>
-          <SeatInfo />
-        </div>
-        <Participants seats={seats} />
+        <FooterNav>
+          <div className={styles.info}>
+            <SeatInfo />
+          </div>
+          <Participants seats={seats} />
+        </FooterNav>
       </Layout>
       <ReserveDialog />
       <DeleteDialog />
