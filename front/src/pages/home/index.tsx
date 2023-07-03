@@ -33,11 +33,7 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    api
-      .getSeats()
-      .then((data) => setSeats(data))
-      .catch((error) => console.error(error));
-
+    api.getSeats().then(setSeats).catch(console.error);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

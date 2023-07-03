@@ -44,7 +44,6 @@ export const Admin = () => {
     });
 
     socket.emit('showAbsentSeats');
-
     socket.on('absentSeatList', (data) => {
       setAbsentSeatIds(data);
     });
@@ -52,15 +51,12 @@ export const Admin = () => {
   }, []);
 
   useEffect(() => {
-    api
-      .getSeats()
-      .then((data) => setSeats(data))
-      .catch((error) => console.error(error));
-
-    api
-      .getLastWeekSeats()
-      .then((data) => setLastWeekSeats(data))
-      .catch((error) => console.error(error));
+    Promise.all([api.getSeats(), api.getLastWeekSeats()])
+      .then((data) => {
+        setSeats(data[0]);
+        setLastWeekSeats(data[1]);
+      })
+      .catch(console.error);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
