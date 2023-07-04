@@ -1,22 +1,11 @@
 import clsx from 'clsx';
-import { useUpdateAtom } from 'jotai/utils';
 import toast from 'react-hot-toast';
-import {
-  deleteDialogOpenAtom,
-  redeemusDialogOpenAtom,
-  reserveDialogOpenAtom,
-  selectedSeatAtom,
-  selectedSeatLineAtom,
-} from '../../shared/atoms';
 import { useMode } from '../../shared/hooks';
 import type { Seat } from '../../shared/models';
-import {
-  appointedSeats,
-  checkIsAvailableForReservation,
-  reportErrorMessage,
-} from '../../shared/utils';
+import { checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utils';
 import socket from '../../socket';
 import styles from './index.module.scss';
+import { useDialog } from './useDialog';
 
 interface SeatBoxProps {
   seat: Seat;
@@ -47,11 +36,7 @@ export const SeatBox = (props: SeatBoxProps) => {
     isLastWeekMode = false,
   } = props;
   const { isUserMode, isAttendanceMode } = useMode();
-  const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
-  const setSelectedSeatLine = useUpdateAtom(selectedSeatLineAtom);
-  const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
-  const setDeleteDialogOpen = useUpdateAtom(deleteDialogOpenAtom);
-  const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
+  const { openDialog } = useDialog();
 
   const { seat_active, id, name } = seat;
   const isLate = isAttendanceMode && lateSeatIds.includes(seat.id);
@@ -82,35 +67,7 @@ export const SeatBox = (props: SeatBoxProps) => {
       reportErrorMessage(error);
     }
 
-    switch (seat_active) {
-      case 1: {
-        setReserveDialogOpen(true);
-        setSelectedSeat(seat);
-        setSelectedSeatLine(seatLine);
-        break;
-      }
-      case 4: {
-        if (appointedSeats.includes(name)) {
-          break;
-        }
-
-        if (isUserMode) {
-          setRedeemusDialogOpen(true);
-        } else {
-          setReserveDialogOpen(true);
-        }
-
-        setSelectedSeat(seat);
-        setSelectedSeatLine(seatLine);
-        break;
-      }
-      case 5: {
-        setDeleteDialogOpen(true);
-        setSelectedSeat(seat);
-        setSelectedSeatLine(seatLine);
-        break;
-      }
-    }
+    openDialog(seat, seatLine);
   };
 
   const cls = clsx(styles.seat, {
