@@ -1,0 +1,21 @@
+@import '../../styles/responsive.scss';
+
+.container {
+  max-width: 100vw;
+  height: 56vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@include md {
+  .container {
+    height: 70vh;
+  }
+}
+
+@include lg {
+  .container {
+    height: 78vh;
+  }
+}

@@ -12,3 +12,4 @@ export * from './rendered-seats';
 export * from './seats-body';
 export * from './layout';
 export * from './footer-nav';
+export * from './spinner';
