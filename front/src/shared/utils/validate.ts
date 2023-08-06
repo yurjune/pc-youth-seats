@@ -4,7 +4,7 @@ import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { type Predicate } from 'fp-ts/Predicate';
 import { INITIAL_ERROR, StateValidator } from '../hooks';
-import { minLength, samePassword } from './rules';
+import { maxLength, minLength, samePassword } from './rules';
 
 // 공통 검증 함수
 const validate =
@@ -37,7 +37,7 @@ const getErrorFromValidators = (validators: StateValidator[]): string | null => 
 };
 
 const validateName = (name: string): Either<string, string> =>
-  pipe(name, validate([minLength(2)], '이름을 2자 이상 입력해주세요.'));
+  pipe(name, validate([minLength(2), maxLength(4)], '이름을 2자 이상 4자 이하로 입력해주세요.'));
 
 const validatePw = (pw: string): Either<string, string> =>
   pipe(pw, validate([minLength(4)], '비밀번호를 4자 이상 입력해주세요.'));
