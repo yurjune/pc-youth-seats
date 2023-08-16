@@ -5,7 +5,7 @@ import express from 'express';
 import helmet from 'helmet';
 import path from 'path';
 
-import seatsController from './controllers/seats.controller';
+import apiRouter from './routes/api';
 import enrollSchedules from './scheduler';
 import launchSocketIO from './socket';
 
@@ -34,7 +34,4 @@ app.all('/*', (req, res, next) => {
   next();
 });
 
-app.get('/api/getSeats', seatsController.getSeats);
-app.get('/api/getLastWeekSeats', seatsController.getLastWeekSeats);
-app.put('/api/makeReservation', seatsController.makeReservation);
-app.put('/api/cancelReservation', seatsController.cancelReservation);
+app.use('/api', apiRouter);
