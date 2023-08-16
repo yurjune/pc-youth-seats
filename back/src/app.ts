@@ -1,13 +1,13 @@
-import express from 'express';
-import path from 'path';
 import bodyParser from 'body-parser';
-import helmet from 'helmet';
-import cors from 'cors';
 import history from 'connect-history-api-fallback';
+import cors from 'cors';
+import express from 'express';
+import helmet from 'helmet';
+import path from 'path';
 
-import launchSocketIO from './socket';
+import seatsController from './controllers/seats.controller';
 import enrollSchedules from './scheduler';
-import { cancelReservation, getLastWeekSeats, getSeats, makeReservation } from './controllers';
+import launchSocketIO from './socket';
 
 global.lateSeatIds = [];
 global.absentSeatIds = [];
@@ -34,7 +34,7 @@ app.all('/*', (req, res, next) => {
   next();
 });
 
-app.get('/api/getSeats', getSeats);
-app.get('/api/getLastWeekSeats', getLastWeekSeats);
-app.put('/api/makeReservation', makeReservation);
-app.put('/api/cancelReservation', cancelReservation);
+app.get('/api/getSeats', seatsController.getSeats);
+app.get('/api/getLastWeekSeats', seatsController.getLastWeekSeats);
+app.put('/api/makeReservation', seatsController.makeReservation);
+app.put('/api/cancelReservation', seatsController.cancelReservation);
