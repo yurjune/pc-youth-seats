@@ -9,7 +9,8 @@
     "nodemon": "nodemon ./dist/app.js",
     "start": "pm2 start ./dist/app.js",
     "restart": "pm2 restart ./dist/app.js",
-    "format": "npx prettier --write ./src"
+    "format": "npx prettier --write ./src",
+    "log": "pm2 log"
   },
   "author": "",
   "license": "ISC",

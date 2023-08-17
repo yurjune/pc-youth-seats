@@ -1,7 +1,6 @@
-import { RequestHandler } from 'express';
+import { NextFunction, RequestHandler } from 'express';
 import fs from 'fs';
-const fsPromise = fs.promises;
-import { checkIsAvailableForReservation, logWithTime } from '../utils';
+import { CURRENT_SEATS, FULL_SEATS, JSON_DIRECTORY, LAST_WEEK_SEATS } from '../constants';
 import type {
   CancelReservationReq,
   CancelReservationRes,
@@ -13,7 +12,8 @@ import type {
   TypedReq,
   TypedRes,
 } from '../models';
-import { CURRENT_SEATS, FULL_SEATS, LAST_WEEK_SEATS, JSON_DIRECTORY } from '../constants';
+import { checkIsAvailableForReservation } from '../utils';
+const fsPromise = fs.promises;
 
 class SeatsController {
   getSeats: RequestHandler = (_, res: TypedRes<GetSeatsRes>) => {
@@ -31,6 +31,7 @@ class SeatsController {
   makeReservation: RequestHandler = (
     req: TypedReq<MakeReservationReq>,
     res: TypedRes<MakeReservationRes>,
+    next: NextFunction,
   ) => {
     if (!checkIsAvailableForReservation()) {
       return res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
@@ -60,8 +61,8 @@ class SeatsController {
           return res.send({ ok: false, message: 'Something went wrong.' });
         }
 
-        logWithTime(`예약완료: ${params.id}, ${params.name}, ${params.pw}`);
-        return res.send({ ok: true, message: '예약 되었습니다.' });
+        res.send({ ok: true, message: '예약 되었습니다.' });
+        next();
       });
     });
   };
@@ -69,6 +70,7 @@ class SeatsController {
   cancelReservation: RequestHandler = (
     req: TypedReq<CancelReservationReq>,
     res: TypedRes<CancelReservationRes>,
+    next: NextFunction,
   ) => {
     const { params } = req.body;
     fsPromise
@@ -111,13 +113,13 @@ class SeatsController {
               });
             }
 
-            logWithTime(`삭제완료: ${params.id}`);
-            return res.send({
+            res.send({
               ok: true,
               message: '삭제 되었습니다.',
               defaultSeatActive,
               defaultSeatName,
             });
+            next();
           });
         });
       });
