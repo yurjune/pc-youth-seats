@@ -1,25 +1,25 @@
+import {
+  Checkbox,
+  DeleteDialog,
+  FooterNav,
+  Layout,
+  Participants,
+  RedeemusDialog,
+  RenderedSeats,
+  ReserveDialog,
+  SeatInfo,
+  SeatsBody,
+  type CheckboxProps,
+} from '@components/index';
+import api from '@shared/api';
+import { isMasterAtom } from '@shared/atoms';
+import { useGAEventsTracker, useSeats } from '@shared/hooks';
+import type { Seats } from '@shared/models';
+import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  DeleteDialog,
-  RedeemusDialog,
-  ReserveDialog,
-  SeatInfo,
-  Checkbox,
-  Participants,
-  RenderedSeats,
-  SeatsBody,
-  Layout,
-  FooterNav,
-} from '../../components';
-import { isMasterAtom } from '../../shared/atoms';
-import api from '../../shared/api';
-import { useGAEventsTracker, useSeats } from '../../shared/hooks';
-import socket from '../../socket';
 import styles from './index.module.scss';
-import type { CheckboxProps } from '../../components';
-import type { Seats } from '../../shared/models';
 
 export const Admin = () => {
   const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();

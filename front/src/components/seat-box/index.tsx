@@ -1,9 +1,9 @@
+import { useMode } from '@shared/hooks';
+import type { Seat } from '@shared/models';
+import socket from '@shared/socket';
+import { checkIsAvailableForReservation, reportErrorMessage } from '@shared/utils';
 import clsx from 'clsx';
 import toast from 'react-hot-toast';
-import { useMode } from '../../shared/hooks';
-import type { Seat } from '../../shared/models';
-import { checkIsAvailableForReservation, reportErrorMessage } from '../../shared/utils';
-import socket from '../../socket';
 import styles from './index.module.scss';
 import { useDialog } from './useDialog';
 

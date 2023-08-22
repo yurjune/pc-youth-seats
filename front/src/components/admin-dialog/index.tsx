@@ -1,19 +1,19 @@
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
   TextField,
 } from '@mui/material';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
+import { env } from '@shared/constants';
+import { useInput } from '@shared/hooks';
+import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../shared/atoms';
-import styles from './index.module.scss';
 import toast from 'react-hot-toast';
-import { useInput } from '../../shared/hooks';
-import { encrypt } from '../../shared/utils';
-import { env } from '../../shared/constants';
+import styles from './index.module.scss';
 
 export const AdminDialog = () => {
   const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);

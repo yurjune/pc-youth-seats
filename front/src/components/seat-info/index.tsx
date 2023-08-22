@@ -1,6 +1,6 @@
+import { useMode } from '@shared/hooks';
 import clsx from 'clsx';
 import styles from './index.module.scss';
-import { useMode } from '../../shared/hooks';
 
 export const SeatInfo = () => {
   const { isUserMode, isAdminMode, isAttendanceMode } = useMode();

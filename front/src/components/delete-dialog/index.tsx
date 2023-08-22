@@ -1,20 +1,20 @@
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
   TextField,
 } from '@mui/material';
+import api from '@shared/api';
+import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
+import { env } from '@shared/constants';
+import { useInput, useMode } from '@shared/hooks';
+import socket from '@shared/socket';
+import { encrypt, reportErrorMessage } from '@shared/utils';
 import { useAtom } from 'jotai';
-import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
-import styles from './index.module.scss';
 import toast from 'react-hot-toast';
-import { useInput, useMode } from '../../shared/hooks';
-import api from '../../shared/api';
-import { encrypt, reportErrorMessage } from '../../shared/utils';
-import socket from '../../socket';
-import { env } from '../../shared/constants';
+import styles from './index.module.scss';
 
 export const DeleteDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();

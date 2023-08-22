@@ -1,4 +1,4 @@
-import { type Seats } from '../../shared/models';
+import { type Seats } from '@shared/models';
 import { SeatBox } from '../seat-box';
 import { Spinner } from '../spinner';
 import styles from './index.module.scss';

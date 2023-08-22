@@ -1,11 +1,8 @@
-import { useAtomValue } from 'jotai';
-import { useUpdateAtom } from 'jotai/utils';
-import { useEffect } from 'react';
 import {
   AdminDialog,
   AdminRadioDialog,
-  FooterNav,
   DeleteDialog,
+  FooterNav,
   Layout,
   Participants,
   RedeemusDialog,
@@ -13,11 +10,14 @@ import {
   ReserveDialog,
   SeatInfo,
   SeatsBody,
-} from '../../components';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '../../shared/atoms';
-import api from '../../shared/api';
-import { useSeats } from '../../shared/hooks';
-import socket from '../../socket';
+} from '@components/index';
+import api from '@shared/api';
+import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
+import { useSeats } from '@shared/hooks';
+import socket from '@shared/socket';
+import { useAtomValue } from 'jotai';
+import { useUpdateAtom } from 'jotai/utils';
+import { useEffect } from 'react';
 import styles from './index.module.scss';
 
 export const Home = () => {

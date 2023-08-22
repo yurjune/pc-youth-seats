@@ -1,19 +1,19 @@
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
-  RadioGroup,
   FormControlLabel,
   Radio,
+  RadioGroup,
   RadioGroupProps,
 } from '@mui/material';
+import { adminRadioDialogOpenAtom } from '@shared/atoms';
 import { useAtom } from 'jotai';
-import { adminRadioDialogOpenAtom } from '../../shared/atoms';
-import styles from './index.module.scss';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './index.module.scss';
 
 export const AdminRadioDialog = () => {
   const [open, setOpen] = useAtom(adminRadioDialogOpenAtom);

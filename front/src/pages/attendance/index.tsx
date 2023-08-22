@@ -1,24 +1,24 @@
+import {
+  Checkbox,
+  DeleteDialog,
+  FooterNav,
+  Layout,
+  Participants,
+  RedeemusDialog,
+  RenderedSeats,
+  ReserveDialog,
+  SeatInfo,
+  SeatsBody,
+  type CheckboxProps,
+} from '@components/index';
+import api from '@shared/api';
+import { isMasterAtom } from '@shared/atoms';
+import { useSeats } from '@shared/hooks';
+import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  DeleteDialog,
-  RedeemusDialog,
-  ReserveDialog,
-  SeatInfo,
-  Checkbox,
-  Participants,
-  RenderedSeats,
-  SeatsBody,
-  Layout,
-  FooterNav,
-} from '../../components';
-import { isMasterAtom } from '../../shared/atoms';
-import api from '../../shared/api';
-import { useSeats } from '../../shared/hooks';
-import socket from '../../socket';
 import styles from './index.module.scss';
-import type { CheckboxProps } from '../../components';
 
 export const Attendance = () => {
   const [lateSeatIds, setLateSeatIds] = useState<string[]>([]);

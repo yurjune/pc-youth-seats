@@ -1,9 +1,9 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { Admin, Attendance, Home } from './pages';
-import { env } from './shared/constants';
+import { Admin, Attendance, Home } from '@pages/index';
+import { env } from '@shared/constants';
 import ReactGA from 'react-ga4';
 import { useEffect } from 'react';
-import { Toaster } from './components';
+import { Toaster } from '@components/index';
 
 const App = () => {
   const location = useLocation();

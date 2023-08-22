@@ -1,18 +1,17 @@
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Button,
   TextField,
 } from '@mui/material';
-import { useAtom } from 'jotai';
-import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '../../shared/atoms';
-import { useInputValidate, useMode } from '../../shared/hooks';
-import styles from './index.module.scss';
-import toast from 'react-hot-toast';
-import api from '../../shared/api';
+import api from '@shared/api';
+import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
+import { env } from '@shared/constants';
+import { useInputValidate, useMode } from '@shared/hooks';
+import socket from '@shared/socket';
 import {
   encrypt,
   getErrorFromValidators,
@@ -20,9 +19,10 @@ import {
   validateName,
   validatePw,
   validatePwCheck,
-} from '../../shared/utils';
-import socket from '../../socket';
-import { env } from '../../shared/constants';
+} from '@shared/utils';
+import { useAtom } from 'jotai';
+import toast from 'react-hot-toast';
+import styles from './index.module.scss';
 
 export const ReserveDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();
