@@ -20,7 +20,7 @@ import { useUpdateAtom } from 'jotai/utils';
 import { useEffect } from 'react';
 import styles from './index.module.scss';
 
-export const Home = () => {
+const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
   const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
@@ -67,3 +67,5 @@ export const Home = () => {
     </>
   );
 };
+
+export default Home;

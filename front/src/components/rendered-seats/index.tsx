@@ -1,7 +1,7 @@
 import { type Seats } from '@shared/models';
 import { SeatBox } from '../seat-box';
-import { Spinner } from '../spinner';
 import styles from './index.module.scss';
+import { Spinner } from '../spinner';
 
 interface RenderedSeatsProps {
   seats: Seats | undefined;

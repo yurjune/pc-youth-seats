@@ -1,9 +1,12 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { Admin, Attendance, Home } from '@pages/index';
-import { env } from '@shared/constants';
-import ReactGA from 'react-ga4';
-import { useEffect } from 'react';
 import { Toaster } from '@components/index';
+import { env } from '@shared/constants';
+import { Suspense, lazy, useEffect } from 'react';
+import ReactGA from 'react-ga4';
+import { Route, Routes, useLocation } from 'react-router-dom';
+
+const Home = lazy(() => import('@pages/home'));
+const Admin = lazy(() => import('@pages/admin'));
+const Attendance = lazy(() => import('@pages/attendance'));
 
 const App = () => {
   const location = useLocation();
@@ -22,9 +25,30 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/admin' element={<Admin />} />
-        <Route path='/attendance' element={<Attendance />} />
+        <Route
+          path='/'
+          element={
+            <Suspense fallback={<div />}>
+              <Home />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/admin'
+          element={
+            <Suspense fallback={<div />}>
+              <Admin />
+            </Suspense>
+          }
+        />
+        <Route
+          path='/attendance'
+          element={
+            <Suspense fallback={<div />}>
+              <Attendance />
+            </Suspense>
+          }
+        />
       </Routes>
       <Toaster />
     </>

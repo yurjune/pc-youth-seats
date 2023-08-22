@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
-export const Admin = () => {
+const Admin = () => {
   const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();
   const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
   const [checked, setChecked] = useState(false);
@@ -94,3 +94,5 @@ export const Admin = () => {
     </>
   );
 };
+
+export default Admin;

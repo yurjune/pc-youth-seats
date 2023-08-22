@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
-export const Attendance = () => {
+const Attendance = () => {
   const [lateSeatIds, setLateSeatIds] = useState<string[]>([]);
   const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
   const [checked, setChecked] = useState(false);
@@ -86,3 +86,5 @@ export const Attendance = () => {
     </>
   );
 };
+
+export default Attendance;
