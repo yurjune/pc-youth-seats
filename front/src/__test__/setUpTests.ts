@@ -7,3 +7,5 @@ jest.mock('@shared/constants', () => ({
     REDEEMUS_PW: '',
   },
 }));
+
+export {};

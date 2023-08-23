@@ -5,9 +5,6 @@ import tsconfig from './tsconfig.json' assert { type: 'json' };
 export default {
   preset: 'ts-jest',
   testEnvironment: 'jest-environment-jsdom', // browser-like environment
-  globals: {
-    'ts-jest': { isolatedModules: true }, // Resolve slow testing due to using ts-jest
-  },
 
   moduleNameMapper: {
     ...pathsToModuleNameMapper(tsconfig.compilerOptions.paths), // for resolve tsconfig's paths
@@ -21,6 +18,15 @@ export default {
     '<rootDir>/src/__test__/setUpTests.ts',
     '<rootDir>/src/__test__/server/setup-env.ts',
   ],
+
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        isolatedModules: true,
+      },
+    ],
+  },
 
   clearMocks: true,
 };
