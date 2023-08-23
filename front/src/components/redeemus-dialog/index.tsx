@@ -40,7 +40,7 @@ export const RedeemusDialog = () => {
   };
 
   return (
-    <Dialog id={styles.dialog} open={open} onClose={handleClose}>
+    <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>리디머스 확인</DialogTitle>
       <DialogContent>
         <div className={styles.textFieldContainer}>

@@ -75,7 +75,7 @@ export const DeleteDialog = () => {
   };
 
   return (
-    <Dialog id={styles.dialog} open={open} onClose={handleClose}>
+    <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>좌석 확인</DialogTitle>
       <DialogContent>
         <div className={styles.textFieldContainer}>
