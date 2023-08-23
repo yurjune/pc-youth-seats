@@ -16,7 +16,10 @@ export default {
   },
   modulePaths: ['src'],
 
-  setupFilesAfterEnv: ['mock-local-storage'], // for mocking local storage
+  setupFilesAfterEnv: [
+    'mock-local-storage', // for mocking local storage
+    '<rootDir>/src/__test__/setUpTests.ts',
+  ],
 
   clearMocks: true,
 };
