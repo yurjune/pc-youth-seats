@@ -1,8 +1,7 @@
 import { rest } from 'msw';
-import { env } from '@shared/constants';
 import seatMock from '../__mocks__/seatMock.json';
 
-const baseURL = `${env.SERVER_URL}/api`;
+const baseURL = `mockUrl/api`;
 
 const service = {
   getSeats: rest.get(`${baseURL}/getSeats`, async (req, res, ctx) => {
