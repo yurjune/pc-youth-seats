@@ -1,6 +1,9 @@
 @import '../../styles/main.scss';
 
 .seat {
+  display: flex;
+  flex-direction: column;
+
   box-sizing: border-box;
   width: 30px;
   height: 30px;

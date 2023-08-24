@@ -83,9 +83,8 @@ export const SeatBox = (props: SeatBoxProps) => {
     <div className={cls} onClick={handleSeatClick}>
       {!isDisabled && (
         <>
-          {id}
-          <br />
-          {name}
+          <span>{id}</span>
+          <span>{name}</span>
         </>
       )}
     </div>
