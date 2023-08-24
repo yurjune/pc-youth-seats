@@ -4,7 +4,7 @@ const GA_ID = import.meta.env.VITE_APP_GA_ID;
 const ADMIN_PW = import.meta.env.VITE_APP_ADMIN_PW ?? '';
 const REDEEMUS_PW = import.meta.env.VITE_APP_REDEEMUS_PW ?? '';
 
-interface Env {
+export interface Env {
   IS_PRODUCTION: boolean;
   SERVER_URL: string;
   GA_ID: string | undefined;
