@@ -21,7 +21,8 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@shared/*": ["shared/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@__mocks__/*": ["__mocks__/*"]
     }
   },
   "include": ["src"]

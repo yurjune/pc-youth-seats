@@ -1,6 +1,6 @@
 import { rest } from 'msw';
-import seatMock from '../__mocks__/seatMock.json';
-import { envMock } from '__test__/__mocks__/envMock';
+import seatMock from '@__mocks__/seatMock.json';
+import { envMock } from '@__mocks__/envMock';
 
 const baseURL = `${envMock.SERVER_URL}/api`;
 
