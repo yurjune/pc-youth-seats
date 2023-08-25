@@ -1,8 +1,8 @@
 import Home from '@pages/home';
 import api from '@shared/api';
-import { act, render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { act, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { BrowserRouter } from 'react-router-dom';
 
 function setUp() {
   return render(
@@ -20,10 +20,10 @@ describe('Home page', () => {
   });
 
   it('fetch seats data', async () => {
-    const getSeats = jest.spyOn(api, 'getSeats');
+    const getSeatsSpy = jest.spyOn(api, 'getSeats');
     setUp();
 
-    expect(getSeats).toHaveBeenCalledTimes(1);
+    expect(getSeatsSpy).toHaveBeenCalledTimes(1);
     expect(await screen.findByText('A-1')).toBeInTheDocument();
     expect(await screen.findByText('사용자1')).toBeInTheDocument();
   });
@@ -37,23 +37,16 @@ describe('Home page', () => {
 
   it('open reserve dialog when click a seat', async () => {
     setUp();
-    const seat = await screen.findByText('A-6');
-    await act(() => userEvent.click(seat));
+    await userEvent.click(await screen.findByText('A-6'));
     expect(screen.getByText('좌석 예약'));
   });
 
   it('renders error message if validation fails when making a reservation', async () => {
     setUp();
-    const seat = await screen.findByText('A-6');
-    await act(() => userEvent.click(seat));
-
-    const name = screen.getByLabelText('이름');
-    const pw = screen.getByLabelText('비밀번호');
-    await act(() => userEvent.type(name, '가'));
-    await act(() => userEvent.type(pw, '12'));
-
-    const submitBtn = screen.getByRole('button', { name: '예약' });
-    await act(() => userEvent.click(submitBtn));
+    await userEvent.click(await screen.findByText('A-6'));
+    await userEvent.type(screen.getByLabelText('이름'), '가');
+    await userEvent.type(screen.getByLabelText('비밀번호'), '12');
+    await userEvent.click(screen.getByRole('button', { name: '예약' }));
 
     await screen.findByText('이름을 2자 이상 4자 이하로 입력해주세요.');
     await screen.findByText('비밀번호를 4자 이상 입력해주세요.');
@@ -63,45 +56,29 @@ describe('Home page', () => {
   // TODO: mock websocket Server
   // TODO: mock dayjs module
   it('reservation success', async () => {
-    const makeReservation = jest.spyOn(api, 'makeReservation');
+    const makeReservationSpy = jest.spyOn(api, 'makeReservation');
     setUp();
 
-    const seat = await screen.findByText('A-6');
-    await act(() => userEvent.click(seat));
+    await userEvent.click(await screen.findByText('A-6'));
+    await userEvent.type(screen.getByLabelText('이름'), '사용자');
+    await userEvent.type(screen.getByLabelText('비밀번호'), '1234');
+    await userEvent.type(screen.getByLabelText('비밀번호 확인'), '1234');
+    await userEvent.click(screen.getByRole('button', { name: '예약' }));
 
-    const name = screen.getByLabelText('이름');
-    const pw = screen.getByLabelText('비밀번호');
-    const pwCheck = screen.getByLabelText('비밀번호 확인');
-    await act(() => userEvent.type(name, '사용자'));
-    await act(() => userEvent.type(pw, '1234'));
-    await act(() => userEvent.type(pwCheck, '1234'));
-
-    const submitBtn = screen.getByRole('button', { name: '예약' });
-    await act(() => userEvent.click(submitBtn));
-
-    expect(makeReservation).toHaveBeenCalledTimes(1);
-    await waitFor(() => {
-      expect(screen.queryByText('좌석 예약')).toBeNull();
-    });
+    expect(makeReservationSpy).toHaveBeenCalledTimes(1);
+    await waitForElementToBeRemoved(() => screen.queryByText('좌석 예약'));
   });
 
   it('cancel reservation success', async () => {
-    const cancelReservation = jest.spyOn(api, 'cancelReservation');
+    const cancelReservationSpy = jest.spyOn(api, 'cancelReservation');
     setUp();
 
-    const seat = await screen.findByText('A-1');
-    await act(() => userEvent.click(seat));
+    await userEvent.click(await screen.findByText('A-1'));
+    await userEvent.type(screen.getByLabelText('비밀번호'), '1234');
+    await userEvent.click(screen.getByRole('button', { name: '삭제' }));
 
-    const pw = screen.getByLabelText('비밀번호');
-    await act(() => userEvent.type(pw, '1234'));
-
-    const submitBtn = screen.getByRole('button', { name: '삭제' });
-    await act(() => userEvent.click(submitBtn));
-
-    expect(cancelReservation).toHaveBeenCalledTimes(1);
-    await waitFor(() => {
-      expect(screen.queryByText('좌석 확인')).toBeNull();
-    });
+    expect(cancelReservationSpy).toHaveBeenCalledTimes(1);
+    await waitForElementToBeRemoved(() => screen.queryByText('좌석 확인'));
   });
 });
 
