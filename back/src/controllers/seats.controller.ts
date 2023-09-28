@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler } from 'express';
 import fs from 'fs';
-import { CURRENT_SEATS, FULL_SEATS, JSON_DIRECTORY, LAST_WEEK_SEATS } from '../constants';
+import { CURRENT_SEATS, ORIGIN_SEATS, JSON_DIRECTORY, LAST_WEEK_SEATS } from '../constants';
 import type {
   CancelReservationReq,
   CancelReservationRes,
@@ -74,7 +74,7 @@ class SeatsController {
   ) => {
     const { params } = req.body;
     fsPromise
-      .readFile(`${JSON_DIRECTORY}/${FULL_SEATS}`, 'utf8')
+      .readFile(`${JSON_DIRECTORY}/${ORIGIN_SEATS}`, 'utf8')
       .then((file) => {
         const parsedJSON: Seats = JSON.parse(file);
         let defaultSeatActive = 0;

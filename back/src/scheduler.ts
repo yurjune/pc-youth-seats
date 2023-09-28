@@ -4,7 +4,7 @@ import schedule from 'node-schedule';
 import { getYearMonthDate, getKoreanTime } from './utils';
 import {
   CURRENT_SEATS,
-  FULL_SEATS,
+  ORIGIN_SEATS,
   LAST_WEEK_SEATS,
   BACKUP_DIRECTORY,
   HISTORY_DIRECTORY,
@@ -12,7 +12,7 @@ import {
 } from './constants';
 
 const resetAllSeats = () => {
-  fs.readFile(`${JSON_DIRECTORY}/${FULL_SEATS}`, 'utf8', (err, result) => {
+  fs.readFile(`${JSON_DIRECTORY}/${ORIGIN_SEATS}`, 'utf8', (err, result) => {
     if (err) return console.log('시온채플 좌석 리셋 실패');
 
     fs.writeFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, result, () => {

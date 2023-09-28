@@ -16,5 +16,5 @@ export const JSON_DIRECTORY = path.join(__dirname, '../../../seats-data');
 export const HISTORY_DIRECTORY = path.join(__dirname, '../../../seats-data/seats-history');
 export const BACKUP_DIRECTORY = path.join(__dirname, '../../../seats-data/seats-backup');
 export const CURRENT_SEATS = 'seats.json';
-export const FULL_SEATS = 'seats_origin.json';
+export const ORIGIN_SEATS = 'seats_origin.json';
 export const LAST_WEEK_SEATS = 'seats_last_week.json';
