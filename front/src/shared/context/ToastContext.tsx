@@ -1,8 +1,8 @@
-import { Alert, Snackbar, SnackbarProps } from '@mui/material';
+import { Alert, AlertProps, Snackbar, SnackbarProps } from '@mui/material';
 import { ReactNode, createContext, useContext, useState } from 'react';
 import styles from './Toast.module.scss';
 
-export type Severity = 'info' | 'success';
+export type Severity = NonNullable<Exclude<AlertProps['severity'], 'warning'>>;
 
 export type ToastContextType = {
   open: boolean;
@@ -11,6 +11,7 @@ export type ToastContextType = {
   openToast: {
     info: (msg: string) => void;
     success: (msg: string) => void;
+    error: (msg: string) => void;
   };
 };
 
@@ -21,6 +22,7 @@ const ToastContext = createContext<ToastContextType>({
   openToast: {
     info: () => undefined,
     success: () => undefined,
+    error: () => undefined,
   },
 });
 
@@ -39,6 +41,11 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
       setOpen(true);
       setMessage(message);
       setType('success');
+    },
+    error: (message: string) => {
+      setOpen(true);
+      setMessage(message);
+      setType('error');
     },
   };
 
