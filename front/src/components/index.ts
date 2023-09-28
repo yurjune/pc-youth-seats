@@ -5,7 +5,6 @@ export * from './redeemus-dialog';
 export * from './reserve-dialog';
 export * from './seat-box';
 export * from './seat-info';
-export * from './toaster';
 export * from './checkbox';
 export * from './participants';
 export * from './rendered-seats';
