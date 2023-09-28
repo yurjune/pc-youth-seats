@@ -17,15 +17,23 @@ const fsPromise = fs.promises;
 
 class SeatsController {
   getSeats: RequestHandler = (_, res: TypedRes<GetSeatsRes>) => {
-    const jsonFile = fs.readFileSync(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8');
-    const parsedJSON = JSON.parse(jsonFile);
-    return res.send(parsedJSON);
+    try {
+      const jsonFile = fs.readFileSync(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8');
+      const parsedJSON = JSON.parse(jsonFile);
+      return res.send(parsedJSON);
+    } catch (err) {
+      return res.sendStatus(500);
+    }
   };
 
   getLastWeekSeats: RequestHandler = (_, res: TypedRes<GetLastWeekSeatsRes>) => {
-    const jsonFile = fs.readFileSync(`${JSON_DIRECTORY}/${LAST_WEEK_SEATS}`, 'utf8');
-    const parsedJSON = JSON.parse(jsonFile);
-    return res.send(parsedJSON);
+    try {
+      const jsonFile = fs.readFileSync(`${JSON_DIRECTORY}/${LAST_WEEK_SEATS}`, 'utf8');
+      const parsedJSON = JSON.parse(jsonFile);
+      return res.send(parsedJSON);
+    } catch (err) {
+      return res.sendStatus(500);
+    }
   };
 
   makeReservation: RequestHandler = (
@@ -39,6 +47,8 @@ class SeatsController {
 
     const { params } = req.body;
     fs.readFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
+      if (err) return res.sendStatus(500);
+
       const parsedJSON: Seats = JSON.parse(data);
 
       for (const idx in parsedJSON[params.line]) {
@@ -57,9 +67,7 @@ class SeatsController {
       }
 
       fs.writeFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, JSON.stringify(parsedJSON), (err) => {
-        if (err) {
-          return res.send({ ok: false, message: 'Something went wrong.' });
-        }
+        if (err) return res.sendStatus(500);
 
         res.send({ ok: true, message: '예약 되었습니다.' });
         next();
@@ -92,6 +100,8 @@ class SeatsController {
       })
       .then(({ defaultSeatActive, defaultSeatName }) => {
         fs.readFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
+          if (err) return res.sendStatus(500);
+
           const parsedJSON: Seats = JSON.parse(data);
 
           for (const idx in parsedJSON[params.line]) {
@@ -104,14 +114,7 @@ class SeatsController {
           }
 
           fs.writeFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, JSON.stringify(parsedJSON), (err) => {
-            if (err) {
-              return res.send({
-                ok: false,
-                message: 'Something went wrong',
-                defaultSeatActive,
-                defaultSeatName,
-              });
-            }
+            if (err) return res.sendStatus(500);
 
             res.send({
               ok: true,
@@ -122,6 +125,9 @@ class SeatsController {
             next();
           });
         });
+      })
+      .catch(() => {
+        return res.sendStatus(500);
       });
   };
 }
