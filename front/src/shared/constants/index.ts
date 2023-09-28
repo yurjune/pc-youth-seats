@@ -1,5 +1,5 @@
 const IS_PRODUCTION = import.meta.env.PROD;
-const SERVER_URL = IS_PRODUCTION ? 'http://3.34.59.214:5000' : 'http://localhost:5000';
+const SERVER_URL = IS_PRODUCTION ? 'http://3.34.59.214:5100' : 'http://localhost:5100';
 const GA_ID = import.meta.env.VITE_APP_GA_ID;
 const ADMIN_PW = import.meta.env.VITE_APP_ADMIN_PW ?? '';
 const REDEEMUS_PW = import.meta.env.VITE_APP_REDEEMUS_PW ?? '';

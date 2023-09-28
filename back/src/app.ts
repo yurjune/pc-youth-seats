@@ -18,12 +18,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cors());
 app.use(history());
 app.use(helmet());
-app.set('port', process.env.PORT || 5000);
+app.set('port', 5100);
 
 enrollSchedules();
 
 export const expressServer = app.listen(app.get('port'), () => {
-  console.log('WebServer Port: ' + app.get('port'));
+  console.log(`웹 서버 시작, 포트 번호: ${app.get('port')}`);
 });
 launchSocketIO(expressServer);
 
