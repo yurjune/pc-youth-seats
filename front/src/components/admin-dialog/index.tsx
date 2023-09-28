@@ -12,14 +12,15 @@ import { useInput } from '@shared/hooks';
 import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
-import toast from 'react-hot-toast';
 import styles from './index.module.scss';
+import { useToastContext } from '@shared/context/ToastContext';
 
 export const AdminDialog = () => {
   const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const setIsMaster = useUpdateAtom(isMasterAtom);
   const [open, setOpen] = useAtom(adminDialogOpenAtom);
   const [pw, handlePwChange, setPw] = useInput('');
+  const { openToast } = useToastContext();
 
   const handleClose = () => {
     setOpen(false);
@@ -34,8 +35,7 @@ export const AdminDialog = () => {
       return;
     }
 
-    const message = '비밀번호를 확인해주세요.';
-    toast.error(message, { id: message });
+    openToast.error('비밀번호를 확인해주세요.');
   };
 
   return (

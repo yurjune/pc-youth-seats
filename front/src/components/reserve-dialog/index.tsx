@@ -10,18 +10,18 @@ import {
 import api from '@shared/api';
 import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
+import { useToastContext } from '@shared/context/ToastContext';
 import { useInputValidate, useMode } from '@shared/hooks';
 import socket from '@shared/socket';
 import {
   encrypt,
   getErrorFromValidators,
-  reportErrorMessage,
+  getErrorMessage,
   validateName,
   validatePw,
   validatePwCheck,
 } from '@shared/utils';
 import { useAtom } from 'jotai';
-import toast from 'react-hot-toast';
 import styles from './index.module.scss';
 
 export const ReserveDialog = () => {
@@ -34,6 +34,7 @@ export const ReserveDialog = () => {
   const [pwCheck, handlePwCheckChange, setPwCheck, pwCheckValidator] = useInputValidate(
     validatePwCheck(pw),
   );
+  const { openToast } = useToastContext();
 
   const handleClose = () => {
     setOpen(false);
@@ -60,7 +61,7 @@ export const ReserveDialog = () => {
       : [nameValidator];
     const error = getErrorFromValidators(validators);
     if (error) {
-      toast.error(error, { id: error });
+      openToast.error(error);
       return;
     }
 
@@ -78,14 +79,13 @@ export const ReserveDialog = () => {
 
       if (ok) {
         socket.emit('seatReserved', { ...params, ignoreIsLate: isAttendanceMode });
-
         resetAllStates();
-        toast.success(message, { id: message });
+        openToast.success(message);
       } else {
-        toast.error(message, { id: message });
+        openToast.error(message);
       }
     } catch (error) {
-      reportErrorMessage(error);
+      openToast.error(getErrorMessage(error));
     }
   };
 

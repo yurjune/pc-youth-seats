@@ -1,9 +1,9 @@
+import { useToastContext } from '@shared/context/ToastContext';
 import { useMode } from '@shared/hooks';
 import type { Seat } from '@shared/models';
 import socket from '@shared/socket';
-import { checkIsAvailableForReservation, reportErrorMessage } from '@shared/utils';
+import { checkIsAvailableForReservation, getErrorMessage } from '@shared/utils';
 import clsx from 'clsx';
-import toast from 'react-hot-toast';
 import styles from './index.module.scss';
 import { useDialog } from './useDialog';
 
@@ -37,6 +37,7 @@ export const SeatBox = (props: SeatBoxProps) => {
   } = props;
   const { isUserMode, isAttendanceMode } = useMode();
   const { openDialog } = useDialog();
+  const { openToast } = useToastContext();
 
   const { seat_active, id, name } = seat;
   const isLate = isAttendanceMode && lateSeatIds.includes(seat.id);
@@ -48,8 +49,7 @@ export const SeatBox = (props: SeatBoxProps) => {
     }
 
     if (!checkIsAvailableForReservation()) {
-      const message = '예약 가능한 시간대가 아닙니다.';
-      toast.error(message, { id: message });
+      openToast.info('예약 가능한 시간대가 아닙니다.');
       return;
     }
 
@@ -64,7 +64,7 @@ export const SeatBox = (props: SeatBoxProps) => {
         return;
       }
     } catch (error) {
-      reportErrorMessage(error);
+      openToast.error(getErrorMessage(error));
     }
 
     openDialog(seat, seatLine);

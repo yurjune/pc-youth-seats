@@ -12,14 +12,15 @@ import { useInput } from '@shared/hooks';
 import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
-import toast from 'react-hot-toast';
 import styles from './index.module.scss';
+import { useToastContext } from '@shared/context/ToastContext';
 
 export const RedeemusDialog = () => {
   const [open, setOpen] = useAtom(redeemusDialogOpenAtom);
   const setReserveDialogOpen = useUpdateAtom(reserveDialogOpenAtom);
   const setSelectedSeat = useUpdateAtom(selectedSeatAtom);
   const [pw, handlePw, setPw] = useInput();
+  const { openToast } = useToastContext();
 
   const handleOkClick = () => {
     if (encrypt(pw) === env.REDEEMUS_PW) {
@@ -29,8 +30,7 @@ export const RedeemusDialog = () => {
       return;
     }
 
-    const message = '비밀번호가 틀렸습니다.';
-    toast.error(message, { id: message });
+    openToast.error('비밀번호가 틀렸습니다.');
   };
 
   const handleClose = () => {

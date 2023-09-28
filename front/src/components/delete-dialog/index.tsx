@@ -11,10 +11,10 @@ import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@s
 import { env } from '@shared/constants';
 import { useInput, useMode } from '@shared/hooks';
 import socket from '@shared/socket';
-import { encrypt, reportErrorMessage } from '@shared/utils';
+import { encrypt, getErrorMessage } from '@shared/utils';
 import { useAtom } from 'jotai';
-import toast from 'react-hot-toast';
 import styles from './index.module.scss';
+import { useToastContext } from '@shared/context/ToastContext';
 
 export const DeleteDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();
@@ -22,6 +22,7 @@ export const DeleteDialog = () => {
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
   const [pw, handleChangePw, setPw] = useInput();
+  const { openToast } = useToastContext();
 
   const handleClose = () => {
     resetAllStates();
@@ -42,7 +43,7 @@ export const DeleteDialog = () => {
     if (isUserMode) {
       if (encrypt(pw) !== env.ADMIN_PW && encrypt(pw) !== selectedSeat.pw) {
         const message = '비밀번호를 확인해주세요. 잊으셨다면 임원에게 문의해주세요.';
-        toast.error(message, { id: message });
+        openToast.error(message);
         return;
       }
     }
@@ -65,12 +66,12 @@ export const DeleteDialog = () => {
         });
 
         resetAllStates();
-        toast.success(message, { id: message });
+        openToast.success(message);
       } else {
-        toast.error(message, { id: message });
+        openToast.error(message);
       }
     } catch (error) {
-      reportErrorMessage(error);
+      openToast.error(getErrorMessage(error));
     }
   };
 
