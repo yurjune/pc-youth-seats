@@ -10,5 +10,10 @@
     "skipLibCheck": true /* 모든 선언 파일(*.d.ts)의 타입 검사 생략 */
   },
   "include": ["./src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "ts-node": {
+    // ts-node + nodemon 사용 시 global.d.ts 파일을 ts-node 가 인식하지 못하는 것을 해결
+    // https://stackoverflow.com/a/62878548
+    "files": true
+  }
 }

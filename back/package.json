@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
-    "nodemon": "nodemon ./dist/app.js",
+    "nodemon": "nodemon --watch src --exec 'npx' 'ts-node' src/app.ts",
     "start": "pm2 start ./dist/app.js",
     "restart": "pm2 restart ./dist/app.js",
     "format": "npx prettier --write ./src",
