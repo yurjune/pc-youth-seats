@@ -19,11 +19,11 @@ interface SeatBoxProps {
 /**
  * seat-active
  * 0: 복도
- * 1: 회색, 예약 가능 좌석
- * 2: 진한 초록, 예약 불가 좌석
+ * 1: 예약 가능 좌석
+ * 2: 예약 불가 좌석
  * 3:
- * 4: 연한 초록, 특수 좌석
- * 5: 파랑, 예약된 좌석
+ * 4: 지정석
+ * 5: 예약된 좌석
  * 6: 공간만 차지하는 투명 좌석
  */
 export const SeatBox = (props: SeatBoxProps) => {

@@ -1,0 +1,15 @@
+.alert {
+  :global(.MuiAlert-icon) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.toast {
+  :global(.MuiPaper-root) {
+    max-width: calc(100vw - 50px);
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 2px 16px;
+  }
+}

@@ -1,6 +1,5 @@
-import { Toaster } from '@components/index';
 import { env } from '@shared/constants';
-import { Suspense, lazy, useEffect } from 'react';
+import { Fragment, Suspense, lazy, useEffect } from 'react';
 import ReactGA from 'react-ga4';
 import { Route, Routes, useLocation } from 'react-router-dom';
 
@@ -23,7 +22,7 @@ const App = () => {
   }, [location]);
 
   return (
-    <>
+    <Fragment>
       <Routes>
         <Route
           path='/'
@@ -50,8 +49,7 @@ const App = () => {
           }
         />
       </Routes>
-      <Toaster />
-    </>
+    </Fragment>
   );
 };
 
