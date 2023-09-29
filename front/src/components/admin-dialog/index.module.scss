@@ -1,24 +1,8 @@
+@import '../../styles/dialog.scss';
+
 .dialog {
-  :global(.MuiPaper-root) {
-    margin: 24px;
-    width: 550px;
-    max-width: 550px;
-  }
-
-  .title {
-    font-size: 24px;
-    padding: 16px 24px 10px;
-  }
-
-  .textFieldContainer {
-    margin: 10px;
-
-    .textField {
-      margin: 10px 0;
-    }
-  }
-
-  .actions {
-    margin-top: 16px;
-  }
+  @include dialog-default();
+  @include dialog-title();
+  @include dialog-textField();
+  @include dialog-actions();
 }
