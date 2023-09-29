@@ -1,4 +1,6 @@
 @import './_reset';
+// https://github.com/orioncactus/pretendard#%EA%B0%80%EB%B3%80-%EB%8B%A4%EC%9D%B4%EB%82%98%EB%AF%B9-%EC%84%9C%EB%B8%8C%EC%85%8B
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css');
 
 *,
 *::before,
@@ -8,8 +10,8 @@
 
 body {
   -webkit-text-size-adjust: 100%;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen-Sans, Ubuntu, Cantarell,
-    'Helvetica Neue', sans-serif;
+  font-family: Pretendard Variable, Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   background-color: #fefefe;
 }
