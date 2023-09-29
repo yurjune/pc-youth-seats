@@ -71,7 +71,9 @@ const Attendance = () => {
             absentSeatIds={absentSeatIds}
             isAbsentMode={checked}
           />
-          <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
+          <div className={styles.checkboxContainer}>
+            <Checkbox label='미출석자 수정하기' checked={checked} onChange={handleCheckboxChange} />
+          </div>
         </SeatsBody>
         <FooterNav>
           <div className={styles.info}>

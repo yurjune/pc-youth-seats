@@ -79,7 +79,9 @@ const Admin = () => {
             absentSeatIds={absentSeatIds}
             isLastWeekMode={checked}
           />
-          <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
+          <div className={styles.checkboxContainer}>
+            <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
+          </div>
         </SeatsBody>
         <FooterNav>
           <div className={styles.info}>
