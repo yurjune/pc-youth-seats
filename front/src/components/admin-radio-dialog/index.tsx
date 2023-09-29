@@ -58,10 +58,10 @@ export const AdminRadioDialog = () => {
           />
         </RadioGroup>
         <DialogActions className={styles.actions}>
-          <Button variant='contained' color='success' onClick={handleOkClick}>
+          <Button variant='outlined' color='primary' onClick={handleOkClick}>
             확인
           </Button>
-          <Button variant='contained' color='error' onClick={handleClose}>
+          <Button variant='outlined' color='warning' onClick={handleClose}>
             취소
           </Button>
         </DialogActions>
