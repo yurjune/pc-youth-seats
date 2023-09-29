@@ -1,4 +1,12 @@
+@import '../../styles/main.scss';
+
 .info {
-  min-width: 440px;
-  margin: 8px 0;
+  min-width: 420px;
+  margin: 8px 0 4px;
+}
+
+@include md {
+  .info {
+    margin-top: 12px;
+  }
 }

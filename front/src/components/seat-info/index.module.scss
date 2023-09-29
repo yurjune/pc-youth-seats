@@ -16,9 +16,9 @@
   }
 
   .seat {
-    width: 20px;
-    height: 20px;
-    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
     border-radius: 3px;
 
     &.active-1 {
@@ -62,7 +62,27 @@
 }
 
 @include md {
-  .container .box > span {
-    font-size: 1rem;
+  .container {
+    .box > span {
+      font-size: 0.9rem;
+    }
+
+    .seat {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+@include lg {
+  .container {
+    .box > span {
+      font-size: 1rem;
+    }
+
+    .seat {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
