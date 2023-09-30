@@ -1,34 +1,49 @@
+@import './responsive.scss';
+
 @mixin dialog-default {
   :global(.MuiPaper-root) {
     margin: 24px;
     width: 550px;
     max-width: 550px;
   }
-
-  :global(.MuiDialogActions-root) {
-    padding: 8px 0;
-  }
 }
 
 @mixin dialog-title {
   .title {
-    font-size: 24px;
+    font-size: 22px;
     padding: 16px 24px 10px;
+  }
+
+  @include md {
+    .title {
+      font-size: 24px;
+    }
   }
 }
 
 @mixin dialog-textField {
   .textFieldContainer {
-    margin: 10px 0;
+    margin: 8px 0;
 
     .textField {
       margin: 10px 0;
+      @include change-underline-hover-color(#9c27b0);
     }
   }
 }
 
 @mixin dialog-actions {
+  :global(.MuiDialogActions-root) {
+    padding: 0;
+  }
+
   .actions {
     margin-top: 16px;
+  }
+}
+
+@mixin change-underline-hover-color($color) {
+  :global(.MuiInput-underline:hover:before) {
+    border-bottom: 2px solid $color !important;
   }
 }

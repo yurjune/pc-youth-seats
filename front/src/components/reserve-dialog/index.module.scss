@@ -7,8 +7,14 @@
   @include dialog-actions();
 
   .contentText {
-    font-size: 14px;
+    font-size: 12px;
     color: #800080;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
+  }
+
+  @include md {
+    .contentText {
+      font-size: 14px;
+    }
   }
 }
