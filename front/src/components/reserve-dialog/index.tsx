@@ -144,7 +144,7 @@ export const ReserveDialog = () => {
           <Button variant='outlined' color='primary' onClick={handleOkClick}>
             예약
           </Button>
-          <Button variant='outlined' color='warning' onClick={handleClose}>
+          <Button variant='outlined' color='error' onClick={handleClose}>
             취소
           </Button>
         </DialogActions>

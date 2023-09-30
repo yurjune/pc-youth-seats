@@ -121,7 +121,7 @@ export const DeleteDialog = () => {
           <Button variant='outlined' color='primary' onClick={handleOkClick}>
             삭제
           </Button>
-          <Button variant='outlined' color='warning' onClick={handleClose}>
+          <Button variant='outlined' color='error' onClick={handleClose}>
             취소
           </Button>
         </DialogActions>
