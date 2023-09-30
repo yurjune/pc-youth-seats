@@ -79,7 +79,7 @@ export const DeleteDialog = () => {
     <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>좌석 확인</DialogTitle>
       <DialogContent>
-        <div className={styles.textFieldContainer}>
+        <div>
           <TextField
             value={selectedSeat?.id ?? ''}
             className={styles.textField}

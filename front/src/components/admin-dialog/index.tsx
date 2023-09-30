@@ -42,7 +42,7 @@ export const AdminDialog = () => {
     <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>관리자 확인</DialogTitle>
       <DialogContent>
-        <div className={styles.textFieldContainer}>
+        <div>
           <TextField
             value={pw}
             onChange={handlePwChange}
