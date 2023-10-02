@@ -49,7 +49,7 @@ export const SeatBox = (props: SeatBoxProps) => {
     }
 
     if (!checkIsAvailableForReservation()) {
-      openToast.info('예약 가능한 시간대가 아닙니다.');
+      openToast.info('매주 월요일 오후 9시부터 예약 가능합니다.');
       return;
     }
 

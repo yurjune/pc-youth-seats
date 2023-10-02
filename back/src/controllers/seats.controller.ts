@@ -42,7 +42,7 @@ class SeatsController {
     next: NextFunction,
   ) => {
     if (!checkIsAvailableForReservation()) {
-      return res.send({ ok: false, message: '예약 가능한 시간대가 아닙니다.' });
+      return res.send({ ok: false, message: '매주 월요일 오후 9시부터 예약 가능합니다.' });
     }
 
     const { params } = req.body;
