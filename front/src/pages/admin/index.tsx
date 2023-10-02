@@ -13,7 +13,7 @@ import {
 } from '@components/index';
 import api from '@shared/api';
 import { isMasterAtom } from '@shared/atoms';
-import { useGAEventsTracker, useSeats } from '@shared/hooks';
+import { useSeats } from '@shared/hooks';
 import type { Seats } from '@shared/models';
 import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
@@ -28,7 +28,6 @@ const Admin = () => {
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
   const navigate = useNavigate();
-  const { trackEvent } = useGAEventsTracker();
 
   const currentSeats = checked ? lastWeekSeats : seats;
 
@@ -63,10 +62,6 @@ const Admin = () => {
   }, []);
 
   const handleCheckboxChange: CheckboxProps['onChange'] = (e) => {
-    if (e.target.checked) {
-      trackEvent('see_last_week_seats');
-    }
-
     setChecked(e.target.checked);
   };
 
