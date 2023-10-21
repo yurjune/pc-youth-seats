@@ -4,7 +4,12 @@
   "private": true,
   "scripts": {
     "build": "vite build",
-    "format": "npx prettier --write ./src",
+    "deploy": "vite build && cp -rf dist/* ../back/public",
+    "dev": "vite",
+    "format": "prettier --write ./src",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "typecheck": "tsc",
     "test": "jest --watch --cache --detectOpenHandles"
   },
   "eslintConfig": {
