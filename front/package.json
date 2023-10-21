@@ -1,9 +1,8 @@
 {
-  "name": "front",
-  "version": "0.1.0",
+  "name": "pc-youth-seats-front",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "vite",
     "build": "vite build",
     "format": "npx prettier --write ./src",
     "test": "jest --watch --cache --detectOpenHandles"
