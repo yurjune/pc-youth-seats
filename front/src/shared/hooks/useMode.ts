@@ -6,9 +6,9 @@ export const useMode = () => {
   const isMaster = useAtomValue(isMasterAtom);
   const location = useLocation();
 
-  const isUserMode = Boolean(location.pathname === '/');
-  const isAdminMode = Boolean(isMaster && location.pathname === '/admin');
-  const isAttendanceMode = Boolean(isMaster && location.pathname === '/attendance');
+  const isUserMode = location.pathname === '/';
+  const isAdminMode = isMaster && location.pathname === '/admin';
+  const isAttendanceMode = isMaster && location.pathname === '/attendance';
 
   return {
     isUserMode,
