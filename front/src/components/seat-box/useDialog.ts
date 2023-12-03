@@ -1,14 +1,14 @@
-import { useUpdateAtom } from 'jotai/utils';
 import {
   deleteDialogOpenAtom,
   redeemusDialogOpenAtom,
   reserveDialogOpenAtom,
   selectedSeatAtom,
   selectedSeatLineAtom,
-} from '../../shared/atoms';
-import type { Seat } from '../../shared/models';
-import { useMode } from '../../shared/hooks';
-import { APPOINTED_SEATS } from '../../shared/utils';
+} from '@shared/atoms';
+import { useMode } from '@shared/hooks/useMode';
+import type { Seat } from '@shared/models/seat.model';
+import { APPOINTED_SEATS } from '@shared/utils/seat';
+import { useUpdateAtom } from 'jotai/utils';
 
 export const useDialog = () => {
   const { isUserMode } = useMode();

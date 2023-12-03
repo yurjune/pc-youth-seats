@@ -1,8 +1,9 @@
 import { useToastContext } from '@shared/context/ToastContext';
-import { useMode } from '@shared/hooks';
-import type { Seat } from '@shared/models';
+import { useMode } from '@shared/hooks/useMode';
+import type { Seat } from '@shared/models/seat.model';
 import socket from '@shared/socket';
-import { checkIsAvailableForReservation, getErrorMessage } from '@shared/utils';
+import { getErrorMessage } from '@shared/utils';
+import { checkIsAvailableForReservation } from '@shared/utils/time';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 import { useDialog } from './useDialog';

@@ -11,16 +11,16 @@ import api from '@shared/api';
 import { reserveDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
 import { useToastContext } from '@shared/context/ToastContext';
-import { useInputValidate, useMode } from '@shared/hooks';
+import { useInputValidate } from '@shared/hooks/useInputValidate';
+import { useMode } from '@shared/hooks/useMode';
 import socket from '@shared/socket';
+import { encrypt, getErrorMessage } from '@shared/utils';
 import {
-  encrypt,
   getErrorFromValidators,
-  getErrorMessage,
   validateName,
   validatePw,
   validatePwCheck,
-} from '@shared/utils';
+} from '@shared/utils/validate';
 import { useAtom } from 'jotai';
 import styles from './index.module.scss';
 

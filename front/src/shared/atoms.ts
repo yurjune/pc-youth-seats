@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import type { Seat } from './models';
+import type { Seat } from './models/seat.model';
 
 const storage = createJSONStorage<boolean>(() => sessionStorage);
 

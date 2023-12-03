@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { SeatParams, Seats } from '../models';
+import { SeatParams, Seats } from '../models/seat.model';
 
 export const useSeats = () => {
   const [seats, setSeats] = useState<Seats>({});

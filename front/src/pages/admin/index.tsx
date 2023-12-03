@@ -13,8 +13,8 @@ import {
 } from '@components/index';
 import api from '@shared/api';
 import { isMasterAtom } from '@shared/atoms';
-import { useSeats } from '@shared/hooks';
-import type { Seats } from '@shared/models';
+import { useSeats } from '@shared/hooks/useSeats';
+import type { Seats } from '@shared/models/seat.model';
 import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
 import { useEffect, useState } from 'react';

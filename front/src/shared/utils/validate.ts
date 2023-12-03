@@ -1,9 +1,9 @@
 import * as A from 'fp-ts/Array';
 import { fromPredicate, type Either } from 'fp-ts/Either';
-import { pipe } from 'fp-ts/function';
 import * as O from 'fp-ts/Option';
 import { type Predicate } from 'fp-ts/Predicate';
-import { INITIAL_ERROR, StateValidator } from '../hooks';
+import { pipe } from 'fp-ts/function';
+import { INITIAL_ERROR, StateValidator } from '../hooks/useInputValidate';
 import { maxLength, minLength, samePassword } from './rules';
 
 // 공통 검증 함수
@@ -47,4 +47,4 @@ const validatePwCheck =
   (pwCheck: string): Either<string, string> =>
     pipe(pwCheck, validate([samePassword(exPw)], '비밀번호가 일치하지 않습니다.'));
 
-export { validate, getErrorFromValidators, validateName, validatePw, validatePwCheck };
+export { getErrorFromValidators, validate, validateName, validatePw, validatePwCheck };

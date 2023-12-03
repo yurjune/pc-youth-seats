@@ -1,4 +1,4 @@
-import { useMode } from '@shared/hooks';
+import { useMode } from '@shared/hooks/useMode';
 import clsx from 'clsx';
 import styles from './index.module.scss';
 

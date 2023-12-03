@@ -13,7 +13,7 @@ import {
 } from '@components/index';
 import api from '@shared/api';
 import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
-import { useSeats } from '@shared/hooks';
+import { useSeats } from '@shared/hooks/useSeats';
 import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';

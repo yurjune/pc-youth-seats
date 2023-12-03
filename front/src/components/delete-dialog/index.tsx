@@ -9,7 +9,8 @@ import {
 import api from '@shared/api';
 import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
-import { useInput, useMode } from '@shared/hooks';
+import { useInput } from '@shared/hooks/useInput';
+import { useMode } from '@shared/hooks/useMode';
 import socket from '@shared/socket';
 import { encrypt, getErrorMessage } from '@shared/utils';
 import { useAtom } from 'jotai';

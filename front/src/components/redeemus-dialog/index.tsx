@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
-import { useInput } from '@shared/hooks';
+import { useInput } from '@shared/hooks/useInput';
 import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
