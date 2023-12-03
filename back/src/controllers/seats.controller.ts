@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler } from 'express';
 import fs from 'fs';
-import { CURRENT_SEATS, ORIGIN_SEATS, JSON_DIRECTORY, LAST_WEEK_SEATS } from '../constants';
+import { CURRENT_SEATS, JSON_DIRECTORY, LAST_WEEK_SEATS, ORIGIN_SEATS } from '../constants';
 import type {
   CancelReservationReq,
   CancelReservationRes,
@@ -8,11 +8,12 @@ import type {
   GetSeatsRes,
   MakeReservationReq,
   MakeReservationRes,
-  Seats,
   TypedReq,
   TypedRes,
-} from '../models';
-import { checkIsAvailableForReservation } from '../utils';
+} from '../models/router.model';
+import type { Seats } from '../models/seat.model';
+import { checkIsAvailableForReservation } from '../utils/time';
+
 const fsPromise = fs.promises;
 
 class SeatsController {

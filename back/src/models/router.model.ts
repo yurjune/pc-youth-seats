@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { SeatParams, Seats } from './index';
+import { SeatParams, Seats } from './seat.model';
 import { Send } from 'express-serve-static-core';
 
 // ref. https://javascript.plainenglish.io/typed-express-request-and-response-with-typescript-7277aea028c

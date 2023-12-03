@@ -1,7 +1,7 @@
 import fs from 'fs';
 import schedule from 'node-schedule';
 
-import { getYearMonthDate, getKoreanTime } from './utils';
+import { getYearMonthDate, getKoreanTime } from './utils/time';
 import {
   CURRENT_SEATS,
   ORIGIN_SEATS,

@@ -1,7 +1,7 @@
 import { Server as SocketServer } from 'socket.io';
 import { Server } from 'http';
-import { ClientToServerEvents, ServerToClientEvents } from './models';
-import { checkIsLateReservation } from './utils';
+import { ClientToServerEvents, ServerToClientEvents } from './models/socket.model';
+import { checkIsLateReservation } from './utils/time';
 
 const launchSocketIO = (expressServer: Server) => {
   const io = new SocketServer<ClientToServerEvents, ServerToClientEvents>(expressServer, {

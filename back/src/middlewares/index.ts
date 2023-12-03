@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { getKoreanTime } from '../utils';
+import { getKoreanTime } from '../utils/time';
 
 // this logging middleware should be executed only if seat reserve or cancel succeed
 export function logSeatChange(req: Request) {
