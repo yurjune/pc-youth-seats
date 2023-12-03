@@ -1,7 +1,7 @@
 import type { Seats } from '@shared/models/seat.model';
+import { getNumberOfSeats } from '@shared/utils/seat';
 import { useMemo } from 'react';
 import styles from './index.module.scss';
-import { getNumberOfSeats } from '@shared/utils/seat';
 
 interface ParticipantsProps {
   seats: Seats | undefined;

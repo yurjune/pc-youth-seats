@@ -9,13 +9,13 @@ import {
 import api from '@shared/api';
 import { deleteDialogOpenAtom, selectedSeatAtom, selectedSeatLineAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
+import { useToastContext } from '@shared/context/ToastContext';
 import { useInput } from '@shared/hooks/useInput';
 import { useMode } from '@shared/hooks/useMode';
 import socket from '@shared/socket';
 import { encrypt, getErrorMessage } from '@shared/utils';
 import { useAtom } from 'jotai';
 import styles from './index.module.scss';
-import { useToastContext } from '@shared/context/ToastContext';
 
 export const DeleteDialog = () => {
   const { isUserMode, isAttendanceMode } = useMode();

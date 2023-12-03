@@ -8,12 +8,12 @@ import {
 } from '@mui/material';
 import { redeemusDialogOpenAtom, reserveDialogOpenAtom, selectedSeatAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
+import { useToastContext } from '@shared/context/ToastContext';
 import { useInput } from '@shared/hooks/useInput';
 import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import styles from './index.module.scss';
-import { useToastContext } from '@shared/context/ToastContext';
 
 export const RedeemusDialog = () => {
   const [open, setOpen] = useAtom(redeemusDialogOpenAtom);
