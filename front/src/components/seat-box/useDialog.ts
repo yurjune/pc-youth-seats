@@ -8,7 +8,7 @@ import {
 } from '../../shared/atoms';
 import type { Seat } from '../../shared/models';
 import { useMode } from '../../shared/hooks';
-import { appointedSeats } from '../../shared/utils';
+import { APPOINTED_SEATS } from '../../shared/utils';
 
 export const useDialog = () => {
   const { isUserMode } = useMode();
@@ -19,7 +19,7 @@ export const useDialog = () => {
   const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
 
   const openDialog = (seat: Seat, seatLine: string) => {
-    if (appointedSeats.includes(seat.name)) return;
+    if (APPOINTED_SEATS.includes(seat.name)) return;
 
     switch (seat.seat_active) {
       case 1: {

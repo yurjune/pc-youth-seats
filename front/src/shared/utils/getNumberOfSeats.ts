@@ -1,34 +1,21 @@
 import { Seats } from '../models';
 
-// 좌석 현황 집계에 포함되는 지정석
-export const appointedSeats = ['교역자', '방송팀', '새가족'];
+export const APPOINTED_SEATS = ['교역자', '방송팀', '새가족'];
+export const ACTIVE_SEATS = [1, 4, 5];
 
-export const getNumberOfSeats = (seats: Seats | undefined) => {
-  let activeSeats = 0;
-  let totalSeats = 0;
+export const getNumberOfSeats = (seats: Seats) => {
+  const allSeats = Object.values(seats).flat();
 
-  if (seats == null) {
-    return { activeSeats, totalSeats };
-  }
+  const totalSeatCount = allSeats.reduce(
+    (acc, seat) => (ACTIVE_SEATS.includes(seat.seat_active) ? acc + 1 : acc),
+    0,
+  );
 
-  Object.keys(seats).forEach((line) => {
-    seats[line].forEach((seat) => {
-      const { seat_active, name } = seat;
+  const activeSeatCount = allSeats.reduce((acc, { seat_active, name }) => {
+    if (seat_active === 5) return acc + 1;
+    if (seat_active === 4 && APPOINTED_SEATS.includes(name)) return acc + 1;
+    return acc;
+  }, 0);
 
-      if ([1, 4, 5].includes(seat_active)) {
-        totalSeats += 1;
-      }
-
-      if (seat_active === 5) {
-        activeSeats += 1;
-      }
-
-      // 교역자 3석, 방송팀 1석, 새가족 2석 = 총 6석
-      if (seat_active === 4 && appointedSeats.includes(name)) {
-        activeSeats += 1;
-      }
-    });
-  });
-
-  return { activeSeats, totalSeats };
+  return [activeSeatCount, totalSeatCount] as const;
 };

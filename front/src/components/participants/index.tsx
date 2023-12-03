@@ -8,14 +8,14 @@ interface ParticipantsProps {
 }
 
 export const Participants = ({ seats }: ParticipantsProps) => {
-  const { activeSeats, totalSeats } = useMemo(() => getNumberOfSeats(seats), [seats]);
+  const [activeSeatCount, totalSeatCount] = useMemo(() => getNumberOfSeats(seats ?? {}), [seats]);
 
   return (
     <div className={styles.participants}>
       <span>좌석 현황: </span>
-      <strong>{activeSeats}</strong>
+      <strong>{activeSeatCount}</strong>
       <span> / </span>
-      <strong>{totalSeats}</strong>
+      <strong>{totalSeatCount}</strong>
     </div>
   );
 };
