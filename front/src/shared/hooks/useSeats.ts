@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { SeatParams, Seats } from '../models';
 
 export const useSeats = () => {
-  const [seats, setSeats] = useState<Seats>();
+  const [seats, setSeats] = useState<Seats>({});
 
   const modifySeats = (params: SeatParams) => {
-    if (params == null) {
-      return;
-    }
-
     const newSeat = {
       id: params.id,
       seat_active: params.seat_active,
@@ -18,12 +14,7 @@ export const useSeats = () => {
     };
 
     setSeats((prev) => {
-      if (prev == null) {
-        return prev;
-      }
-
       const newLine = prev[params.line]?.map((seat) => (seat.id === params.id ? newSeat : seat));
-
       return { ...prev, [params.line]: newLine };
     });
   };
