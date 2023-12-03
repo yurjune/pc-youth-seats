@@ -7,29 +7,16 @@ dayjs.extend(timezone);
 
 export const checkIsAvailableForReservation = () => {
   const { day, hour } = getKoreanTime();
-
   // 월요일 00시 ~ 21시 예약불가
-  if (day === 1 && hour < 21) {
-    return false;
-  }
-
-  return true;
+  return day !== 1 || hour >= 21;
 };
 
 export const checkIsLateReservation = () => {
   const { day, hour, minute } = getKoreanTime();
 
-  if (day !== 0) {
-    return false;
-  }
-
-  // 일요일 1:20 이후
-  if (hour === 13 && minute >= 20) {
-    return true;
-  }
-
-  if (hour >= 14) {
-    return true;
+  // 일요일 13:20 이후
+  if (day === 0) {
+    return (hour === 13 && minute >= 20) || hour >= 14;
   }
 
   return false;
