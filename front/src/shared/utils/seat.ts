@@ -1,6 +1,6 @@
 import { Seats } from '@shared/models/seat.model';
 
-export const APPOINTED_SEATS = ['교역자', '방송팀', '새가족', '05또래'];
+export const APPOINTED_SEATS = ['교역자', '방송팀', '새가족', '05또래', '사역팀'];
 export const ACTIVE_SEATS = [1, 4, 5];
 
 export const getNumberOfSeats = (seats: Seats) => {
