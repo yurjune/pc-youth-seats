@@ -7,7 +7,7 @@ import {
 } from '@shared/atoms';
 import { useMode } from '@shared/hooks/useMode';
 import type { Seat } from '@shared/models/seat.model';
-import { APPOINTED_SEATS } from '@shared/utils/seat';
+import { APPOINTED_SEAT_NAMES } from '@shared/utils/seat';
 import { useUpdateAtom } from 'jotai/utils';
 
 export const useDialog = () => {
@@ -19,14 +19,14 @@ export const useDialog = () => {
   const setRedeemusDialogOpen = useUpdateAtom(redeemusDialogOpenAtom);
 
   const openDialog = (seat: Seat, seatLine: string) => {
-    if (APPOINTED_SEATS.includes(seat.name)) return;
-
     switch (seat.seat_active) {
       case 1: {
         setReserveDialogOpen(true);
         break;
       }
       case 4: {
+        if (APPOINTED_SEAT_NAMES.includes(seat.name)) return;
+
         if (isUserMode) {
           setRedeemusDialogOpen(true);
         } else {
