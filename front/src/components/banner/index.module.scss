@@ -1,0 +1,33 @@
+@import '../../styles/main.scss';
+
+.alert {
+  display: flex;
+  justify-content: center;
+
+  :global(.MuiAlert-standard) {
+    padding: 2px 12px;
+  }
+
+  :global(.MuiAlert-message) {
+    font-weight: bold;
+    font-size: 0.8rem;
+    line-height: 20px;
+  }
+
+  :global(.MuiAlert-icon) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@include md {
+  .alert {
+    :global(.MuiAlert-standard) {
+      padding: 6px 16px;
+    }
+
+    :global(.MuiAlert-message) {
+      font-size: 14px;
+    }
+  }
+}
