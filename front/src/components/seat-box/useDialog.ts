@@ -6,7 +6,7 @@ import {
   selectedSeatLineAtom,
 } from '@shared/atoms';
 import { useMode } from '@shared/hooks/useMode';
-import type { Seat } from '@shared/models/seat.model';
+import { Seat, SeatActive } from '@shared/models/seat.model';
 import { APPOINTED_SEAT_NAMES } from '@shared/utils/seat';
 import { useUpdateAtom } from 'jotai/utils';
 
@@ -20,11 +20,11 @@ export const useDialog = () => {
 
   const openDialog = (seat: Seat, seatLine: string) => {
     switch (seat.seat_active) {
-      case 1: {
+      case SeatActive.VACANT: {
         setReserveDialogOpen(true);
         break;
       }
-      case 4: {
+      case SeatActive.PRIVATE: {
         if (APPOINTED_SEAT_NAMES.includes(seat.name)) return;
 
         if (isUserMode) {
@@ -34,7 +34,7 @@ export const useDialog = () => {
         }
         break;
       }
-      case 5: {
+      case SeatActive.RESERVED: {
         setDeleteDialogOpen(true);
         break;
       }

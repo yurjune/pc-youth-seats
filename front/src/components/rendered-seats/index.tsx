@@ -1,4 +1,4 @@
-import type { Seats } from '@shared/models/seat.model';
+import { SeatActive, Seats } from '@shared/models/seat.model';
 import { SeatBox } from '../seat-box';
 import { Spinner } from '../spinner';
 import styles from './index.module.scss';
@@ -20,7 +20,7 @@ export const RenderedSeats = ({ seats, ...rest }: RenderedSeatsProps) => {
         <div key={idx}>
           <div className={styles.line}>
             {seats[line].map((seat, idx) => {
-              if (seat.seat_active === 0) {
+              if (seat.seat_active === SeatActive.PATH) {
                 return <div key={idx} className={styles['active-0']} />;
               }
 

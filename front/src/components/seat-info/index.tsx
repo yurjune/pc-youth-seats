@@ -8,19 +8,19 @@ export const SeatInfo = () => {
   return (
     <div className={styles.container}>
       <div className={styles.box}>
-        <div className={clsx(styles.seat, styles['active-1'])} />
+        <div className={clsx(styles.seat, styles.vacant)} />
         <span>선택 가능</span>
       </div>
       {/* <div className={styles.box}>
-        <div className={clsx(styles.seat, styles['active-2'])} />
+        <div className={clsx(styles.seat, styles.disabled)} />
         <span>선택 불가</span>
       </div> */}
       <div className={styles.box}>
-        <div className={clsx(styles.seat, styles['active-4'])} />
+        <div className={clsx(styles.seat, styles.private)} />
         <span>지정 좌석</span>
       </div>
       <div className={styles.box}>
-        <div className={clsx(styles.seat, styles['active-5'])} />
+        <div className={clsx(styles.seat, styles.reserved)} />
         <span>선택 완료</span>
       </div>
       {isAttendanceMode ? (
