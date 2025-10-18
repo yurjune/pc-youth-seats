@@ -1,7 +1,7 @@
 @import '../../styles/main.scss';
 
 .participants {
-  color: $active1-color;
+  color: $vacant-color;
   text-align: center;
   font-size: 14px;
 
@@ -9,7 +9,7 @@
     font-weight: bolder;
 
     &:first-of-type {
-      color: $active5-color;
+      color: $reserved-color;
     }
   }
 }

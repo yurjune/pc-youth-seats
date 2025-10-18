@@ -16,36 +16,36 @@
   text-align: center;
   border-radius: 3px;
   cursor: pointer;
-  background: $active1-color;
+  background: $vacant-color;
 }
 
 .seat {
   &.vacant {
-    background: $active1-color;
+    background: $vacant-color;
 
     &:not(.lastWeek) {
       @media (hover: hover) {
         &:hover {
-          background: $active1-hover-color;
+          background: $vacant-hover-color;
         }
       }
     }
   }
 
   &.disabled {
-    background: $active2-color;
+    background: $disabled-color;
   }
 
   &.private {
-    background: $active4-color;
+    background: $private-color;
   }
 
   &.reserved:not(.lastWeek) {
-    background: $active5-color;
+    background: $reserved-color;
 
     @media (hover: hover) {
       &:hover {
-        background: $active5-hover-color;
+        background: $reserved-hover-color;
       }
     }
   }
