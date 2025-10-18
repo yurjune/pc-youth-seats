@@ -24,7 +24,7 @@ describe('Home page', () => {
     setUp();
 
     expect(getSeatsSpy).toHaveBeenCalledTimes(1);
-    expect(await screen.findByText('A-1')).toBeInTheDocument();
+    expect(await screen.findByText('A-6')).toBeInTheDocument();
     expect(await screen.findByText('사용자1')).toBeInTheDocument();
   });
 
@@ -37,13 +37,13 @@ describe('Home page', () => {
 
   it('open reserve dialog when click a seat', async () => {
     setUp();
-    await userEvent.click(await screen.findByText('A-6'));
+    await userEvent.click(await screen.findByText('A-8'));
     expect(screen.getByText('좌석 예약'));
   });
 
   it('renders error message if validation fails when making a reservation', async () => {
     setUp();
-    await userEvent.click(await screen.findByText('A-6'));
+    await userEvent.click(await screen.findByText('A-8'));
     await userEvent.type(screen.getByLabelText('이름'), '가');
     await userEvent.type(screen.getByLabelText('비밀번호'), '12');
     await userEvent.click(screen.getByRole('button', { name: '예약' }));
@@ -59,7 +59,7 @@ describe('Home page', () => {
     const makeReservationSpy = jest.spyOn(api, 'makeReservation');
     setUp();
 
-    await userEvent.click(await screen.findByText('A-6'));
+    await userEvent.click(await screen.findByText('A-8'));
     await userEvent.type(screen.getByLabelText('이름'), '사용자');
     await userEvent.type(screen.getByLabelText('비밀번호'), '1234');
     await userEvent.type(screen.getByLabelText('비밀번호 확인'), '1234');
@@ -73,7 +73,7 @@ describe('Home page', () => {
     const cancelReservationSpy = jest.spyOn(api, 'cancelReservation');
     setUp();
 
-    await userEvent.click(await screen.findByText('A-1'));
+    await userEvent.click(await screen.findByText('A-6'));
     await userEvent.type(screen.getByLabelText('비밀번호'), '1234');
     await userEvent.click(screen.getByRole('button', { name: '삭제' }));
 

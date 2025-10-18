@@ -21,7 +21,7 @@
     margin-right: 6px;
     border-radius: 3px;
 
-    &.active-1 {
+    &.vacant {
       background: $active1-color;
 
       &:hover {
@@ -29,15 +29,15 @@
       }
     }
 
-    &.active-2 {
+    &.disabled {
       background: $active2-color;
     }
 
-    &.active-4 {
+    &.private {
       background: $active4-color;
     }
 
-    &.active-5 {
+    &.reserved {
       background: $active5-color;
 
       @media (hover: hover) {

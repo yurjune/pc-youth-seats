@@ -38,15 +38,15 @@
     },
     {
       "id": "A-6",
-      "seat_active": 3,
-      "name": "사용자1",
-      "pw": "1234"
+      "seat_active": 0,
+      "name": "",
+      "pw": ""
     },
     {
       "id": "A-7",
-      "seat_active": 3,
-      "name": "사용자2",
-      "pw": "1234"
+      "seat_active": 0,
+      "name": "",
+      "pw": ""
     },
     {
       "id": "A-8",

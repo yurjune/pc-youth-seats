@@ -11,7 +11,7 @@ import type {
   TypedReq,
   TypedRes,
 } from '../models/router.model';
-import type { Seats } from '../models/seat.model';
+import { SeatActive, Seats } from '../models/seat.model';
 import { checkIsAvailableForReservation } from '../utils/time';
 
 const fsPromise = fs.promises;
@@ -57,7 +57,7 @@ class SeatsController {
           continue;
         }
 
-        if (parsedJSON[params.line][idx].seat_active === 5) {
+        if (parsedJSON[params.line][idx].seat_active === SeatActive.RESERVED) {
           return res.send({ ok: false, message: '이미 예약된 좌석입니다.' });
         }
 
@@ -86,7 +86,7 @@ class SeatsController {
       .readFile(`${JSON_DIRECTORY}/${ORIGIN_SEATS}`, 'utf8')
       .then((file) => {
         const parsedJSON: Seats = JSON.parse(file);
-        let defaultSeatActive = 0;
+        let defaultSeatActive = SeatActive.DISABLED;
         let defaultSeatName = '';
 
         for (const seat of parsedJSON[params.line]) {

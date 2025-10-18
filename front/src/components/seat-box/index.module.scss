@@ -20,7 +20,7 @@
 }
 
 .seat {
-  &.active-1 {
+  &.vacant {
     background: $active1-color;
 
     &:not(.lastWeek) {
@@ -32,15 +32,15 @@
     }
   }
 
-  &.active-2 {
+  &.disabled {
     background: $active2-color;
   }
 
-  &.active-4 {
+  &.private {
     background: $active4-color;
   }
 
-  &.active-5:not(.lastWeek) {
+  &.reserved:not(.lastWeek) {
     background: $active5-color;
 
     @media (hover: hover) {
@@ -50,11 +50,11 @@
     }
   }
 
-  &.active-5.lastWeek {
+  &.reserved.lastWeek {
     background: $lastWeek-color;
   }
 
-  &.active-6 {
+  &.invisible {
     background: transparent;
   }
 

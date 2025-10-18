@@ -13,6 +13,7 @@ import { env } from '@shared/constants';
 import { useToastContext } from '@shared/context/ToastContext';
 import { useInputValidate } from '@shared/hooks/useInputValidate';
 import { useMode } from '@shared/hooks/useMode';
+import { SeatActive } from '@shared/models/seat.model';
 import socket from '@shared/socket';
 import { encrypt, getErrorMessage } from '@shared/utils';
 import {
@@ -68,7 +69,7 @@ export const ReserveDialog = () => {
     try {
       const params = {
         id: selectedSeat.id,
-        seat_active: 5,
+        seat_active: SeatActive.RESERVED,
         line: selectedSeatLine,
         name,
         pw: isUserMode ? encrypt(pw) : env.ADMIN_PW,

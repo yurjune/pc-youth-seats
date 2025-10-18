@@ -8,7 +8,6 @@ export const useSeats = () => {
     const newSeat = {
       id: params.id,
       seat_active: params.seat_active,
-      seat_num: 100, // TODO
       name: params.name,
       pw: params.pw,
     };
