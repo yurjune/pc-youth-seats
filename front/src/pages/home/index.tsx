@@ -1,5 +1,5 @@
 import {
-  AdminDialog,
+  AdminEntryDialog,
   AdminRadioDialog,
   DeleteDialog,
   FooterNav,
@@ -12,7 +12,7 @@ import {
   SeatsBody,
 } from '@components/index';
 import api from '@shared/api';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
+import { adminEntryDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
 import { useSeats } from '@shared/hooks/useSeats';
 import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
@@ -23,7 +23,8 @@ import styles from './index.module.scss';
 const Home = () => {
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
-  const setAdminDialogOpen = useUpdateAtom(adminDialogOpenAtom);
+
+  const setAdminEntryDialogOpen = useUpdateAtom(adminEntryDialogOpenAtom);
   const setAdminRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Home = () => {
     if (isMaster) {
       setAdminRadioDialogOpen(true);
     } else {
-      setAdminDialogOpen(true);
+      setAdminEntryDialogOpen(true);
     }
   };
 
@@ -59,10 +60,11 @@ const Home = () => {
           <Participants seats={seats} />
         </FooterNav>
       </Layout>
+
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />
-      <AdminDialog />
+      <AdminEntryDialog />
       <AdminRadioDialog />
     </>
   );

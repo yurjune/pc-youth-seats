@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { adminDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
+import { adminEntryDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
 import { useToastContext } from '@shared/context/ToastContext';
 import { useInput } from '@shared/hooks/useInput';
@@ -15,10 +15,10 @@ import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
 import styles from './index.module.scss';
 
-export const AdminDialog = () => {
+export const AdminEntryDialog = () => {
   const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
   const setIsMaster = useUpdateAtom(isMasterAtom);
-  const [open, setOpen] = useAtom(adminDialogOpenAtom);
+  const [open, setOpen] = useAtom(adminEntryDialogOpenAtom);
   const [pw, handlePwChange, setPw] = useInput('');
   const { openToast } = useToastContext();
 
