@@ -5,14 +5,11 @@ interface SeatsBodyProps {
   onEntranceClick?: () => void;
 }
 
-export const SeatsBody = ({ children, onEntranceClick }: PropsWithChildren<SeatsBodyProps>) => {
+export const SeatsBody = ({ children }: PropsWithChildren<SeatsBodyProps>) => {
   return (
     <div>
-      <div className={styles.title}>강단</div>
+      <div className={styles.title}>스크린</div>
       {children}
-      <div className={styles.title} onClick={onEntranceClick}>
-        입구
-      </div>
     </div>
   );
 };

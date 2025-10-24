@@ -15,10 +15,10 @@ export const SeatInfo = () => {
         <div className={clsx(styles.seat, styles.disabled)} />
         <span>선택 불가</span>
       </div> */}
-      <div className={styles.box}>
-        <div className={clsx(styles.seat, styles.private)} />
-        <span>지정 좌석</span>
-      </div>
+      {/* <div className={styles.box}> */}
+      {/*   <div className={clsx(styles.seat, styles.private)} /> */}
+      {/*   <span>지정 좌석</span> */}
+      {/* </div> */}
       <div className={styles.box}>
         <div className={clsx(styles.seat, styles.reserved)} />
         <span>선택 완료</span>

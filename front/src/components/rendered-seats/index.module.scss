@@ -11,8 +11,8 @@
   justify-content: center;
 
   .active-0 {
-    width: 5px;
-    height: 5px;
+    width: 30px;
+    height: 30px;
     align-self: center;
   }
 }
@@ -24,8 +24,8 @@
 
   .line {
     .active-0 {
-      width: 10px;
-      height: 10px;
+      width: 40px;
+      height: 40px;
     }
   }
 }
@@ -33,5 +33,12 @@
 @include lg {
   .container {
     width: 1200px;
+  }
+
+  .line {
+    .active-0 {
+      width: 50px;
+      height: 50px;
+    }
   }
 }

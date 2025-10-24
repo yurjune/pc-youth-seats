@@ -27,7 +27,6 @@ export const RenderedSeats = ({ seats, ...rest }: RenderedSeatsProps) => {
               return <SeatBox key={idx} seat={seat} seatLine={line} {...rest} />;
             })}
           </div>
-          {line === 'seat_line_6' && <br />}
         </div>
       ))}
     </div>
