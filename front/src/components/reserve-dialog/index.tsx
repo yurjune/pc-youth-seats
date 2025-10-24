@@ -94,12 +94,6 @@ export const ReserveDialog = () => {
     <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>좌석 예약</DialogTitle>
       <DialogContent>
-        {isUserMode && (
-          <DialogContentText className={styles.contentText}>
-            * 예약 가능 시간: 매주 월요일 오후 9시 ~
-            <br />* 부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
-          </DialogContentText>
-        )}
         <div>
           <TextField
             value={name}
