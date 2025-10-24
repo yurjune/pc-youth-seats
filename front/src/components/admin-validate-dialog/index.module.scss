@@ -1,0 +1,8 @@
+@import '../../styles/dialog.scss';
+
+.dialog {
+  @include dialog-default();
+  @include dialog-title();
+  @include dialog-textField();
+  @include dialog-actions();
+}

@@ -1,4 +1,5 @@
 export * from './admin-entry-dialog';
+export * from './admin-validate-dialog';
 export * from './admin-radio-dialog';
 export * from './delete-dialog';
 export * from './redeemus-dialog';

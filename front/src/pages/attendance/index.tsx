@@ -1,4 +1,5 @@
 import {
+  AdminValidateDialog,
   Checkbox,
   DeleteDialog,
   FooterNav,
@@ -12,12 +13,12 @@ import {
   type CheckboxProps,
 } from '@components/index';
 import api from '@shared/api';
-import { isMasterAtom } from '@shared/atoms';
+import { adminValidateDialogOpenAtom, isMasterAtom } from '@shared/atoms';
 import { useSeats } from '@shared/hooks/useSeats';
 import socket from '@shared/socket';
 import { useAtomValue } from 'jotai';
+import { useUpdateAtom } from 'jotai/utils';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
 const Attendance = () => {
@@ -26,14 +27,14 @@ const Attendance = () => {
   const [checked, setChecked] = useState(false);
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
-  const navigate = useNavigate();
+
+  const setAdminValidateDialogOpen = useUpdateAtom(adminValidateDialogOpenAtom);
 
   useEffect(() => {
     if (!isMaster) {
-      alert('잘못된 접근입니다. 예약화면으로 돌아갑니다');
-      navigate('/');
+      setAdminValidateDialogOpen(true);
     }
-  }, [navigate, isMaster]);
+  }, [isMaster, setAdminValidateDialogOpen]);
 
   useEffect(() => {
     socket.on('seatList', (data) => {
@@ -82,6 +83,8 @@ const Attendance = () => {
           <Participants seats={seats} />
         </FooterNav>
       </Layout>
+
+      <AdminValidateDialog />
       <ReserveDialog />
       <DeleteDialog />
       <RedeemusDialog />

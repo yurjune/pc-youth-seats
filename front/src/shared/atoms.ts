@@ -13,4 +13,5 @@ export const reserveDialogOpenAtom = atom(false);
 export const deleteDialogOpenAtom = atom(false);
 export const redeemusDialogOpenAtom = atom(false);
 export const adminEntryDialogOpenAtom = atom(false);
+export const adminValidateDialogOpenAtom = atom(false);
 export const adminRadioDialogOpenAtom = atom(false);
