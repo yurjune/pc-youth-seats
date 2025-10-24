@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 
 const Admin = () => {
-  const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();
+  const [lastWeekSeats] = useState<Seats>();
   const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
   const [checked] = useState(false);
   const [seats, setSeats, modifySeats] = useSeats();
@@ -50,10 +50,9 @@ const Admin = () => {
   }, []);
 
   useEffect(() => {
-    Promise.all([api.getSeats(), api.getLastWeekSeats()])
+    Promise.all([api.getSeats()])
       .then((data) => {
         setSeats(data[0]);
-        setLastWeekSeats(data[1]);
       })
       .catch(console.error);
 
