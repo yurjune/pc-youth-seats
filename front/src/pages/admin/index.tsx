@@ -1,5 +1,4 @@
 import {
-  Checkbox,
   DeleteDialog,
   FooterNav,
   Layout,
@@ -10,7 +9,6 @@ import {
   SeatInfo,
   SeatsBody,
   AdminValidateDialog,
-  type CheckboxProps,
 } from '@components/index';
 import api from '@shared/api';
 import { adminValidateDialogOpenAtom, isMasterAtom } from '@shared/atoms';
@@ -25,7 +23,7 @@ import styles from './index.module.scss';
 const Admin = () => {
   const [lastWeekSeats, setLastWeekSeats] = useState<Seats>();
   const [absentSeatIds, setAbsentSeatIds] = useState<string[]>([]);
-  const [checked, setChecked] = useState(false);
+  const [checked] = useState(false);
   const [seats, setSeats, modifySeats] = useSeats();
   const isMaster = useAtomValue(isMasterAtom);
 
@@ -62,10 +60,6 @@ const Admin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCheckboxChange: CheckboxProps['onChange'] = (e) => {
-    setChecked(e.target.checked);
-  };
-
   return (
     <>
       <Layout>
@@ -75,9 +69,9 @@ const Admin = () => {
             absentSeatIds={absentSeatIds}
             isLastWeekMode={checked}
           />
-          <div className={styles.checkboxContainer}>
-            <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} />
-          </div>
+          {/* <div className={styles.checkboxContainer}> */}
+          {/*   <Checkbox label='지난 주 좌석보기' checked={checked} onChange={handleCheckboxChange} /> */}
+          {/* </div> */}
         </SeatsBody>
         <FooterNav>
           <div className={styles.info}>
