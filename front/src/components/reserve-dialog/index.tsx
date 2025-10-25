@@ -19,6 +19,7 @@ import { encrypt, getErrorMessage } from '@shared/utils';
 import {
   getErrorFromValidators,
   validateName,
+  validateGroup,
   validatePw,
   validatePwCheck,
 } from '@shared/utils/validate';
@@ -31,6 +32,7 @@ export const ReserveDialog = () => {
   const [selectedSeat, setSelectedSeat] = useAtom(selectedSeatAtom);
   const [selectedSeatLine, setSelectedSeatLine] = useAtom(selectedSeatLineAtom);
   const [name, handleNameChange, setName, nameValidator] = useInputValidate(validateName);
+  const [group, handleGroupChange, setGroup, groupValidator] = useInputValidate(validateGroup);
   const [pw, handlePwChange, setPw, pwValidator] = useInputValidate(validatePw);
   const [pwCheck, handlePwCheckChange, setPwCheck, pwCheckValidator] = useInputValidate(
     validatePwCheck(pw),
@@ -48,6 +50,7 @@ export const ReserveDialog = () => {
     setSelectedSeat(null);
     setSelectedSeatLine(null);
     setName('');
+    setGroup('');
     setPw('');
     setPwCheck('');
   };
@@ -58,8 +61,8 @@ export const ReserveDialog = () => {
     }
 
     const validators = isUserMode
-      ? [nameValidator, pwValidator, pwCheckValidator]
-      : [nameValidator];
+      ? [nameValidator, groupValidator, pwValidator, pwCheckValidator]
+      : [nameValidator, groupValidator];
     const error = getErrorFromValidators(validators);
     if (error) {
       openToast.error(error);
@@ -71,6 +74,7 @@ export const ReserveDialog = () => {
         id: selectedSeat.id,
         seat_active: SeatActive.RESERVED,
         line: selectedSeatLine,
+        group,
         name,
         pw: isUserMode ? encrypt(pw) : env.ADMIN_PW,
       };
@@ -94,13 +98,18 @@ export const ReserveDialog = () => {
     <Dialog className={styles.dialog} open={open} onClose={handleClose}>
       <DialogTitle className={styles.title}>좌석 예약</DialogTitle>
       <DialogContent>
-        {isUserMode && (
-          <DialogContentText className={styles.contentText}>
-            * 예약 가능 시간: 매주 월요일 오후 9시 ~
-            <br />* 부득이한 이유로 불참 시 다른 분들을 위해 좌석 예약을 취소해 주세요.
-          </DialogContentText>
-        )}
         <div>
+          <TextField
+            value={group}
+            onChange={handleGroupChange}
+            className={styles.textField}
+            helperText={groupValidator.error}
+            id='group'
+            label='순'
+            variant='standard'
+            fullWidth
+            color='secondary'
+          />
           <TextField
             value={name}
             onChange={handleNameChange}

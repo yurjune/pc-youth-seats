@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const checkIsAvailableForReservation = () => {
+  return true;
   const { day, hour } = getKoreanTime();
   // 월요일 00시 ~ 21시 예약불가
   return day !== 1 || hour >= 21;

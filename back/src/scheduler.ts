@@ -63,13 +63,13 @@ const backupSeats = () => {
 
 const enrollSchedules = () => {
   // 초 분 시간 일 월 요일
-  const MONDAY_MIDNIGHT = '00 00 00 * * 1';
+  // const MONDAY_MIDNIGHT = '00 00 00 * * 1';
   const EVERY_HOUR = '00 00 * * * *';
 
-  schedule.scheduleJob(MONDAY_MIDNIGHT, () => {
-    resetAllSeats();
-    saveLastWeekSeats();
-  });
+  // schedule.scheduleJob(MONDAY_MIDNIGHT, () => {
+  //   resetAllSeats();
+  //   saveLastWeekSeats();
+  // });
 
   schedule.scheduleJob(EVERY_HOUR, backupSeats);
 };

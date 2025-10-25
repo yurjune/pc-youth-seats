@@ -29,6 +29,7 @@ type CancelReservationReq = {
 };
 type CancelReservationRes = ResWithMessage & {
   defaultSeatActive: number;
+  defaultSeatGroup: string;
   defaultSeatName: string;
 };
 

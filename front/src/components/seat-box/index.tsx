@@ -30,7 +30,7 @@ export const SeatBox = (props: SeatBoxProps) => {
   const { openDialog } = useDialog();
   const { openToast } = useToastContext();
 
-  const { seat_active, id, name } = seat;
+  const { seat_active, id, group, name } = seat;
   const isLate = isAttendanceMode && lateSeatIds.includes(seat.id);
   const isAbsent = !isLate && !isUserMode && absentSeatIds.includes(seat.id);
 
@@ -76,6 +76,7 @@ export const SeatBox = (props: SeatBoxProps) => {
       {!isDisabled && (
         <>
           <span>{id}</span>
+          <span>{group}</span>
           <span>{name}</span>
         </>
       )}

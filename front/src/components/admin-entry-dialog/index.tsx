@@ -6,17 +6,18 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { adminEntryDialogOpenAtom, adminRadioDialogOpenAtom, isMasterAtom } from '@shared/atoms';
+import { adminEntryDialogOpenAtom, isMasterAtom } from '@shared/atoms';
 import { env } from '@shared/constants';
 import { useToastContext } from '@shared/context/ToastContext';
 import { useInput } from '@shared/hooks/useInput';
 import { encrypt } from '@shared/utils';
 import { useAtom } from 'jotai';
 import { useUpdateAtom } from 'jotai/utils';
+import { useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 
 export const AdminEntryDialog = () => {
-  const setRadioDialogOpen = useUpdateAtom(adminRadioDialogOpenAtom);
+  const navigate = useNavigate();
   const setIsMaster = useUpdateAtom(isMasterAtom);
   const [open, setOpen] = useAtom(adminEntryDialogOpenAtom);
   const [pw, handlePwChange, setPw] = useInput('');
@@ -30,7 +31,8 @@ export const AdminEntryDialog = () => {
   const handleOkClick = () => {
     if (encrypt(pw) === env.ADMIN_PW) {
       setIsMaster(true);
-      setRadioDialogOpen(true);
+      // setRadioDialogOpen(true);
+      navigate('./admin');
       handleClose();
       return;
     }

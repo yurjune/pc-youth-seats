@@ -62,6 +62,7 @@ class SeatsController {
         }
 
         parsedJSON[params.line][idx].seat_active = params.seat_active;
+        parsedJSON[params.line][idx].group = params.group;
         parsedJSON[params.line][idx].name = params.name;
         parsedJSON[params.line][idx].pw = params.pw;
         break;
@@ -87,19 +88,21 @@ class SeatsController {
       .then((file) => {
         const parsedJSON: Seats = JSON.parse(file);
         let defaultSeatActive = SeatActive.DISABLED;
+        let defaultSeatGroup = '';
         let defaultSeatName = '';
 
         for (const seat of parsedJSON[params.line]) {
           if (seat.id === params.id) {
             defaultSeatActive = seat.seat_active;
+            defaultSeatGroup = seat.group;
             defaultSeatName = seat.name;
             break;
           }
         }
 
-        return { defaultSeatActive, defaultSeatName };
+        return { defaultSeatActive, defaultSeatGroup, defaultSeatName };
       })
-      .then(({ defaultSeatActive, defaultSeatName }) => {
+      .then(({ defaultSeatActive, defaultSeatGroup, defaultSeatName }) => {
         fs.readFile(`${JSON_DIRECTORY}/${CURRENT_SEATS}`, 'utf8', (err, data) => {
           if (err) return res.sendStatus(500);
 
@@ -108,6 +111,7 @@ class SeatsController {
           for (const idx in parsedJSON[params.line]) {
             if (parsedJSON[params.line][idx].id === params.id) {
               parsedJSON[params.line][idx].seat_active = defaultSeatActive;
+              parsedJSON[params.line][idx].group = defaultSeatGroup;
               parsedJSON[params.line][idx].name = defaultSeatName;
               parsedJSON[params.line][idx].pw = '';
               break;
@@ -121,6 +125,7 @@ class SeatsController {
               ok: true,
               message: '삭제 되었습니다.',
               defaultSeatActive,
+              defaultSeatGroup,
               defaultSeatName,
             });
             next();

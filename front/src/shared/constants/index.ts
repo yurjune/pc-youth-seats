@@ -1,5 +1,5 @@
 const IS_PRODUCTION = import.meta.env.PROD;
-const SERVER_URL = IS_PRODUCTION ? 'https://pcyseat.com' : 'http://localhost:5100';
+const SERVER_URL = IS_PRODUCTION ? 'https://pcyseat.dpdns.org' : 'http://localhost:5100';
 const ADMIN_PW = import.meta.env.VITE_APP_ADMIN_PW ?? '';
 const REDEEMUS_PW = import.meta.env.VITE_APP_REDEEMUS_PW ?? '';
 
