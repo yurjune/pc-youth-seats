@@ -6,6 +6,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const checkIsAvailableForReservation = (): boolean => {
+  return true;
   const dayjsKorea = dayjs().tz('Asia/Seoul');
   const day = dayjsKorea.day();
   const hour = dayjsKorea.hour();
