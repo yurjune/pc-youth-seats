@@ -61,6 +61,7 @@ export const DeleteDialog = () => {
         socket.emit('seatRemoved', {
           ...params,
           seat_active: result.defaultSeatActive,
+          group: result.defaultSeatGroup || '',
           name: result.defaultSeatName,
           pw: '',
           ignoreIsLate: isAttendanceMode,
@@ -86,6 +87,17 @@ export const DeleteDialog = () => {
             className={styles.textField}
             id='seat'
             label='좌석'
+            variant='standard'
+            color='secondary'
+            fullWidth
+            inputProps={{ readOnly: true }}
+            helperText=' '
+          />
+          <TextField
+            value={selectedSeat?.group ?? ''}
+            className={styles.textField}
+            id='group'
+            label='순'
             variant='standard'
             color='secondary'
             fullWidth

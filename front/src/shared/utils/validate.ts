@@ -39,6 +39,12 @@ const getErrorFromValidators = (validators: StateValidator[]): string | null => 
 const validateName = (name: string): Either<string, string> =>
   pipe(name, validate([minLength(2), maxLength(4)], '이름을 2자 이상 4자 이하로 입력해주세요.'));
 
+const validateGroup = (group: string): Either<string, string> =>
+  pipe(
+    group,
+    validate([minLength(2), maxLength(4)], '순 이름을 2자 이상 4자 이하로 입력해주세요.'),
+  );
+
 const validatePw = (pw: string): Either<string, string> =>
   pipe(pw, validate([minLength(4)], '비밀번호를 4자 이상 입력해주세요.'));
 
@@ -47,4 +53,11 @@ const validatePwCheck =
   (pwCheck: string): Either<string, string> =>
     pipe(pwCheck, validate([samePassword(exPw)], '비밀번호가 일치하지 않습니다.'));
 
-export { getErrorFromValidators, validate, validateName, validatePw, validatePwCheck };
+export {
+  getErrorFromValidators,
+  validate,
+  validateName,
+  validateGroup,
+  validatePw,
+  validatePwCheck,
+};

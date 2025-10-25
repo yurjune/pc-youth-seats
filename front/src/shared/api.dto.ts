@@ -14,6 +14,7 @@ type MakeReservationResDto = ResWithMessage;
 type CancelReservationReqDto = Pick<SeatParams, 'id' | 'line' | 'ignoreIsLate'>;
 type CancelReservationResDto = ResWithMessage & {
   defaultSeatActive: number;
+  defaultSeatGroup: string;
   defaultSeatName: string;
 };
 
