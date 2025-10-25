@@ -1,7 +1,7 @@
 @import '../../styles/responsive.scss';
 
 .container {
-  width: 700px;
+  width: 900px;
   margin: 0 auto;
   padding: 16px 0;
 }
@@ -19,7 +19,7 @@
 
 @include md {
   .container {
-    width: 930px;
+    width: 1150px;
   }
 
   .line {
@@ -32,7 +32,7 @@
 
 @include lg {
   .container {
-    width: 1200px;
+    width: 1400px;
   }
 
   .line {

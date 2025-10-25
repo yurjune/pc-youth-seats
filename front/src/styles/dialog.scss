@@ -23,7 +23,7 @@
 
 @mixin dialog-textField {
   .textField {
-    margin: 10px 0;
+    margin: 4px 0;
     @include change-underline-hover-color(#9c27b0);
   }
 }

@@ -5,9 +5,9 @@
   flex-direction: column;
 
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
-  font-size: 0.45rem;
+  width: 40px;
+  height: 40px;
+  font-size: 0.5rem;
   font-weight: 600;
   margin: 1px;
   padding: 1px;
@@ -17,6 +17,7 @@
   border-radius: 3px;
   cursor: pointer;
   background: $vacant-color;
+  flex-shrink: 0;
 }
 
 .seat {
@@ -74,19 +75,19 @@
 
 @include md {
   .seat {
-    width: 40px;
-    height: 40px;
-    font-size: 0.6rem;
+    width: 50px;
+    height: 50px;
+    font-size: 0.65rem;
     font-weight: 400;
   }
 }
 
 @include lg {
   .seat {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     margin: 2px;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: 400;
   }
 }
