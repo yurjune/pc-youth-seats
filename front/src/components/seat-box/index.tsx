@@ -35,6 +35,11 @@ export const SeatBox = (props: SeatBoxProps) => {
   const isAbsent = !isLate && !isUserMode && absentSeatIds.includes(seat.id);
 
   const handleSeatClick = async () => {
+    if (isUserMode) {
+      openToast.info('현재 예약할 수 없습니다. 순장/임원에게 문의해주세요.');
+      return;
+    }
+
     if (isLastWeekMode) {
       return;
     }
